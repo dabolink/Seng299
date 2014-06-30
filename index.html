@@ -1,19 +1,87 @@
 <!DOCTYPE html> 
 <html>
 	<head>
+		<meta charset = "UTF-8">
 		<title>Log In</title>
+		<meta name = "viewport" content = "width = device-width, initial-scale = 1">
+		<link rel = "stylesheet" href = "jquery.mobile.structure-1.0.1" />
+		<link rel = "stylesheet" href = "jquery.mobile-1.0.1.css" />
 		<link rel = "stylesheet" href = "stylesheet.css"/>
-		<link rel = "sytlesheet" href = "jquery.mobile-1.0.1.css" />
-		<link rel = "sytlesheet" href = "jquery.mobile.structure-1.0.1 />
+		<script src = "js/jquery-1.7.1.min.js"></script>
+		<script src = "js/jquery.mobile-1.0.1.min.js"></script>
 	</head>
 	<body>
-		<div data-role = "field-contain">
-			<form action = "login_form.asp">
+		<div data-role = "page" id = "login">
+			<div data-role = "header">
+				<h1> My Title </h1>
+			</div>
+			<div data-role = "content">
 				Username: <input type = "text" name = "username"><br>
 				Password: <input type = "password" name = "password"><br>
-				<div class = "buttonbox">
-					<input type = "submit" value = "Login"><br>
+				<a href="profile.html" data-role="button">Login</a>
+				<div id = "halfwidthleft">
+					<a href = "#forgotPass" data-role = "button">Forgot Password?</a>
 				</div>
-			</form>
+				<div id = "halfwidthright">
+					<a href="#register" data-role="button">Register</a>
+				</div>
+			</div>
+		</div>
+		<div data-role = "page" id = "forgotPass" data-add-back-btn=true>
+			<div data-role = "header">
+				<h1>Forgot Password?</h1>
+			</div>
+			<div id = "filler">
+			</div>
+			<div data-role = "content">
+				<input type = "text" onfocus="if(this.value == 'Username'){this.value = ''}" onblur = "if(this.value == ''){this.value = 'Username'}" name = "username" value = "Username"><br>
+				<div id = "halfwidthleft">
+				<a href = "#login" data-role = "button">Back</a>
+				</div>
+				<div id = "halfwidthright">
+				<a href="#sendEmail" data-role="button" onmouseup="alert('Email Sent');">Send E-Mail</a>
+				</div>
+			</div>
+		</div>
+		<div data-role = "page" id = "register" data-add-back-btn=true>
+			<div data-role = "header">
+				<h1>Registration</h1>
+			</div>
+			<div data-role = "content">
+				<input type = "text" name = "FirstName" value = "First Name">
+				<input type = "text" name = "LastName" value = "Last Name">
+				<a>Date input here</a>
+				<div id = "center">
+					<fieldset data-role = "controlgroup" data-type = "horizontal">
+						<input type = "radio" name = "gender" id = "Male" value = "Male"/>
+						<label for = "Male">Male</label>
+						<input type = "radio" name = "gender" id = "Female" value = "Female"/>
+						<label for = "Female">Female</label>
+					</fieldset>
+				</div>
+				Username:
+				<input type = "text" name = "Username">
+				Password:
+				<input type = "password" name = "password">
+				Email:
+				<input type = "text" name = "Email" value = "User@Domain.com">
+				<fieldset class = "ui-field-contain">
+				<label for = "School">School</label>
+					<select name = "School" id = "School" onsubmit = "if(this.value == 'NULL'){alert('invalid school');}>
+						<option value = "NULL"> Select School</option>
+						<option value = "UVic">University of Victoria</option>
+						<option value = "UBC">University of British Columbia</option>
+					</select>
+				</fieldset>
+				<input type="radio" name = "ToS" id = "ToS">
+				<label for = "ToS">I agree to the Terms of Service</label>
+				<div id = "halfwidthleft">
+					<a href = "#login" data-role = "button">Back</a>
+				</div>
+				<div id = "halfwidthright">
+					<a href="#login" data-role="button" onmouseup="alert('Confirmation Email sent');">Register</a>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
