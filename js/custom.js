@@ -1,3 +1,8 @@
+function initialization(){
+	addSchools();
+	addGPs();
+}
+
 //check if rewritten password == password
 function checkPassword(){
 	var pass = document.getElementById('password').value;
@@ -17,6 +22,17 @@ function addSchool(school){
 	var x = document.getElementById('School');
 	var option = document.createElement("option");
 	option.text = school;
+	x.add(option);
+}
+
+function addGPs(){
+	addGP('Greg Howe');
+}
+
+function addGP(GP){
+	var x = document.getElementById('GP');
+	var option = document.createElement("option");
+	option.text = GP;
 	x.add(option);
 }
 

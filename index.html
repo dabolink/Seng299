@@ -11,10 +11,10 @@
 		<script src = "js/jquery.mobile-1.0.1.min.js"></script>
 		<script type = "text/javascript" src = "js/custom.js"></script>
 	</head>
-	<body onload=addSchools()>
+	<body onload=initialization()>
 		<div data-role = "page" id = "login">
 			<div data-role = "header">
-				<h1> My Title </h1>
+				<h1> EMR Application </h1>
 			</div>
 			<div data-role = "content">
 				<center>
@@ -94,11 +94,23 @@
 		<div data-role = "page" id = "profile" data-add-back-btn=true>
 			<div data-role="header">
 				<h1>Profile</h1>
+				<div class = "ui-btn-right">
+					<a href = "#login" data-role = "button">Sign out</a>
+				</div>
 			</div>
 			<div data-role = "content">
-				<img src="images/dude.png"></img>
-				<p>Name: Bob Johnson</p>
-				<p>Age: 31</p>
+				<img src="images/dude.png"></img><br>
+				First Name: xxxxxx<br>
+				Last Name: xxxxxx<br>
+				Date of Birth: xxxxxx (Age: 31)<br>
+				School: xxxxxx<br>
+				Username:<br><br>
+				<label for = "textarea-b">Previous logins</label>
+				<textarea name = "textarea" id = "textarea-b" readonly>
+					A list of users past logins will go here.
+					What do we store other than the date/time to prove authenticity?
+					IP? MAC? GPS coordinates? Location?
+				</textarea>
 			</div>
 		</div>
 
@@ -112,14 +124,16 @@
 				</div>
 				</div>
 			<div data-role="content">
-				<a href = "#profile" data-role = "button">Profile</a>
-				<a href = "#bookAppt" data-role = "button">Book Appointment</a>
-				<a href = "#viewAppt" data-role = "button">Check Appointments</a><br>
-				<label for="textarea-a">Recent News:</label>
-				<textarea name="textarea" id="textarea-a" readonly>
-				This application is a work in progress.
-				A database call would go here to grab the news from the DB?
-				</textarea>
+				<center>
+					<a href = "#profile" data-role = "button">Profile</a>
+					<a href = "#bookAppt" data-role = "button">Book Appointment</a>
+					<a href = "#viewAppt" data-role = "button">Check Appointments</a><br>
+					<label for="textarea-a">Recent News:</label>
+					<textarea name="textarea" id="textarea-a" readonly>
+					This application is a work in progress.
+					A database call would go here to grab the news from the DB?
+					</textarea>
+				</center>
 			</div>
 		</div>
 
@@ -127,15 +141,27 @@
 		<div data-role = "page" id = "bookAppt" data-add-back-btn=true>
 			<div data-role="header">
 				<h1>Book Appointment</h1>
+				<div class = "ui-btn-right">
+					<a href = "#login" data-role = "button">Sign out</a>
+				</div>
 			</div>
 			<div data-role = "content">
-
+				<center>
+					<fieldset class = "ui-field-contain">
+						<select name = "GP" id = "GP">
+							<option value = "NULL">Select a GP</option>
+						</select>
+					</fieldset>
+				</center>
 			</div>
 		</div>
 
 		<div data-role = "page" id = "viewAppt" data-add-back-btn=true>
 			<div data-role="header">
 				<h1>Check Appointments</h1>
+				<div class = "ui-btn-right">
+					<a href = "#login" data-role = "button">Sign out</a>
+				</div>
 			</div>
 		</div>
 
