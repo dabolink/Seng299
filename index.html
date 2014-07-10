@@ -41,12 +41,12 @@
 			<div id = "filler">
 			</div>
 			<div data-role = "content">
-				<input type = "text" onfocus="if(this.value == 'Username'){this.value = ''}" onblur = "if(this.value == ''){this.value = 'Username'}" name = "username" value = "Username"><br>
+				<input type = "text" value placeholder ="username" id = "fgtpassUser"><br>
 				<div id = "halfwidthleft">
 				<a href = "#login" data-role = "button">Back</a>
 				</div>
 				<div id = "halfwidthright">
-				<a href="#sendEmail" data-role="button" onmouseup="alert('Email Sent');">Send E-Mail</a>
+				<a href="#" data-role="button" id = "sendEmailB" onmouseup=checkFgtPassUser()>Send E-Mail</a>
 				</div>
 			</div>
 		</div>

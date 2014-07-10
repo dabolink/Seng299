@@ -40,6 +40,18 @@ function addGP(GP){
 function sendEmail(){
 	alert('Confirmation Email Sent');
 }
+function checkFgtPassUser(){
+	var x = document.getElementById('fgtpassUser');
+	var sendEmailB = document.getElementById('sendEmailB');
+	var y = x.value;
+	if (y == ''){
+		alert('please input username');
+	}
+	else{
+		alert('confirmation email sent');
+		sendEmailB.setAttribute('href','#login');
+	}
+}
 function checkRegistration(){
 	var valid = true;
 	var fName = document.getElementById('firstName').value;
