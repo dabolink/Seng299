@@ -3,9 +3,9 @@ function checkPassword(){
 	var pass = document.getElementById('password').value;
 	var repass = document.getElementById('repassword').value;
 	if(((pass != repass) || ((pass != '') || (repass != '')))){
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 //add schools to selection
 function addSchools(){
