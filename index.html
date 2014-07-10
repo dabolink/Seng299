@@ -55,6 +55,7 @@
 				<input type = "text" name = "FirstName" value = "First Name">
 				<input type = "text" name = "LastName" value = "Last Name">
 				<a>Date input here</a>
+				<input type = "date" name = "birthdate">
 				<div id = "center">
 					<fieldset data-role = "controlgroup" data-type = "horizontal">
 						<input type = "radio" name = "gender" id = "Male" value = "Male"/>
@@ -63,12 +64,10 @@
 						<label for = "Female">Female</label>
 					</fieldset>
 				</div>
-				Username:
-				<input type = "text" name = "Username">
-				Password:
-				<input type = "password" name = "password">
-				Email:
-				<input type = "text" name = "Email" value = "User@Domain.com">
+				<input type = "text" name = "Username" value placeholder = "Username">
+				<input type = "password" name = "password" value placeholder = "Password">
+				<input type = "password" name = "repassword" value placeholder = "Re-enter Password">
+				<input type = "email" name = "Email" value placeholder = "E-Mail" >
 				<fieldset class = "ui-field-contain">
 				<label for = "School">School</label>
 					<select name = "School" id = "School" onsubmit = "if(this.value == 'NULL'){alert('invalid school');}">
