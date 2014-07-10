@@ -9,6 +9,7 @@
 		<link rel = "stylesheet" href = "stylesheet.css"/>
 		<script src = "js/jquery-1.7.1.min.js"></script>
 		<script src = "js/jquery.mobile-1.0.1.min.js"></script>
+		<script type = "text/javascript" src = "js/custom.js"></script>
 	</head>
 	<body>
 		<div data-role = "page" id = "login">
@@ -26,7 +27,7 @@
 					<a href = "#forgotPass" data-role = "button">Forgot Password?</a>
 				</div>
 				<div id = "halfwidthright">
-					<a href="#register" data-role="button">Register</a>
+					<a href="#register" data-role="button" onclick = HelloWorld()>Register</a>
 				</div>
 			</div>
 		</div>
@@ -66,13 +67,13 @@
 						<label for = "Female">Female</label>
 					</fieldset>
 				</center>
-				<input type = "text" name = "Username" value placeholder = "Username">
-				<input type = "password" name = "password" value placeholder = "Password">
-				<input type = "password" name = "repassword" value placeholder = "Re-enter Password">
+				<input type = "text" name = "username" value placeholder = "Username">
+				<input type = "password" id = "password" value placeholder = "Password" onblur =checkPassword()>
+				<input type = "password" id = "repassword" value placeholder = "Re-enter Password" onblur =checkPassword()>
 				<input type = "email" name = "Email" value placeholder = "E-Mail" >
 				<center>
 					<fieldset class = "ui-field-contain">
-						<select name = "School" id = "School" onsubmit = "if(this.value == 'NULL'){alert('invalid school');}">
+						<select name = "School" id = "School" onsubmit = emptyInput()>
 							<option value = "NULL"> Select School</option>
 							<option value = "UVic">University of Victoria</option>
 							<option value = "UBC">University of British Columbia</option>
@@ -85,7 +86,7 @@
 					<a href = "#login" data-role = "button">Back</a>
 				</div>
 				<div id = "halfwidthright">
-					<a href="#login" data-role="button" onmouseup="alert('Confirmation Email sent');">Register</a>
+					<a href="#login" data-role="button" onmouseup=sendEmail()>Register</a>
 				</div>
 			</div>
 		</div>
