@@ -23,3 +23,12 @@ html,body{
 	text-align: center;
 	margin: 0 auto;
 }
+.center{
+	text-align:center;
+	float:center;
+	width: 50%
+}
+.smallbuttonright{
+	width: 10%;
+	float: right;
+}

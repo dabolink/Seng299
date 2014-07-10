@@ -52,30 +52,31 @@
 				<h1>Registration</h1>
 			</div>
 			<div data-role = "content">
-				<input type = "text" name = "FirstName" value = "First Name">
-				<input type = "text" name = "LastName" value = "Last Name">
-				<a>Date input here</a>
-				<input type = "date" name = "birthdate">
-				<div id = "center">
-					<fieldset data-role = "controlgroup" data-type = "horizontal">
+				<input type = "text" name = "FirstName" value placeholder = "First Name">
+				<input type = "text" name = "LastName" value placeholder = "Last Name">
+				<label for = "birthdate">Date of Birth</label>
+				<input type = "date" name = "birthdate" value placeholder = "Birth Date">
+				<center><!-- TO DO: -->
+					<fieldset data-role = "controlgroup" data-type = "horizontal" class = "ui-field-contain">
 						<input type = "radio" name = "gender" id = "Male" value = "Male"/>
 						<label for = "Male">Male</label>
 						<input type = "radio" name = "gender" id = "Female" value = "Female"/>
 						<label for = "Female">Female</label>
 					</fieldset>
-				</div>
+				</center>
 				<input type = "text" name = "Username" value placeholder = "Username">
 				<input type = "password" name = "password" value placeholder = "Password">
 				<input type = "password" name = "repassword" value placeholder = "Re-enter Password">
 				<input type = "email" name = "Email" value placeholder = "E-Mail" >
-				<fieldset class = "ui-field-contain">
-				<label for = "School">School</label>
-					<select name = "School" id = "School" onsubmit = "if(this.value == 'NULL'){alert('invalid school');}">
-						<option value = "NULL"> Select School</option>
-						<option value = "UVic">University of Victoria</option>
-						<option value = "UBC">University of British Columbia</option>
-					</select>
-				</fieldset>
+				<center>
+					<fieldset class = "ui-field-contain">
+						<select name = "School" id = "School" onsubmit = "if(this.value == 'NULL'){alert('invalid school');}">
+							<option value = "NULL"> Select School</option>
+							<option value = "UVic">University of Victoria</option>
+							<option value = "UBC">University of British Columbia</option>
+						</select>
+					</fieldset>
+				</center>
 				<input type="radio" name = "ToS" id = "ToS">
 				<label for = "ToS">I agree to the Terms of Service</label>
 				<div id = "halfwidthleft">
@@ -105,11 +106,11 @@
 		<div data-role = "page" id = "main" data-add-back-btn=false>
 			<div data-role="header">
 				<h1>Main</h1>
-			</div>
-			<div data-role="content">
-				<div id = "halfwidthright">
+				<div class = "ui-btn-right">
 					<a href = "#login" data-role = "button">Sign out</a>
 				</div>
+				</div>
+			<div data-role="content">
 				<div id = "halfwidthleft">
 					<a href = "#profile" data-role = "button">Profile</a>
 					<a href = "#bookAppt" data-role = "button">Book Appointment</a>
