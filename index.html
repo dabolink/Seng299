@@ -11,7 +11,7 @@
 		<script src = "js/jquery.mobile-1.0.1.min.js"></script>
 		<script type = "text/javascript" src = "js/custom.js"></script>
 	</head>
-	<body>
+	<body onload=addSchools()>
 		<div data-role = "page" id = "login">
 			<div data-role = "header">
 				<h1> My Title </h1>
@@ -74,9 +74,7 @@
 				<center>
 					<fieldset class = "ui-field-contain">
 						<select name = "School" id = "School" onsubmit = emptyInput()>
-							<option value = "NULL"> Select School</option>
-							<option value = "UVic">University of Victoria</option>
-							<option value = "UBC">University of British Columbia</option>
+							<option value = "NULL">Select School</option>
 						</select>
 					</fieldset>
 				</center>
