@@ -27,7 +27,7 @@
 					<a href = "#forgotPass" data-role = "button">Forgot Password?</a>
 				</div>
 				<div id = "halfwidthright">
-					<a href="#register" data-role="button" onclick = HelloWorld()>Register</a>
+					<a href="#register" data-role="button">Register</a>
 				</div>
 			</div>
 		</div>
@@ -55,10 +55,10 @@
 				<h1>Registration</h1>
 			</div>
 			<div data-role = "content">
-				<input type = "text" name = "FirstName" value placeholder = "First Name">
-				<input type = "text" name = "LastName" value placeholder = "Last Name">
+				<input type = "text" id = "firstName" value placeholder = "First Name">
+				<input type = "text" id = "lastName" value placeholder = "Last Name">
 				<label for = "birthdate">Date of Birth</label>
-				<input type = "date" name = "birthdate" value placeholder = "Birth Date">
+				<input type = "date" id = "birthDate" value placeholder = "Birth Date">
 				<center><!-- TO DO: -->
 					<fieldset data-role = "controlgroup" data-type = "horizontal" class = "ui-field-contain">
 						<input type = "radio" name = "gender" id = "Male" value = "Male"/>
@@ -67,24 +67,24 @@
 						<label for = "Female">Female</label>
 					</fieldset>
 				</center>
-				<input type = "text" name = "username" value placeholder = "Username">
+				<input type = "text" id = "username" value placeholder = "Username">
 				<input type = "password" id = "password" value placeholder = "Password" onblur =checkPassword()>
 				<input type = "password" id = "repassword" value placeholder = "Re-enter Password" onblur =checkPassword()>
-				<input type = "email" name = "Email" value placeholder = "E-Mail" >
+				<input type = "email" id = "Email" value placeholder = "E-Mail" >
 				<center>
 					<fieldset class = "ui-field-contain">
-						<select name = "School" id = "School" onsubmit = emptyInput()>
+						<select name = "School" id = "School">
 							<option value = "NULL">Select School</option>
 						</select>
 					</fieldset>
 				</center>
-				<input type="radio" name = "ToS" id = "ToS">
+				<input type="checkbox" name = "ToS" id = "ToS">
 				<label for = "ToS">I agree to the Terms of Service</label>
 				<div id = "halfwidthleft">
 					<a href = "#login" data-role = "button">Back</a>
 				</div>
 				<div id = "halfwidthright">
-					<a href="#login" data-role="button" onmouseup=sendEmail()>Register</a>
+					<a href="#" id = "Register" data-role="button" onmouseup=checkRegistration()>Register</a>
 				</div>
 			</div>
 		</div>
