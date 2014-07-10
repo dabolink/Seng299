@@ -23,3 +23,15 @@ function addSchool(school){
 function sendEmail(){
 	alert('Confirmation Email Sent');
 }
+
+function confirmUserPass(){
+	var user = document.getElementById('userlogin').value;
+	var pass = document.getElementById('passlogin').value;
+	var loginB = document.getElementById('loginButton');
+	if((user != '' )&&(pass != '')){
+		loginB.setAttribute('href','#main');
+	}
+	else{
+		alert('Incorrect Username or Password');
+	}
+}
