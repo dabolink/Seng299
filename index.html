@@ -57,15 +57,19 @@
 			<div data-role = "content">
 				<input type = "text" id = "firstName" value placeholder = "First Name">
 				<input type = "text" id = "lastName" value placeholder = "Last Name">
-				<label for = "birthdate">Date of Birth</label>
-				<input type = "date" id = "birthDate" value placeholder = "Birth Date">
-				<center><!-- TO DO: -->
-					<fieldset data-role = "controlgroup" data-type = "horizontal" class = "ui-field-contain">
-						<input type = "radio" name = "gender" id = "Male" value = "Male"/>
-						<label for = "Male">Male</label>
-						<input type = "radio" name = "gender" id = "Female" value = "Female"/>
-						<label for = "Female">Female</label>
-					</fieldset>
+				<div data-role="fieldcontain">
+					<label for = "birthdate">Date of Birth:</label>
+					<input type = "date" id = "birthDate" value placeholder = "Birth Date">
+				</div>
+				<center>
+					<div class = "MF">
+						<fieldset data-role = "controlgroup" data-type = "horizontal" class = "ui-field-contain">
+							<input type = "radio" name = "gender" id = "Male" value = "Male"/>
+							<label for = "Male">Male</label>
+							<input type = "radio" name = "gender" id = "Female" value = "Female"/>
+							<label for = "Female">Female</label>
+						</fieldset>
+					</div>
 				</center>
 				<input type = "text" id = "username" value placeholder = "Username">
 				<input type = "password" id = "password" value placeholder = "Password" onblur =checkPassword()>
