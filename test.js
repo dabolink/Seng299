@@ -1,6 +1,7 @@
 /* var mongoose = require('mongoose'); */
 var http = require('http'),
 		fs = require('fs');
+		require('./js/custom.js');
 
 fs.readFile('./index.html',function(err,html){
 	if(err){
