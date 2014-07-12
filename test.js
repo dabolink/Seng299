@@ -1,13 +1,15 @@
 /* var mongoose = require('mongoose'); */
 var http = require('http'),
-		fs = require('fs');
-		require('./js/custom.js');
-
+	fs = require('fs'),
+	path = require('path');
+	
 fs.readFile('./index.html',function(err,html){
 	if(err){
 		throw err;
 	}
 	http.createServer(function(request,response){
+		var stream = fs.createReadStream(__dirname + '/stylesheet.css');
+		stream.pipe(response);
 		response.writeHeader(200, {"Content-Type": 'text/html'});
 		response.write(html);
 		response.end();
@@ -15,6 +17,36 @@ fs.readFile('./index.html',function(err,html){
 	console.log("server has started");
 	
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*var FN = 'Daniel';
 var LN = 'Bolink';
 var DoB = '08-14-1993';
