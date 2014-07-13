@@ -136,3 +136,6 @@ function confirmUserPass(){
 function alternateCheck(){
 
 }
+function cancelAppointment(){
+	alert('Appointment cancelled.')
+}
