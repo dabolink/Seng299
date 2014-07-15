@@ -137,5 +137,11 @@ function alternateCheck(){
 
 }
 function cancelAppointment(){
+	$.ajax({
+    url: '/', 
+    type: 'POST', 
+    contentType: 'application/json', 
+    data: JSON.stringify({number:1})}
+)
 	alert('Appointment cancelled.')
 }

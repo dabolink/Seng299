@@ -1,4 +1,5 @@
 var express = require('express'),
+    bodyParser = require('body-parser'),
     app = express(),
     mongoose = require('mongoose'),
     https = require('https'),
@@ -19,7 +20,9 @@ var UserSchema = new mongoose.Schema({
 		School: { type: String},
 });
 
-mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299');
+mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', function(error){
+	console.log('MongoDB connection ready');
+});
 
 var SchoolSchema = new mongoose.Schema({
 	School: { type: String}
@@ -43,16 +46,22 @@ test.save(function(err, test){
 	if(err) return console.error(err);
 	console.dir(test);
 });
-
-if(mongoose.connection.readyState != 1){}
-console.log('MongoDB connection ready-state:  '+ mongoose.connection.readyState);
-
+ 
+app.use(bodyParser.json());
+//app.use(app.router);
+//app.use(express.logger());
 app.use(express.static(__dirname));
 
 app.get('/', function(req, res){
     res.sendfile('index.html');
 });
 
+//Create the server on port 3000
 var server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
+});
+
+app.post('/', function(req,res,next){
+    console.log(req.body);
+    next()
 });
