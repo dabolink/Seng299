@@ -1,3 +1,8 @@
+/*************************************************************************************************************************************
+														Initialization
+*************************************************************************************************************************************/
+
+
 var express = require('express'),
     bodyParser = require('body-parser'),
     app = express(),
@@ -58,12 +63,7 @@ User.findOne({UserName: 'Dabolink'},function(err, obj){
 	}
 });	
 
-if(mongoose.connection.readyState != 1){}
-console.log('MongoDB connection ready-state:  '+ mongoose.connection.readyState);
- 
 app.use(bodyParser.json());
-//app.use(app.router);
-//app.use(express.logger());
 app.use(express.static(__dirname));
 
 app.get('/', function(req, res){
@@ -75,7 +75,16 @@ var server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
 });
 
-app.post('/', function(req,res,next){
+/*************************************************************************************************************************************
+														serverPost Methods
+*************************************************************************************************************************************/
+
+app.post('/', function(req, res, next){
     console.log(req.body);
+    console.log(req.body.number);
     next()
+});
+
+app.post('/addUser', function(req, res, next){
+	console.log(req.body);
 });

@@ -3,11 +3,40 @@ function initialization(){
 	addGPs();
 }
 
+//Post data to a server
+//Variables:
+//	uri 		An indicator the server will read in as the action (See serverPost Methods in expresso.js)
+//	data 		A valid JSON string. Use JSON.stringlify({ data:value })
+function serverPost(uri, keyPair){
+	$.ajax({
+    url: '/' + uri, 
+    type: 'POST', 
+    contentType: 'application/json', 
+    data: keyPair})
+}
+
+function createUser(){
+	if(!checkRegistration()){
+		return;
+	}
+	var user = JSON.stringify({
+		firstName: document.getElementById('firstName').value,
+		lastName: document.getElementById('lastName').value,
+		DateOfBirth: document.getElementById('birthDate').value,
+		gender: checkMF(),
+		Username: document.getElementById('username').value,
+		Password: document.getElementById('password').value,
+		EMail: document.getElementById('Email').value,
+		School: document.getElementById('School').value
+	});
+	serverPost('addUser', user);
+}
+
 //check if rewritten password == password
 function checkPassword(){
 	var pass = document.getElementById('password').value;
 	var repass = document.getElementById('repassword').value;
-	if(((pass != repass) || ((pass != '') || (repass != '')))){
+	if((pass != repass) && (pass != '') && (repass != '')){
 		return true;
 	}
 	return false;
@@ -98,10 +127,11 @@ function checkRegistration(){
 		alert('registration sucessfull');
 		reg.setAttribute('href','#login');
 		alert('confirmation email sent');
-		
+		return true;
 	} 
 	else {
 		alert('registration incomplete');
+		return false;
 	}
 }
 function checkUser(){
@@ -137,11 +167,6 @@ function alternateCheck(){
 
 }
 function cancelAppointment(){
-	$.ajax({
-    url: '/', 
-    type: 'POST', 
-    contentType: 'application/json', 
-    data: JSON.stringify({number:1})}
-)
+	serverPost('', JSON.stringify({number:1}));
 	alert('Appointment cancelled.')
 }
