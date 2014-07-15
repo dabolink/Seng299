@@ -28,7 +28,6 @@ mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', f
 var SchoolSchema = new mongoose.Schema({
 	School: { type: String}
 });
-found = true;
 var User = mongoose.model('User', UserSchema);
 var School = mongoose.model('School', SchoolSchema);
 User.findOne({UserName: 'Dabolink'},function(err, obj){
@@ -58,31 +57,9 @@ User.findOne({UserName: 'Dabolink'},function(err, obj){
 		
 	}
 });	
-console.log(found);
-if(!found){
-	var test = new User({
-		FirstName: 'Daniel',
-		LastName: 'Bolink',
-		DateOfBirth: '14-08-2014',
-		gender: 'Male',
-		UserName: 'Dabolink',
-		Password: '1234',
-		EMail: 'dabolink@gmail.com',
-		School: 'University of Victoria',
-	}); 
-	test.save(function(err){
-		if(err) return console.error(err);
-		console.dir('test3');
-	});
-}
 
 if(mongoose.connection.readyState != 1){}
 console.log('MongoDB connection ready-state:  '+ mongoose.connection.readyState);
-	
-test.save(function(err, test){
-	if(err) return console.error(err);
-	console.dir(test);
-});
  
 app.use(bodyParser.json());
 //app.use(app.router);
