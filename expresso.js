@@ -21,28 +21,57 @@ var UserSchema = new mongoose.Schema({
 
 mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299');
 
+
 var SchoolSchema = new mongoose.Schema({
 	School: { type: String}
 });
-
+found = true;
 var User = mongoose.model('User', UserSchema);
 var School = mongoose.model('School', SchoolSchema);
-
-var test = new User({
-	FirstName: 'Daniel',
-	LastName: 'Bolink',
-	DateOfBirth: '14-08-2014',
-	gender: 'Male',
-	UserName: 'Dabolink',
-	Password: '1234',
-	EMail: 'dabolink@gmail.com',
-	School: 'University of Victoria',
+User.findOne({UserName: 'Dabolink'},function(err, obj){
+	if(err) {
+		console.log('test1');
+		console.error(err);
+	}
+	else{
+		console.log('test2');
+		console.log(obj);
+		if(obj == null){
+			var test = new User({
+				FirstName: 'Daniel',
+				LastName: 'Bolink',
+				DateOfBirth: '14-08-2014',
+				gender: 'Male',
+				UserName: 'Dabolink',
+				Password: '1234',
+				EMail: 'dabolink@gmail.com',
+				School: 'University of Victoria',
+			}); 
+			test.save(function(err){
+				if(err) return console.error(err);
+				console.dir('test3');
+			});
+		}
+		
+	}
+});	
+console.log(found);
+if(!found){
+	var test = new User({
+		FirstName: 'Daniel',
+		LastName: 'Bolink',
+		DateOfBirth: '14-08-2014',
+		gender: 'Male',
+		UserName: 'Dabolink',
+		Password: '1234',
+		EMail: 'dabolink@gmail.com',
+		School: 'University of Victoria',
+	}); 
+	test.save(function(err){
+		if(err) return console.error(err);
+		console.dir('test3');
 	});
-	
-test.save(function(err, test){
-	if(err) return console.error(err);
-	console.dir(test);
-});
+}
 
 if(mongoose.connection.readyState != 1){}
 console.log('MongoDB connection ready-state:  '+ mongoose.connection.readyState);
