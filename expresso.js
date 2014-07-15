@@ -6,29 +6,45 @@ var express = require('express'),
 
 var db = mongoose.connection;
 db.on('error', console.error);
-db.once('open', function(){
+db.once('open', function(){});
 
-	var UserSchema = new mongoose.Schema({
+var UserSchema = new mongoose.Schema({
 		FirstName: { type: String},
 		LastName: { type: String},
-		DateOfBirth: { type: Date},
+		DateOfBirth: { type: String},
 		gender: { type: String},
 		UserName: { type: String},
 		Password: { type: String},
 		EMail: { type: String},
 		School: { type: String},
-	});
-
-	var SchoolSchema = new mongoose.Schema({
-		School: { type: String}
-	});
-
-	var User = mongoose.model('User', UserSchema);
-	var School = mongoose.model('School', SchoolSchema);
 });
 
-mongoose.connect('mongodb://DigitalCoffee:1234@ds041208.mongolab.com:41238/seng299');
-//while (mongoose.connection.readyState != 1) {}
+mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299');
+
+var SchoolSchema = new mongoose.Schema({
+	School: { type: String}
+});
+
+var User = mongoose.model('User', UserSchema);
+var School = mongoose.model('School', SchoolSchema);
+
+var test = new User({
+	FirstName: 'Daniel',
+	LastName: 'Bolink',
+	DateOfBirth: '14-08-2014',
+	gender: 'Male',
+	UserName: 'Dabolink',
+	Password: '1234',
+	EMail: 'dabolink@gmail.com',
+	School: 'University of Victoria',
+	});
+	
+test.save(function(err, test){
+	if(err) return console.error(err);
+	console.dir(test);
+});
+
+if(mongoose.connection.readyState != 1){}
 console.log('MongoDB connection ready-state:  '+ mongoose.connection.readyState);
 
 app.use(express.static(__dirname));

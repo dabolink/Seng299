@@ -77,7 +77,7 @@ var UserSchema = new mongoose.Schema({
 	EMail: { type: String},
 	School: { type: String},
 	});
-var User = mongoose.model('User', UserSchema);
+var User = mongoose.model('test', UserSchema);
 
 var test = new User({
 	FirstName: FN,
