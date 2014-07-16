@@ -87,4 +87,32 @@ app.post('/', function(req, res, next){
 
 app.post('/addUser', function(req, res, next){
 	console.log(req.body);
+	console.log(req.body.Username);
+	User.findOne({UserName: req.body.Username},function(err, obj){
+	if(err) {
+		console.log('test1');
+		console.error(err);
+	}
+	else{
+		console.log('test2');
+		console.log(obj);
+		if(obj == null){
+			var test = new User({
+				FirstName: req.body.FirstName,
+				LastName: req.body.LastName,
+				DateOfBirth: req.body.DateOfBirth,
+				gender: req.body.gender,
+				Username: req.body.Username,
+				Password: req.body.Password,
+				EMail: req.body.EMail,
+				School: req.body.School,
+			}); 
+			test.save(function(err){
+				if(err) return console.error(err);
+				console.dir('test3');
+			});
+		}
+		
+	}
+});	
 });

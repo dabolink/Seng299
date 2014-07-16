@@ -20,8 +20,8 @@ function createUser(){
 		return;
 	}
 	var user = JSON.stringify({
-		firstName: document.getElementById('firstName').value,
-		lastName: document.getElementById('lastName').value,
+		FirstName: document.getElementById('firstName').value,
+		LastName: document.getElementById('lastName').value,
 		DateOfBirth: document.getElementById('birthDate').value,
 		gender: checkMF(),
 		Username: document.getElementById('username').value,
