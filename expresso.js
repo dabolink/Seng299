@@ -79,17 +79,19 @@ var server = app.listen(3000, function() {
 														serverPost Methods
 *************************************************************************************************************************************/
 
+//Note: If a function does not encounter any errors, it must call res.send(200);
+//To send data back from the server, use res.json(200, < JSON string >);
+//If there is an error, call res.send(500, < Error message >);
+
 app.post('/', function(req, res, next){
     console.log(req.body);
-    console.log(req.body.number);
-    next()
+    res.json(200, {message: 'This is text!'});
 });
 
 app.post('/addUser', function(req, res, next){
-	console.log(req.body);
-	console.log(req.body.Username);
 	User.findOne({UserName: req.body.Username},function(err, obj){
 	if(err) {
+		res.send(500, 'This is text!');
 		console.log('test1');
 		console.error(err);
 	}
@@ -110,6 +112,7 @@ app.post('/addUser', function(req, res, next){
 			test.save(function(err){
 				if(err) return console.error(err);
 				console.dir('test3');
+				res.json(200, {message: 'This is text!'});
 			});
 		}
 		

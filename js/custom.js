@@ -3,16 +3,24 @@ function initialization(){
 	addGPs();
 }
 
-//Post data to a server
+//Post data to a server, or create an alert if there was an error.
+//A function can be passed in if the server is expected to send a JSON response.
 //Variables:
 //	uri 		An indicator the server will read in as the action (See serverPost Methods in expresso.js)
-//	data 		A valid JSON string. Use JSON.stringlify({ data:value })
-function serverPost(uri, keyPair){
+//	data 		A valid JSON string. Use JSON.stringify({ data:value })
+function serverPost(uri, keyPair, successFunction){
+
 	$.ajax({
     url: '/' + uri, 
     type: 'POST', 
     contentType: 'application/json', 
-    data: keyPair})
+    data: keyPair,
+    success: function(result){
+    	successFunction(result);
+    },
+	error: function(xhr){
+		alert('There was a problem.\n' + xhr.responseText);
+	}})
 }
 
 function createUser(){
@@ -29,7 +37,7 @@ function createUser(){
 		EMail: document.getElementById('Email').value,
 		School: document.getElementById('School').value
 	});
-	serverPost('addUser', user);
+	serverPost('addUser', user, function(result){});
 }
 
 //check if rewritten password == password
@@ -167,6 +175,6 @@ function alternateCheck(){
 
 }
 function cancelAppointment(){
-	serverPost('', JSON.stringify({number:1}));
-	alert('Appointment cancelled.')
+	serverPost('', JSON.stringify({number:1}), function(result){alert(result.message);});
+	alert('Appointment cancelled.\n')
 }
