@@ -19,7 +19,7 @@ var UserSchema = new mongoose.Schema({
 		LastName: { type: String},
 		DateOfBirth: { type: String},
 		gender: { type: String},
-		UserName: { type: String},
+		Username: { type: String},
 		Password: { type: String},
 		EMail: { type: String},
 		School: { type: String},
@@ -35,33 +35,6 @@ var SchoolSchema = new mongoose.Schema({
 });
 var User = mongoose.model('User', UserSchema);
 var School = mongoose.model('School', SchoolSchema);
-User.findOne({UserName: 'Dabolink'},function(err, obj){
-	if(err) {
-		console.log('test1');
-		console.error(err);
-	}
-	else{
-		console.log('test2');
-		console.log(obj);
-		if(obj == null){
-			var test = new User({
-				FirstName: 'Daniel',
-				LastName: 'Bolink',
-				DateOfBirth: '14-08-2014',
-				gender: 'Male',
-				UserName: 'Dabolink',
-				Password: '1234',
-				EMail: 'dabolink@gmail.com',
-				School: 'University of Victoria',
-			}); 
-			test.save(function(err){
-				if(err) return console.error(err);
-				console.dir('test3');
-			});
-		}
-		
-	}
-});	
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -89,9 +62,41 @@ app.post('/', function(req, res, next){
 });
 
 app.post('/addUser', function(req, res, next){
-	User.findOne({UserName: req.body.Username},function(err, obj){
+	User.findOne({Username: req.body.Username},function(err, obj){
+		if(err) {
+			res.send(500, 'err');
+			console.log('test1');
+			console.error(err);
+		}
+		else{
+			console.log('test2');
+			console.log(obj);
+			if(obj == null){
+				var test = new User({
+					FirstName: req.body.FirstName,
+					LastName: req.body.LastName,
+					DateOfBirth: req.body.DateOfBirth,
+					gender: req.body.gender,
+					Username: req.body.Username,
+					Password: req.body.Password,
+					EMail: req.body.EMail,
+					School: req.body.School,
+				}); 
+				test.save(function(err){
+					if(err) return console.error(err);
+					console.dir('test3');
+					res.json(200, {message: 'true'});
+				});
+			}
+			else{
+					res.send(200, {message: 'false'});
+			}
+		}
+});	
+});
+
+/* User.findOne({UserName: 'Dabolink'},function(err, obj){
 	if(err) {
-		res.send(500, 'This is text!');
 		console.log('test1');
 		console.error(err);
 	}
@@ -100,22 +105,20 @@ app.post('/addUser', function(req, res, next){
 		console.log(obj);
 		if(obj == null){
 			var test = new User({
-				FirstName: req.body.FirstName,
-				LastName: req.body.LastName,
-				DateOfBirth: req.body.DateOfBirth,
-				gender: req.body.gender,
-				Username: req.body.Username,
-				Password: req.body.Password,
-				EMail: req.body.EMail,
-				School: req.body.School,
+				FirstName: 'Daniel',
+				LastName: 'Bolink',
+				DateOfBirth: '14-08-2014',
+				gender: 'Male',
+				UserName: 'Dabolink',
+				Password: '1234',
+				EMail: 'dabolink@gmail.com',
+				School: 'University of Victoria',
 			}); 
 			test.save(function(err){
 				if(err) return console.error(err);
 				console.dir('test3');
-				res.json(200, {message: 'This is text!'});
 			});
 		}
 		
 	}
-});	
-});
+}); */	
