@@ -256,4 +256,3 @@ $('#viewAppt').live('pageinit',function(){
 		alert("Must be logged in to access this page");
 	}
 });
-
