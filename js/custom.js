@@ -37,12 +37,11 @@ function createUser(){
 		EMail: document.getElementById('Email').value,
 		School: document.getElementById('School').value
 	});
-	alert(user.Username);
 	serverPost('addUser', user, function(result){
 		alert(result.message);
 		if(result.message == 'true'){
 			alert('registration sucessfull');
-			document.getElementById('Register').setAttribute('href','#login');
+			$.mobile.changePage("#login");
 			alert('confirmation email sent');
 		}		
 		else if(result.message == 'err'){
@@ -155,7 +154,6 @@ function checkRegistration(){
 }
 function checkUser(){
 	var user = document.getElementById('username').value;
-	alert(user);
 	if(user != ''){
 		return true;
 	}
