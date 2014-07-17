@@ -27,15 +27,16 @@ var UserSchema = new mongoose.Schema({
 
 var SchoolSchema = new mongoose.Schema({
 	Schools: [String],
-	length: Number,
 });
-
+var GPSchema = new mongoose.Schema({
+	GPs: [String],
+});
 
 mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', function(error){
 	console.log('MongoDB connection ready');
 });
 
-
+var GPs = mongoose.model('GPs', GPSchema);
 var User = mongoose.model('User', UserSchema);
 var Schools = mongoose.model('Schools', SchoolSchema);
 
@@ -125,9 +126,33 @@ app.post('/addUser', function(req, res, next){
 		}
 	});	
 });
+
+app.post('/getGPs', function(req,res,next){
+	Schools.findOne(function(err,obj){
+		if(err){
+			res.send(500,'err');
+			console.log(err);
+		}
+		else{
+			res.json(200, {GPs: obj.GPs});
+		}
+	});
+});
+
+/*************************************************************************************************************************************
+														Use these to Add Schools and GPs (only run once)
+*************************************************************************************************************************************/
+
 /* var test = new Schools({
 	Schools: ['Univeristy of Victoria','University of British Columbia'],
 });
 test.save(function(err){
 	if(err) return console.error(err);
 });*/
+
+/*  var test = new GPs({
+	GPs: ['Greg Howe'],
+});
+test.save(function(err){
+	if(err) return console.error(err);
+}); */

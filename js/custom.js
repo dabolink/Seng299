@@ -80,7 +80,11 @@ function addSchool(school){
 }
 
 function addGPs(){
-	addGP('Greg Howe');
+	serverPost('getGPs',null,function(result){
+		for(i=0;i<result.GPs.length;i++){
+			addGP(result.GPs[i]);
+		}
+	});
 }
 
 function addGP(GP){
