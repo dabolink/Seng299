@@ -147,7 +147,15 @@ app.post('/getProfile', function(req, res, next){
 		}
 		else {
 			console.log(obj);
-			res.json(200, {User: obj});
+			res.json(200, {User: {
+				FirstName: obj.FirstName,
+				LastName: obj.LastName,
+				DateOfBirth: obj.DateOfBirth,
+				gender: obj.gender,
+				Username: obj.Username,
+				EMail: obj.EMail,
+				School: obj.School
+			}});
 		}
 	});
 });
