@@ -128,7 +128,7 @@ app.post('/addUser', function(req, res, next){
 });
 
 app.post('/getGPs', function(req,res,next){
-	Schools.findOne(function(err,obj){
+	GPs.findOne(function(err,obj){
 		if(err){
 			res.send(500,'err');
 			console.log(err);
