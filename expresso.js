@@ -139,6 +139,20 @@ app.post('/getGPs', function(req,res,next){
 	});
 });
 
+app.post('/getProfile', function(req, res, next){
+	console.log(req.body.Username);
+	User.findOne({Username: req.body.Username},function(err, obj){
+		if(err){
+			res.send(500,'err');
+			console.log(err);
+		}
+		else {
+			console.log(obj);
+			res.json(200, {User: obj.User});
+		}
+	});
+});
+
 /*************************************************************************************************************************************
 														DataBase Functions (only run once)
 *************************************************************************************************************************************/

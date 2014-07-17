@@ -100,11 +100,8 @@
 			</div>
 			<div data-role = "content">
 				<img src="stylesheets/images/dude.png"></img><br>
-				First Name: xxxxxx<br>
-				Last Name: xxxxxx<br>
-				Date of Birth: xxxxxx (Age: 31)<br>
-				School: xxxxxx<br>
-				Username:<br><br>
+				<div id = "profileInfo">
+			</div><br><br>
 				<label for = "textarea-b">Previous logins</label>
 				<textarea name = "textarea" id = "textarea-b" readonly>
 					A list of users past logins will go here.
@@ -125,7 +122,7 @@
 				</div>
 			<div data-role="content">
 				<center>
-					<a href = "#profile" data-role = "button">Profile</a>
+					<a href = "#profile" data-role = "button" onmouseup = getProfileInfo()>Profile</a>
 					<a href = "#bookAppt" data-role = "button">Book Appointment</a>
 					<a href = "#viewAppt" data-role = "button">Check Appointments</a><br>
 					<label for="textarea-a">Recent News:</label>

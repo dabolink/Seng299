@@ -210,6 +210,18 @@ function cancelAppointment(){
 	alert('Appointment cancelled.\n')
 }
 
+function getProfileInfo(){
+	serverPost('getProfile', JSON.stringify({Username: curUser}), function(result){
+		var userInfo = document.getElementById('profileInfo');
+		alert(result.Username);
+		userInfo.innerHTML = '<p>FirstName: ' + JSON.parse(result).FirstName
+			+ '<p/><p>LastName: ' + JSON.parse(result).LastName + '</p>';
+	});
+}
+function setProfileInfo(result){
+	alert('Do Magic!');
+}
+
 /*************************************************************************************************************************************
 														Redirect to login if no current login
 *************************************************************************************************************************************/
@@ -218,25 +230,25 @@ function cancelAppointment(){
 $('#main').live('pageinit',function(){
 	if(window.curUser == ''){
 		$.mobile.changePage("#login");
-		alert("must be logged in to access this page");
+		alert("Must be logged in to access this page");
 	}
 });
 $('#profile').live('pageinit',function(){
 	if(window.curUser == ''){
 		$.mobile.changePage("#login");
-		alert("must be logged in to access this page");
+		alert("Must be logged in to access this page");
 	}
 });
 $('#bookAppt').live('pageinit',function(){
 	if(window.curUser == ''){
 		$.mobile.changePage("#login");
-		alert("must be logged in to access this page");
+		alert("Must be logged in to access this page");
 	}
 });
 $('#viewAppt').live('pageinit',function(){
 	if(window.curUser == ''){
 		$.mobile.changePage("#login");
-		alert("must be logged in to access this page");
+		alert("Must be logged in to access this page");
 	}
 });
 
