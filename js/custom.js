@@ -213,8 +213,11 @@ function cancelAppointment(){
 function getProfileInfo(){
 	serverPost('getProfile', JSON.stringify({Username: curUser}), function(result){
 		alert(result.Username);
-		userInfo.innerHTML = '<p>FirstName: ' + JSON.parse(result).FirstName
-			+ '<p/><p>LastName: ' + JSON.parse(result).LastName + '</p>';
+		var userInfo = document.getElementById('profileInfo');
+		userInfo.innerHTML = '<p>FirstName: ' + result.User.FirstName
+			+ '<p/><p>LastName: ' + result.User.LastName
+			+ '</p><p>Date of Birth: ' + result.User.DateOfBirth
+			+ '</p><p>Gender: ' + result.User.gender;
 	});
 }
 function setProfileInfo(result){
