@@ -117,47 +117,48 @@ function checkRegistration(){
 	var lName = document.getElementById('lastName').value;
 	var DoB = document.getElementById('birthDate').value;
 	var reg = document.getElementById('Register');
+	var incomplete = '';
 	if(DoB == ''){
-		alert('date not correct');
+		incomplete += 'Date not correct\n';
 		valid = false;
 	}
 	if ((fName == '') || (lName == '')){
-		alert('missing first or last name');
+		incomplete +='Missing first or last name\n';
 		valid = false;
 	}
 	var MF = checkMF();
 	if(MF == 'undefined'){
-		alert('please select gender');
+		incomplete += 'Please select gender\n';
 		valid = false;
 	}
 	if(!checkUser()){
-		alert('username taken');
+		incomplete += 'Username taken\n';
 		valid = false;
 	}
 	if(checkPassword()){
-		alert("passwords don't match or are empty");
+		incomplete += "Passwords don't match or are empty\n";
 		valid = false;
 	}
 	var email = document.getElementById('Email').value;
 	if(email == ''){
-		alert('please enter E-Mail address');
+		incomplete += 'Please enter an E-Mail address\n';
 		valid = false;
 	}
 	var School = document.getElementById('School').value;
 	if(School == 'NULL'){
-		alert('please select school you are currently attending');
+		incomplete +='Please select school you are currently attending\n';
 		valid = false;
 	}
 	var ToS = document.getElementById('ToS');
 	if(!ToS.checked){
-		alert('please accept Terms of Service');
+		incomplete += 'Please accept Terms of Service\n';
 		valid = false;
 	}
 	if(valid){
 		return true;
 	} 
 	else {
-		alert('registration incomplete');
+		alert('Registration incomplete. Please fix the following:\n\n' + incomplete);
 		return false;
 	}
 }
@@ -174,9 +175,9 @@ function checkMF(){
 	if((!male) && (!female)){
 		return 'undefined';
 	}else if (male){
-		return 'male';
+		return 'Male';
 	} else if (female) {
-		return 'female';
+		return 'Female';
 	}
 }
 function signOut(){
@@ -212,7 +213,6 @@ function cancelAppointment(){
 
 function getProfileInfo(){
 	serverPost('getProfile', JSON.stringify({Username: curUser}), function(result){
-		alert(result.Username);
 		var userInfo = document.getElementById('profileInfo');
 		userInfo.innerHTML = '<p>FirstName: ' + result.User.FirstName
 			+ '<p/><p>LastName: ' + result.User.LastName
