@@ -40,9 +40,7 @@ function createUser(){
 		EMail: document.getElementById('Email').value,
 		School: document.getElementById('School').value
 	});
-	alert(user.Username);
 	serverPost('addUser', user, function(result){
-		alert(result.message);
 		if(result.message == 'true'){
 			alert('registration sucessful');
 			$.mobile.changePage("#login");
@@ -182,9 +180,7 @@ function checkMF(){
 	}
 }
 function signOut(){
-	alert(window.curUser);
 	window.curUser = '';
-	alert(window.curUser);
 }
 function confirmUserPass(){
 	var userE = document.getElementById('userlogin').value;
@@ -196,7 +192,6 @@ function confirmUserPass(){
 	serverPost('checkPass',user, function(result){
 		if(result.message == 'true'){
 			window.curUser = userE;
-			alert(window.curUser);
 			$.mobile.changePage("#main");
 		}
 		else if (result.message == 'err'){
