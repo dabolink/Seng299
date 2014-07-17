@@ -1,6 +1,9 @@
+var curUser = '';
+
 function initialization(){
 	addSchools();
 	addGPs();
+	
 }
 
 //Post data to a server, or create an alert if there was an error.
@@ -178,15 +181,22 @@ function checkMF(){
 		return 'female';
 	}
 }
+function signOut(){
+	alert(window.curUser);
+	window.curUser = '';
+	alert(window.curUser);
+}
 function confirmUserPass(){
-	var user = document.getElementById('userlogin').value;
-	var pass = document.getElementById('passlogin').value;
+	var userE = document.getElementById('userlogin').value;
+	var passE = document.getElementById('passlogin').value;
 	var user = JSON.stringify({
-		Username: user,
-		Password: pass,
+		Username: userE,
+		Password: passE,
 	});
 	serverPost('checkPass',user, function(result){
 		if(result.message == 'true'){
+			window.curUser = userE;
+			alert(window.curUser);
 			$.mobile.changePage("#main");
 		}
 		else if (result.message == 'err'){
@@ -204,3 +214,34 @@ function cancelAppointment(){
 	serverPost('', JSON.stringify({number:1}), function(result){alert(result.message);});
 	alert('Appointment cancelled.\n')
 }
+
+/*************************************************************************************************************************************
+														Redirect to login if no current login
+*************************************************************************************************************************************/
+
+
+$('#main').live('pageinit',function(){
+	if(window.curUser == ''){
+		$.mobile.changePage("#login");
+		alert("must be logged in to access this page");
+	}
+});
+$('#profile').live('pageinit',function(){
+	if(window.curUser == ''){
+		$.mobile.changePage("#login");
+		alert("must be logged in to access this page");
+	}
+});
+$('#bookAppt').live('pageinit',function(){
+	if(window.curUser == ''){
+		$.mobile.changePage("#login");
+		alert("must be logged in to access this page");
+	}
+});
+$('#viewAppt').live('pageinit',function(){
+	if(window.curUser == ''){
+		$.mobile.changePage("#login");
+		alert("must be logged in to access this page");
+	}
+});
+
