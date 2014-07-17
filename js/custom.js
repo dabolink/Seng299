@@ -37,6 +37,7 @@ function createUser(){
 		EMail: document.getElementById('Email').value,
 		School: document.getElementById('School').value
 	});
+	alert(user.Username);
 	serverPost('addUser', user, function(result){
 		alert(result.message);
 		if(result.message == 'true'){
@@ -154,6 +155,7 @@ function checkRegistration(){
 }
 function checkUser(){
 	var user = document.getElementById('username').value;
+	alert(user);
 	if(user != ''){
 		return true;
 	}
@@ -173,13 +175,22 @@ function checkMF(){
 function confirmUserPass(){
 	var user = document.getElementById('userlogin').value;
 	var pass = document.getElementById('passlogin').value;
-	var loginB = document.getElementById('loginButton');
-	if((user != '' )&&(pass != '')){
-		loginB.setAttribute('href','#main');
-	}
-	else{
-		alert('Incorrect Username or Password');
-	}
+	var user = JSON.stringify({
+		Username: user,
+		Password: pass,
+	});
+	serverPost('checkPass',user, function(result){
+		alert(result.message);
+		if(result.message == 'true'){
+			$.mobile.changePage("#main");
+		}
+		else if (result.message == 'err'){
+		
+		}
+		else{
+			alert("Invalid Username or Password");
+		}
+	});
 }
 function alternateCheck(){
 

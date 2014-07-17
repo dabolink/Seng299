@@ -60,7 +60,30 @@ app.post('/', function(req, res, next){
     console.log(req.body);
     res.json(200, {message: 'This is text!'});
 });
-
+app.post('/checkPass', function(req,res,next){
+	User.findOne({Username: req.body.Username},function(err,obj){
+		if(err){
+			res.send(500, 'err');
+			console.log('test4');
+			console.log(err);
+		}
+		else{
+			console.log('test5');
+			console.log(obj);
+			if(obj != null){
+				if(req.body.Password == obj.Password){
+					res.json(200, {message: 'true'});
+				}
+				else{
+					res.json(200, {message: 'false'});
+				}
+			}
+			else{
+				res.json(200, {message: 'false'});
+			}
+		}
+	});
+});
 app.post('/addUser', function(req, res, next){
 	User.findOne({Username: req.body.Username},function(err, obj){
 		if(err) {
@@ -92,7 +115,7 @@ app.post('/addUser', function(req, res, next){
 					res.send(200, {message: 'false'});
 			}
 		}
-});	
+	});	
 });
 
 /* User.findOne({UserName: 'Dabolink'},function(err, obj){
