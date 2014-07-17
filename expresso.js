@@ -25,16 +25,19 @@ var UserSchema = new mongoose.Schema({
 		School: { type: String},
 });
 
+var SchoolSchema = new mongoose.Schema({
+	Schools: [String],
+	length: Number,
+});
+
+
 mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', function(error){
 	console.log('MongoDB connection ready');
 });
 
 
-var SchoolSchema = new mongoose.Schema({
-	School: { type: String}
-});
 var User = mongoose.model('User', UserSchema);
-var School = mongoose.model('School', SchoolSchema);
+var Schools = mongoose.model('Schools', SchoolSchema);
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -60,16 +63,25 @@ app.post('/', function(req, res, next){
     console.log(req.body);
     res.json(200, {message: 'This is text!'});
 });
+
+app.post('/getSchools', function(req,res,next){
+	Schools.findOne(function(err,obj){
+		if(err){
+			res.send(500,'err');
+			console.log(err);
+		}
+		else{
+			res.json(200, {Schools: obj.Schools});
+		}
+	});
+});
 app.post('/checkPass', function(req,res,next){
 	User.findOne({Username: req.body.Username},function(err,obj){
 		if(err){
 			res.send(500, 'err');
-			console.log('test4');
 			console.log(err);
 		}
 		else{
-			console.log('test5');
-			console.log(obj);
 			if(obj != null){
 				if(req.body.Password == obj.Password){
 					res.json(200, {message: 'true'});
@@ -88,12 +100,9 @@ app.post('/addUser', function(req, res, next){
 	User.findOne({Username: req.body.Username},function(err, obj){
 		if(err) {
 			res.send(500, 'err');
-			console.log('test1');
 			console.error(err);
 		}
 		else{
-			console.log('test2');
-			console.log(obj);
 			if(obj == null){
 				var test = new User({
 					FirstName: req.body.FirstName,
@@ -107,7 +116,6 @@ app.post('/addUser', function(req, res, next){
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
-					console.dir('test3');
 					res.json(200, {message: 'true'});
 				});
 			}
@@ -117,31 +125,9 @@ app.post('/addUser', function(req, res, next){
 		}
 	});	
 });
-
-/* User.findOne({UserName: 'Dabolink'},function(err, obj){
-	if(err) {
-		console.log('test1');
-		console.error(err);
-	}
-	else{
-		console.log('test2');
-		console.log(obj);
-		if(obj == null){
-			var test = new User({
-				FirstName: 'Daniel',
-				LastName: 'Bolink',
-				DateOfBirth: '14-08-2014',
-				gender: 'Male',
-				UserName: 'Dabolink',
-				Password: '1234',
-				EMail: 'dabolink@gmail.com',
-				School: 'University of Victoria',
-			}); 
-			test.save(function(err){
-				if(err) return console.error(err);
-				console.dir('test3');
-			});
-		}
-		
-	}
-}); */	
+/* var test = new Schools({
+	Schools: ['Univeristy of Victoria','University of British Columbia'],
+});
+test.save(function(err){
+	if(err) return console.error(err);
+});*/

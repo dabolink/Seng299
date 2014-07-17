@@ -41,7 +41,7 @@ function createUser(){
 	serverPost('addUser', user, function(result){
 		alert(result.message);
 		if(result.message == 'true'){
-			alert('registration sucessfull');
+			alert('registration sucessful');
 			$.mobile.changePage("#login");
 			alert('confirmation email sent');
 		}		
@@ -65,8 +65,11 @@ function checkPassword(){
 }
 //add schools to selection
 function addSchools(){
-	addSchool('University of Victoria');
-	addSchool('University of British Columbia');
+	serverPost('getSchools',null,function(result){
+		for(i=0;i<result.Schools.length;i++){
+			addSchool(result.Schools[i]);
+		}
+	});
 }
 // add 1 school to selection
 function addSchool(school){
@@ -155,7 +158,6 @@ function checkRegistration(){
 }
 function checkUser(){
 	var user = document.getElementById('username').value;
-	alert(user);
 	if(user != ''){
 		return true;
 	}
@@ -180,7 +182,6 @@ function confirmUserPass(){
 		Password: pass,
 	});
 	serverPost('checkPass',user, function(result){
-		alert(result.message);
 		if(result.message == 'true'){
 			$.mobile.changePage("#main");
 		}
