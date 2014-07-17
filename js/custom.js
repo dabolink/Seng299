@@ -97,7 +97,7 @@ function addGP(GP){
 
 //send email
 function sendEmail(){
-	alert('Confirmation Email Sent');
+	alert('Confirmation Email Sent (To Be Implemented)');
 }
 function checkFgtPassUser(){
 	var x = document.getElementById('fgtpassUser');
@@ -107,7 +107,7 @@ function checkFgtPassUser(){
 		alert('please input username');
 	}
 	else{
-		alert('confirmation email sent');
+		alert('confirmation email sent (To Be Implemented)');
 		sendEmailB.setAttribute('href','#login');
 	}
 }
