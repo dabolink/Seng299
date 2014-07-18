@@ -196,9 +196,10 @@ function confirmUserPass(){
 		if(result.user != ''){
 			window.curUser = userE;
 			window.Privlage = result.Privlage;
-			alert(window.Privlage);
+			if(window.Privlage == 'admin'){
+				addAllUsers();
+			}
 			$.mobile.changePage("#main");
-			alert(window.curUser);
 		}
 		else if (result.message == 'err'){
 		
@@ -229,6 +230,42 @@ function getProfileInfo(){
 }
 function setProfileInfo(result){
 	alert('Do Magic!');
+}
+/*************************************************************************************************************************************
+														admin functions
+*************************************************************************************************************************************/
+
+
+function removeUser(){
+	var User = document.getElementById('allUsers').value;
+	serverPost('removeUser',JSON.stringify({Username: User}),function(result){
+		alert(User + " has been deleted for the database");
+		if(User == curUser){
+			alert("deleted your own account");
+			signOut();
+		}
+	});
+}
+function addAllUsers(){
+	serverPost('addAllUsers',null,function(result){
+		for(i=0;i<result.Users.Users.length;i++){
+			addUsers(result.Users.Users[i].Username);
+		}
+	});
+}
+// add 1 school to selection
+function addUsers(user){
+	var x = document.getElementById('allUsers');
+	var option = document.createElement("option");
+	option.text = user;
+	option.value = user;
+	x.add(option);
+}
+function addSchoolToDB(){
+
+}
+function addGPToDB(){
+
 }
 
 /*************************************************************************************************************************************

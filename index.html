@@ -195,12 +195,17 @@
 			</div>
 		</div>
 		
-		<div data-role = "admin" id = "admin">
+		<div data-role = "page" id = "admin">
 			<div data-role = "header">
 				<h1>Admin</h1>
 			</div>
 			<div data-role = "content">
-				test
+				<fieldset class = "ui-field-contain">
+						<select name = "allUsers" id = "allUsers">
+							<option value = "NULL">Select User</option>
+						</select>
+						<a href = "#" data-role = "button" onmouseup = removeUser()>Remove</a>
+					</fieldset>
 			</div>
 		</div>
 

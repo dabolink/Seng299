@@ -161,6 +161,41 @@ app.post('/getProfile', function(req, res, next){
 		}
 	});
 });
+/*************************************************************************************************************************************
+														admin functions
+*************************************************************************************************************************************/
+app.post('/addAllUsers', function(req,res,next){
+	User.find(function(err,obj){
+		if(err){
+			console.log(err);
+		}
+		else{
+			var temp = [];
+			for(i=0;i<obj.length;i++){
+				temp.push({Username: obj[i].Username});
+				console.log(obj[i]);
+			}
+			console.log(temp);
+			res.json(200, {Users: {
+				Users: temp,
+			}});
+		}
+	});
+});
+app.post('/removeUser',function(req,res,next){
+	User.remove({Username: req.body.Username},function(err,obj){
+		if(err){
+			res.send(500,'err');
+			console.log(err);
+		}
+		else{
+			console.log(obj);
+			res.send(200,obj);
+		}
+	});
+});
+
+
 
 /*************************************************************************************************************************************
 														DataBase Functions (only run once)
