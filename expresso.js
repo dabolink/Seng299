@@ -23,6 +23,7 @@ var UserSchema = new mongoose.Schema({
 		Password: { type: String},
 		EMail: { type: String},
 		School: { type: String},
+		Privlage: { type: String},
 });
 
 var SchoolSchema = new mongoose.Schema({
@@ -85,14 +86,14 @@ app.post('/checkPass', function(req,res,next){
 		else{
 			if(obj != null){
 				if(req.body.Password == obj.Password){
-					res.json(200, {message: 'true'});
+					res.json(200, {user: obj.Username, Privlage: obj.Privlage,});
 				}
 				else{
-					res.json(200, {message: 'false'});
+					res.json(200, {user: '', privlage: '',});
 				}
 			}
 			else{
-				res.json(200, {message: 'false'});
+				res.json(200, {user: '', privlage: '',});
 			}
 		}
 	});
@@ -114,6 +115,7 @@ app.post('/addUser', function(req, res, next){
 					Password: req.body.Password,
 					EMail: req.body.EMail,
 					School: req.body.School,
+					Privlage: req.body.Privlage,
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
@@ -154,7 +156,7 @@ app.post('/getProfile', function(req, res, next){
 				gender: obj.gender,
 				Username: obj.Username,
 				EMail: obj.EMail,
-				School: obj.School
+				School: obj.School,
 			}});
 		}
 	});

@@ -1,4 +1,5 @@
 var curUser = '';
+var privlage = '';
 
 function initialization(){
 	addSchools();
@@ -38,7 +39,8 @@ function createUser(){
 		Username: document.getElementById('username').value,
 		Password: document.getElementById('password').value,
 		EMail: document.getElementById('Email').value,
-		School: document.getElementById('School').value
+		School: document.getElementById('School').value,
+		Privlage: '',
 	});
 	serverPost('addUser', user, function(result){
 		if(result.message == 'true'){
@@ -191,9 +193,12 @@ function confirmUserPass(){
 		Password: passE,
 	});
 	serverPost('checkPass',user, function(result){
-		if(result.message == 'true'){
+		if(result.user != ''){
 			window.curUser = userE;
+			window.Privlage = result.Privlage;
+			alert(window.Privlage);
 			$.mobile.changePage("#main");
+			alert(window.curUser);
 		}
 		else if (result.message == 'err'){
 		
@@ -253,5 +258,11 @@ $('#viewAppt').live('pageinit',function(){
 	if(window.curUser == ''){
 		$.mobile.changePage("#login");
 		alert("Must be logged in to access this page");
+	}
+});
+$('#admin').live('pageinit',function(){
+	if(window.curUser == '' || window.Privlage != 'admin'){
+		$.mobile.changePage("#main");
+		alert("You Must have higher standing to access this page");
 	}
 });
