@@ -214,8 +214,7 @@ function cancelAppointment(){
 function getProfileInfo(){
 	serverPost('getProfile', JSON.stringify({Username: curUser}), function(result){
 		var userInfo = document.getElementById('profileInfo');
-		userInfo.innerHTML = '<p>FirstName: ' + result.User.FirstName
-			+ '<p/><p>LastName: ' + result.User.LastName
+		userInfo.innerHTML = '<p>Name: ' + result.User.FirstName + " " + result.User.LastName
 			+ '</p><p>Date of Birth: ' + result.User.DateOfBirth
 			+ '</p><p>Gender: ' + result.User.gender
 			+ '</p><p>Username: ' + result.User.Username
