@@ -187,16 +187,15 @@ app.post('/getApptTimes', function(req, res, next){
 			console.log(err);
 		}
 		else{
-			if (obj!=null){
+			if (obj.length > 0){
 				var temp = [];
 				for (var i = 0; i < obj.length; i++) {
 					temp.push({Time: obj[i].ApptTime});
-					console.log(obj[i]);
 				};
 				res.json(200, {ApptTimes: temp});
 			}
 			else{
-				res.send(500, 'Could not find');
+				res.json(200, {message: 'Could not find'});
 			}
 		}
 	})

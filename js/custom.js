@@ -228,11 +228,13 @@ function getProfileInfo(){
 }
 
 function getApptTimes(){
-	document.getElementById('bookButton').disabled = true;
+	var bookB = document.getElementById('bookButton');
 	var field = document.getElementById('availableTimes');
 	var curGP = document.getElementById('GP').value;
 	var selectedDate = document.getElementById('BookApptDate').value;
 
+	bookB.setAttribute('href','#');
+	bookB.setAttribute('onmouseup', '');
 	field.innerHTML = '';
 	var tempHTML = '';
 	if (curGP != 'NULL' && selectedDate){
@@ -240,18 +242,16 @@ function getApptTimes(){
 			GPs: curGP,
 			ApptDate: selectedDate
 		}), function(result){
-			alert(result.ApptTimes);
-			if (result.ApptTimes){
-				tempHTML = '<fieldset data-role=\"controlgroup\" data-mini=\"true\"><legend>Choose a time:</legend>';
+			if (!result.message){
+				tempHTML = '<legend>Choose a time:</legend>\n';
 				for( i = 0; i < result.ApptTimes.length; i++){
-					tempHTML += '<input type=\"radio\" name=\"radio-mini\" id=\"radio-mini-' + i + '\" value=\"' + result.ApptTimes[i].Time + '\" /><label for=\"radio-mini-' + i + '\">' + result.ApptTimes[i].Time + '</label>';
+					tempHTML += '<input type=\"radio\" name=\"radio-mini\" id=\"radio-mini-' + i + '\" value=\"' + result.ApptTimes[i].Time + '\" />\n<label for=\"radio-mini-' + i + '\">' + result.ApptTimes[i].Time + '</label>\n';
 				}
-				tempHTML += '</fieldset>';
 				field.innerHTML = tempHTML;
-				document.getElementById('bookButton').disabled = false;
+				bookB.setAttribute('onmouseup', 'bookAppointment()');
 			}
 			else {
-				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available times for the requested date.</strong>'
+				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
 			}
 		});
 	}
@@ -260,6 +260,12 @@ function getApptTimes(){
 	}
 }
 
+function bookAppointment(){
+	if($('input[name=radio-mini]:checked').size() > 0){
+		document.getElementById('bookButton').setAttribute('href','#viewAppt');
+		alert('Appointment booked');
+	}
+}
 
 /*************************************************************************************************************************************
 														admin functions
