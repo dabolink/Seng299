@@ -23,7 +23,7 @@ var UserSchema = new mongoose.Schema({
 		Password: { type: String},
 		EMail: { type: String},
 		School: { type: String},
-		Privlage: { type: String},
+		Privilege: { type: String},
 });
 
 var SchoolSchema = new mongoose.Schema({
@@ -95,14 +95,14 @@ app.post('/checkPass', function(req,res,next){
 		else{
 			if(obj != null){
 				if(req.body.Password == obj.Password){
-					res.json(200, {user: obj.Username, Privlage: obj.Privlage,});
+					res.json(200, {user: obj.Username, Privilege: obj.Privilege,});
 				}
 				else{
-					res.json(200, {user: '', privlage: '',});
+					res.json(200, {user: '', Privilege: '',});
 				}
 			}
 			else{
-				res.json(200, {user: '', privlage: '',});
+				res.json(200, {user: '', Privilege: '',});
 			}
 		}
 	});
@@ -124,7 +124,7 @@ app.post('/addUser', function(req, res, next){
 					Password: req.body.Password,
 					EMail: req.body.EMail,
 					School: req.body.School,
-					Privlage: req.body.Privlage,
+					Privilege: req.body.Privilege,
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
@@ -204,9 +204,9 @@ app.post('/addAllUsers', function(req,res,next){
 			for(i=0;i<obj.length;i++){
 				temp.push({Username: obj[i].Username});
 			}
-			res.json(200, {Users: {
+			res.json(200,{
 				Users: temp,
-			}});
+				});
 		}
 	});
 });
