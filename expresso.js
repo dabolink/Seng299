@@ -33,6 +33,14 @@ var GPSchema = new mongoose.Schema({
 	GPs: [String],
 });
 
+var ApptSchema = new mongoose.Schema({
+	GPs: [String],
+	ApptDate: [String],
+	ApptTime: [String],
+	Patient: [String],
+	Reason: [String],
+})
+
 mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', function(error){
 	console.log('MongoDB connection ready');
 });
@@ -40,6 +48,7 @@ mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', f
 var GPs = mongoose.model('GPs', GPSchema);
 var User = mongoose.model('User', UserSchema);
 var Schools = mongoose.model('Schools', SchoolSchema);
+var Appointments = mongoose.model('Appointments', ApptSchema);
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -148,7 +157,6 @@ app.post('/getProfile', function(req, res, next){
 			console.log(err);
 		}
 		else {
-			console.log(obj);
 			res.json(200, {User: {
 				FirstName: obj.FirstName,
 				LastName: obj.LastName,
@@ -160,6 +168,28 @@ app.post('/getProfile', function(req, res, next){
 			}});
 		}
 	});
+});
+
+app.post('/getApptTimes', function(req, res, next){
+	Appointments.find({GPs: req.body.GPs, ApptDate: req.body.ApptDate, Patient: '', Reason: ''}, function(err, obj){
+		if(err){
+			res.send(500, 'err');
+			console.log(err);
+		}
+		else{
+			if (obj!=null){
+				var temp = [];
+				for (var i = 0; i < obj.length; i++) {
+					temp.push({Time: obj[i].ApptTime});
+					console.log(obj[i]);
+				};
+				res.json(200, {ApptTimes: temp});
+			}
+			else{
+				res.send(500, 'Could not find');
+			}
+		}
+	})
 });
 /*************************************************************************************************************************************
 														admin functions
@@ -173,9 +203,7 @@ app.post('/addAllUsers', function(req,res,next){
 			var temp = [];
 			for(i=0;i<obj.length;i++){
 				temp.push({Username: obj[i].Username});
-				console.log(obj[i]);
 			}
-			console.log(temp);
 			res.json(200, {Users: {
 				Users: temp,
 			}});
@@ -189,12 +217,11 @@ app.post('/removeUser',function(req,res,next){
 			console.log(err);
 		}
 		else{
-			console.log(obj);
+			console.log('User was removed: ' + obj);
 			res.send(200,obj);
 		}
 	});
 });
-
 
 
 /*************************************************************************************************************************************
@@ -214,3 +241,16 @@ test.save(function(err){
 test.save(function(err){
 	if(err) return console.error(err);
 }); */
+
+var test = new Appointments({
+	GPs: 'Greg Howe',
+	ApptDate: '2014-07-18',
+	ApptTime: '8 am',
+	Patient: '',
+	Reason: '',
+});
+
+test.save(function(err){
+	console.log('Hi!')
+	if(err) return console.error(err);
+});

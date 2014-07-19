@@ -209,9 +209,7 @@ function confirmUserPass(){
 		}
 	});
 }
-function alternateCheck(){
 
-}
 function cancelAppointment(){
 	serverPost('', JSON.stringify({number:1}), function(result){alert(result.message);});
 	alert('Appointment cancelled.\n')
@@ -228,9 +226,37 @@ function getProfileInfo(){
 			+ '</p><p>School: ' + result.User.School + '</p>';
 	});
 }
-function setProfileInfo(result){
-	alert('Do Magic!');
+
+function getApptTimes(){
+	var field = document.getElementById('availableTimes');
+	var curGP = document.getElementById('GP').value;
+	var selectedDate = document.getElementById('BookApptDate').value;
+
+	field.innerHTML = '';
+	if (curGP != 'NULL' && selectedDate){
+		serverPost('getApptTimes', JSON.stringify({
+			GPs: curGP,
+			ApptDate: selectedDate
+		}), function(result){
+			alert(result.ApptTimes);
+			if (result.ApptTimes){
+				field.innerHTML = '<fieldset data-role=\"controlgroup\" data-mini=\"true\"><legend>Choose a time:</legend>';
+				for( i = 0; i < result.ApptTimes.length; i++){
+					field.innerHTML += '<input type=\"radio\" name=\"radio-mini\" id=\"radio-mini-' + i + '\" value=\"' + result.ApptTimes[i].Time + '\" /><label for=\"radio-mini-' + i + '\">' + result.ApptTimes[i].Time + '</label>';
+				}
+				innerHTML += '</fieldset>';
+			}
+			else {
+				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available times for the requested date.</strong>'
+			}
+		});
+	}
+	else{
+		field.innerHTML = '<p><strong>Please select a date and/or a GP.<strong></p>'
+	}
 }
+
+
 /*************************************************************************************************************************************
 														admin functions
 *************************************************************************************************************************************/
@@ -299,7 +325,7 @@ $('#viewAppt').live('pageinit',function(){
 });
 $('#admin').live('pageinit',function(){
 	if(window.curUser == '' || window.Privlage != 'admin'){
-		$.mobile.changePage("#main");
+		$.mobile.changePage("#login");
 		alert("You Must have higher standing to access this page");
 	}
 });

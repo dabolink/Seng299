@@ -146,28 +146,31 @@
 			</div>
 			<div data-role = "content">
 				<label for="date">Select a date:</label>
-				<input type="date" name="date" id="date" value=""  />	
+				<input type="date" name="date" id="BookApptDate" value="" value placeholder="Date" onchange=getApptTimes()  />	
 				<center>
 					<fieldset class = "ui-field-contain">
-						<select name = "GP" id = "GP">
-							<option value = "NULL">Select a GP</option>
+						<select name = "GP" id = "GP" onchange=getApptTimes()>
+							<option value = 'NULL'>Select a GP</option>
 						</select>
 					</fieldset>
 				</center>
-				<fieldset data-role="controlgroup" data-mini="true">
-					<legend>Choose a time:</legend>
-			    	<input type="radio" name="radio-mini" id="radio-mini-1" value="choice-1" checked="checked" />
-			    	<label for="radio-mini-1">8 am</label>
+				<div id='availableTimes'>
+					<p><strong>Please select a date and/or a GP.<strong></p>
+					<!---
+						<legend>Choose a time:</legend>
+				    	<input type="radio" name="radio-mini" id="radio-mini-1" value="choice-1" checked="checked" />
+				    	<label for="radio-mini-1">8 am</label>
 
-					<input type="radio" name="radio-mini" id="radio-mini-2" value="choice-2" disabled = "true"  />
-			    	<label for="radio-mini-2">9 am</label>
-			    	
-			    	<input type="radio" name="radio-mini" id="radio-mini-3" value="choice-3"  />
-			    	<label for="radio-mini-3">10 am</label>
-				</fieldset>
+						<input type="radio" name="radio-mini" id="radio-mini-2" value="choice-2" disabled = "true"  />
+				    	<label for="radio-mini-2">9 am</label>
+				    	
+				    	<input type="radio" name="radio-mini" id="radio-mini-3" value="choice-3"  />
+				    	<label for="radio-mini-3">10 am</label>
+					-->
+				</div>
 				<br><label for="textarea-c">Reason for appointment:</label>
 				<textarea name="textarea" id="apptReason" ></textarea><br>
-				<a href = "#viewAppt" data-role = "button">Book Appointment</a>
+				<a href = "#viewAppt" data-role = "button" disabled = true>Book Appointment</a>
 			</div>
 		</div>
 
