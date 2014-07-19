@@ -69,8 +69,8 @@ function checkPassword(){
 //add schools to selection
 function addSchools(){
 	serverPost('getSchools',null,function(result){
-		for(i=0;i<result.Schools.length;i++){
-			addSchool(result.Schools[i]);
+		for(i=0;i<result.names.length;i++){
+			addSchool(result.names[i].name);
 		}
 	});
 }
@@ -84,8 +84,8 @@ function addSchool(school){
 
 function addGPs(){
 	serverPost('getGPs',null,function(result){
-		for(i=0;i<result.GPs.length;i++){
-			addGP(result.GPs[i]);
+		for(i=0;i<result.names.length;i++){
+			addGP(result.names[i].name);
 		}
 	});
 }
@@ -196,7 +196,6 @@ function confirmUserPass(){
 		if(result.user != ''){
 			window.curUser = userE;
 			window.Privilege = result.Privilege;
-			alert(result.Privilege);
 			if(window.Privilege == 'admin'){
 				addAllUsers();
 			}
@@ -279,13 +278,23 @@ function removeUser(){
 }
 function addAllUsers(){
 	serverPost('addAllUsers',null,function(result){
-		alert(result.Users[0].Username);
 		for(i=0;i<result.Users.length;i++){
 			addUsers(result.Users[i].Username);
 		}
 	});
 }
-// add 1 school to selection
+function addSchoolToDB(){
+	var SchoolName = document.getElementById('addedSchool').value;
+	serverPost('addSchoolToDB',JSON.stringify({name: SchoolName}),function(result){
+		if(result == 'false'){
+			alert('school already in database');
+		}
+		else{
+			alert(SchoolName + ' has been added to the database');
+		}
+	});
+}
+
 function addUsers(user){
 	var x = document.getElementById('allUsers');
 	var option = document.createElement("option");
@@ -293,11 +302,17 @@ function addUsers(user){
 	option.value = user;
 	x.add(option);
 }
-function addSchoolToDB(){
 
-}
 function addGPToDB(){
-
+	var GPName = document.getElementById('addedGP').value;
+	serverPost('addGPToDB',JSON.stringify({name: GPName}),function(result){
+		if(result == 'false'){
+			alert('GP already in database');
+		}
+		else{
+			alert(GPName + ' has been added to the database');
+		}
+	});
 }
 
 /*************************************************************************************************************************************

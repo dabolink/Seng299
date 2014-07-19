@@ -27,10 +27,10 @@ var UserSchema = new mongoose.Schema({
 });
 
 var SchoolSchema = new mongoose.Schema({
-	Schools: [String],
+	name: String,
 });
 var GPSchema = new mongoose.Schema({
-	GPs: [String],
+	name: String,
 });
 
 var ApptSchema = new mongoose.Schema({
@@ -45,9 +45,9 @@ mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', f
 	console.log('MongoDB connection ready');
 });
 
-var GPs = mongoose.model('GPs', GPSchema);
+var GP = mongoose.model('GP', GPSchema);
 var User = mongoose.model('User', UserSchema);
-var Schools = mongoose.model('Schools', SchoolSchema);
+var School = mongoose.model('School', SchoolSchema);
 var Appointments = mongoose.model('Appointments', ApptSchema);
 
 app.use(bodyParser.json());
@@ -76,15 +76,20 @@ app.post('/', function(req, res, next){
 });
 
 app.post('/getSchools', function(req,res,next){
-	Schools.findOne(function(err,obj){
+	School.find(function(err,obj){
 		if(err){
-			res.send(500,'err');
 			console.log(err);
 		}
 		else{
-			res.json(200, {Schools: obj.Schools});
+			var temp = [];
+			for(i=0;i<obj.length;i++){
+				temp.push({name: obj[i].name});
+			}
+			res.json(200,{
+				names: temp,
+				});
 		}
-	});
+	}); 
 });
 app.post('/checkPass', function(req,res,next){
 	User.findOne({Username: req.body.Username},function(err,obj){
@@ -139,13 +144,18 @@ app.post('/addUser', function(req, res, next){
 });
 
 app.post('/getGPs', function(req,res,next){
-	GPs.findOne(function(err,obj){
+	GP.find(function(err,obj){
 		if(err){
-			res.send(500,'err');
 			console.log(err);
 		}
 		else{
-			res.json(200, {GPs: obj.GPs});
+			var temp = [];
+			for(i=0;i<obj.length;i++){
+				temp.push({name: obj[i].name});
+			}
+			res.json(200,{
+				names: temp,
+				});
 		}
 	});
 });
@@ -222,7 +232,51 @@ app.post('/removeUser',function(req,res,next){
 		}
 	});
 });
+app.post('/addSchoolToDB',function(req,res,next){
+	School.findOne({name: req.body.name},function(err, obj){
+		if(err) {
+			res.send(500, 'err');
+			console.error(err);
+		}
+		else{
+			if(obj == null){
+				var test = new School({
+					name: req.body.name,
+				}); 
+				test.save(function(err){
+					if(err) return console.error(err);
+					res.json(200, {message: 'true'});
+				});
+			}
+			else{
+					res.send(200, {message: 'false'});
+			}
+		}
+	});
+});
 
+app.post('/addGPToDB',function(req,res,next){
+	GP.findOne({name: req.body.name},function(err, obj){
+		if(err) {
+			res.send(500, 'err');
+			console.error(err);
+		}
+		else{
+			if(obj == null){
+				var test = new GP({
+					name: req.body.name,
+				}); 
+				test.save(function(err){
+					if(err) return console.error(err);
+					res.json(200, {message: 'true'});
+				});
+			}
+			else{
+					res.send(200, {message: 'false'});
+			}
+		}
+	});
+});
 
 /*************************************************************************************************************************************
 														DataBase Functions (only run once)
