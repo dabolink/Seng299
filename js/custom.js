@@ -237,7 +237,7 @@ function getApptTimes(){
 	bookB.setAttribute('onmouseup', '');
 	field.innerHTML = '';
 	var tempHTML = '';
-	if (curGP != 'NULL' && selectedDate){
+	if (curGP != 'NULL' && selectedDate && beforeTomorrow(selectedDate)){
 		serverPost('getApptTimes', JSON.stringify({
 			GPs: curGP,
 			ApptDate: selectedDate
@@ -256,7 +256,12 @@ function getApptTimes(){
 		});
 	}
 	else{
-		field.innerHTML = '<p><strong>Please select a date and/or a GP.<strong></p>'
+		if(!beforeTomorrow(selectedDate) && curGP != 'NULL'){
+			field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
+		}
+		else{
+			field.innerHTML = '<p><strong>Please select a date and/or a GP.<strong></p>'
+		}
 	}
 }
 
@@ -264,6 +269,41 @@ function bookAppointment(){
 	if($('input[name=radio-mini]:checked').size() > 0){
 		document.getElementById('bookButton').setAttribute('href','#viewAppt');
 		alert('Appointment booked');
+	}
+}
+
+function getDate(){
+	var d = new Date();
+
+	var month = d.getMonth()+1;
+	var day = d.getDate();
+
+	return (d.getFullYear() + '-' +
+	    (month<10 ? '0' : '') + month + '-' +
+	    (day<10 ? '0' : '') + day);
+}
+
+//Compares dates if they are string of the form yyyy-mm-dd
+function beforeTomorrow(date1){
+	try{
+		var date2 = getDate();
+		var year1 = date1.charAt(0) + date1.charAt(1) + date1.charAt(2) + date1.charAt(3),
+		year2 = date2.charAt(0) + date2.charAt(1) + date2.charAt(2) + date2.charAt(3);
+		if(parseInt(year2) <= parseInt(year1)){
+			var month1 = date1.charAt(5) + date1.charAt(6),
+			month2 = date2.charAt(5) + date2.charAt(6);
+			if(parseInt(month2) <= parseInt(month1)){
+				var day1 = date1.charAt(8) + date1.charAt(9),
+				day2 = date2.charAt(8) + date2.charAt(9);
+				if(parseInt(day2) < parseInt(day1)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	catch(err){
+		alert('Invalid string format\n' + err);
 	}
 }
 
