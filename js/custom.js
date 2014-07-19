@@ -238,6 +238,7 @@ function getApptTimes(){
 	field.innerHTML = '';
 	var tempHTML = '';
 	if (curGP != 'NULL' && selectedDate && beforeTomorrow(selectedDate)){
+		field.innerHTML = '<p>Loading, please wait.</p>';
 		serverPost('getApptTimes', JSON.stringify({
 			GPs: curGP,
 			ApptDate: selectedDate
@@ -253,10 +254,11 @@ function getApptTimes(){
 			else {
 				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
 			}
+			$("#bookAppt").trigger("pagecreate");
 		});
 	}
 	else{
-		if(!beforeTomorrow(selectedDate) && curGP != 'NULL'){
+		if(!beforeTomorrow(selectedDate) && curGP != 'NULL' && selectedDate){
 			field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
 		}
 		else{

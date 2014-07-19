@@ -295,7 +295,7 @@ test.save(function(err){
 	if(err) return console.error(err);
 }); */
 
-var test = new Appointments({
+/*var test = new Appointments({
 	GPs: 'Greg Howe',
 	ApptDate: '2014-07-25',
 	ApptTime: '8 am',
@@ -305,4 +305,4 @@ var test = new Appointments({
 
 test.save(function(err){
 	if(err) return console.error(err);
-});
+});*/
