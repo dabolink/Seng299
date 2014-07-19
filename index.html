@@ -155,22 +155,11 @@
 					</fieldset>
 				</center>
 				<div id='availableTimes'>
-					<p><strong>Please select a date and/or a GP.<strong></p>
-					<!---
-						<legend>Choose a time:</legend>
-				    	<input type="radio" name="radio-mini" id="radio-mini-1" value="choice-1" checked="checked" />
-				    	<label for="radio-mini-1">8 am</label>
-
-						<input type="radio" name="radio-mini" id="radio-mini-2" value="choice-2" disabled = "true"  />
-				    	<label for="radio-mini-2">9 am</label>
-				    	
-				    	<input type="radio" name="radio-mini" id="radio-mini-3" value="choice-3"  />
-				    	<label for="radio-mini-3">10 am</label>
-					-->
+					<p><strong>Please select a date and/or a GP.</strong></p>
 				</div>
-				<br><label for="textarea-c">Reason for appointment:</label>
-				<textarea name="textarea" id="apptReason" ></textarea><br>
-				<a href = "#viewAppt" data-role = "button" disabled = true>Book Appointment</a>
+				<br /><label for="textarea-c">Reason for appointment:</label>
+				<textarea name="textarea" id="apptReason" ></textarea><br />
+				<a href = "#viewAppt" data-role = "button" id = "bookButton">Book Appointment</a>
 			</div>
 		</div>
 
@@ -195,6 +184,7 @@
 				<center>
 					<font color = 'red'>This will cancel the selected appointment(s).
 						Appointments cannot be cancelled 30 minutes prior to the indicated time.</font>
+				</center>
 			</div>
 		</div>
 		

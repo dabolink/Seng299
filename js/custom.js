@@ -228,11 +228,13 @@ function getProfileInfo(){
 }
 
 function getApptTimes(){
+	document.getElementById('bookButton').disabled = true;
 	var field = document.getElementById('availableTimes');
 	var curGP = document.getElementById('GP').value;
 	var selectedDate = document.getElementById('BookApptDate').value;
 
 	field.innerHTML = '';
+	var tempHTML = '';
 	if (curGP != 'NULL' && selectedDate){
 		serverPost('getApptTimes', JSON.stringify({
 			GPs: curGP,
@@ -240,11 +242,13 @@ function getApptTimes(){
 		}), function(result){
 			alert(result.ApptTimes);
 			if (result.ApptTimes){
-				field.innerHTML = '<fieldset data-role=\"controlgroup\" data-mini=\"true\"><legend>Choose a time:</legend>';
+				tempHTML = '<fieldset data-role=\"controlgroup\" data-mini=\"true\"><legend>Choose a time:</legend>';
 				for( i = 0; i < result.ApptTimes.length; i++){
-					field.innerHTML += '<input type=\"radio\" name=\"radio-mini\" id=\"radio-mini-' + i + '\" value=\"' + result.ApptTimes[i].Time + '\" /><label for=\"radio-mini-' + i + '\">' + result.ApptTimes[i].Time + '</label>';
+					tempHTML += '<input type=\"radio\" name=\"radio-mini\" id=\"radio-mini-' + i + '\" value=\"' + result.ApptTimes[i].Time + '\" /><label for=\"radio-mini-' + i + '\">' + result.ApptTimes[i].Time + '</label>';
 				}
-				innerHTML += '</fieldset>';
+				tempHTML += '</fieldset>';
+				field.innerHTML = tempHTML;
+				document.getElementById('bookButton').disabled = false;
 			}
 			else {
 				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available times for the requested date.</strong>'

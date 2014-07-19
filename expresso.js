@@ -251,6 +251,5 @@ test.save(function(err){
 });
 
 test.save(function(err){
-	console.log('Hi!')
 	if(err) return console.error(err);
 });*/
