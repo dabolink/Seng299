@@ -71,8 +71,7 @@ var server = app.listen(3000, function() {
 //If there is an error, call res.send(500, < Error message >);
 
 app.post('/', function(req, res, next){
-    console.log(req.body);
-    res.json(200, {message: 'This is text!'});
+    res.json(200, {message: 'You\'re a wizard, Harry'});
 });
 
 app.post('/getSchools', function(req,res,next){
@@ -202,7 +201,7 @@ app.post('/getApptTimes', function(req, res, next){
 });
 
 app.post('/bookAppt', function(req, res, next){
-	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate}, function(err, obj){
+	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
 		if(err){
 			res.send(500,'err');
 			console.log(err);
@@ -217,10 +216,9 @@ app.post('/bookAppt', function(req, res, next){
 			}).save(function(err){
 				if (err){
 					console.log(err);
-					//res.send(500);
+					res.send(500);
 				}
 				else{
-					//res.send(200);
 					Appointments.remove({
 						GPs: req.body.GPs,
 					ApptDate: req.body.ApptDate,
@@ -237,6 +235,55 @@ app.post('/bookAppt', function(req, res, next){
 					});
 				}
 			});
+		}
+	});
+});
+
+app.post('/cancelAppt', function(req, res, next){
+	for(var i = 0; i < req.Appts.length; i++){
+		Appointments.findOne({GPs: req.body.Appts[i].GPs, ApptDate: req.body.Appts[i].ApptDate, ApptTime: req.body.Appts[i].ApptTime, Patient: req.body.Appts[i].Patient}, function(err, obj){
+			if(err){
+				res.send(500,'err');
+				console.log(err);
+			}
+			else {
+				obj.modified = new Appointments({
+					GPs: req.body.GPs,
+					ApptDate: req.body.ApptDate,
+					ApptTime: req.body.ApptTime,
+					Patient: "",
+					Reason: "",
+				}).save(function(err){
+					if (err){
+						console.log(err);
+						res.send(500);
+					}
+					else{
+						res.send(200);
+					}
+				});
+			}
+		});
+	}
+});
+
+app.post('/getUserAppt', function(req, res, next){
+	Appointments.find({Patient: req.body.Patient}, function(err, obj){
+		if(err){
+			console.log(err);
+			res.send(500);
+		}
+		else{
+			if (obj.length > 0){
+				var temp = [];
+				for (var i = 0; i < obj.length; i++) {
+					temp.push({Appts: obj[i]});
+				};
+				res.json(200, {Appts: temp});
+			}
+			else{
+				res.json(500, {message: 'Could not find'});
+			}
 		}
 	});
 });

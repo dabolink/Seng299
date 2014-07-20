@@ -126,7 +126,7 @@
 				<center>
 					<a href = "#profile" data-role = "button" onmouseup = getProfileInfo()>Profile</a>
 					<a href = "#bookAppt" data-role = "button">Book Appointment</a>
-					<a href = "#viewAppt" data-role = "button">Check Appointments</a><br>
+					<a href = "#viewAppt" data-role = "button" onmouseup = retrieveAppts()>Check Appointments</a><br>
 					<label for="textarea-a">Recent News:</label>
 					<textarea name="textarea" id="textarea-a" readonly>
 					This application is a work in progress.
@@ -175,12 +175,7 @@
 			</div>
 			<div data-role = "content">
 				<div data-role="fieldcontain">
-				    <fieldset data-role="controlgroup">
-					   <legend>Appointments:</legend>
-					   <input type="checkbox" name="checkbox-2" id="checkbox-2" class="custom" />
-					   <label for="checkbox-2">Sunday, July 13 2014 @ 10am</label>
-					   <input type="checkbox" name="checkbox-3" id="checkbox-3" class="custom" />
-					   <label for="checkbox-3">Sunday, July 20 2014 @ 10am</label>
+				    <fieldset data-role="controlgroup" id="userApptsList">
 				    </fieldset>
 				</div>
 				<a href = "#" data-role = "button" onmouseup = cancelAppointment()>Cancel Appointment</a>

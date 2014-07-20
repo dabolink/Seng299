@@ -231,10 +231,6 @@ function createAppointment(){
 		}
 	});
 }
-function cancelAppointment(){
-	serverPost('', JSON.stringify({number:1}), function(result){alert(result.message);});
-	alert('Appointment cancelled.\n')
-}
 
 function getProfileInfo(){
 	serverPost('getProfile', JSON.stringify({Username: curUser}), function(result){
@@ -340,6 +336,28 @@ function beforeTomorrow(date1){
 	catch(err){
 		alert('Invalid string format\n' + err);
 	}
+}
+
+function retrieveAppts(){
+	var list = document.getElementById('userApptsList');
+	list.innerHTML = '<p>Loading, please wait.</p>';
+	serverPost('getUserAppt', JSON.stringify({
+		Patient: curUser
+	}), function(result){
+		var HTMLstring = '<legend>Appointments:</legend>';
+		for(var i=0; i < result.Appts.length; i++){
+			HTMLstring += '<input type="checkbox" name="checkbox-' + i + '" id="checkbox-' + i + '" class="custom" /><label for="checkbox-' + i + '">';
+			HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</label>';
+		}
+		list.innerHTML = HTMLstring;
+		$("#viewAppt").trigger("pagecreate");
+
+	});
+}
+
+function cancelAppointment(){
+	serverPost('', JSON.stringify({number:1}), function(result){alert(result.message);});
+	alert('Appointment cancelled.\n')
 }
 
 /*************************************************************************************************************************************
