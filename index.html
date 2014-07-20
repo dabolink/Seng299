@@ -203,6 +203,25 @@
 				<a href = "#" data-role = "button" onmouseup = addSchoolToDB()>Add School</a>
 				<input type = "text" id = "addedGP" value placeholder = "GP Name">
 				<a href = "#" data-role = "button" onmouseup = addGPToDB()>Add GP</a>
+				<table width = 100%>
+					<tr>
+						<td>
+							<select name = "allGPsApp" id = "allGPsApp">
+								<option value = "NULL">Select GP</option>
+							</select>
+						</td>
+						<td>
+							<input type = "date" id = "addedDateApp" value placeholder = "School Name">
+						</td>
+						<td>
+							<input type = "number" id = "addedTimeApp">
+						</td>
+						<td>
+							<input type = "text" id = "addedAMPMApp" value placeholder = "AM/PM">
+						</td>
+					</tr>
+				</table>
+				<a href = "#" data-role = "button" onmouseup =createAppointment()>Add Appointment</a>
 			</div>
 		</div>
 

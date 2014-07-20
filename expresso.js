@@ -34,11 +34,11 @@ var GPSchema = new mongoose.Schema({
 });
 
 var ApptSchema = new mongoose.Schema({
-	GPs: [String],
-	ApptDate: [String],
-	ApptTime: [String],
-	Patient: [String],
-	Reason: [String],
+	GPs: String,
+	ApptDate: String,
+	ApptTime: String,
+	Patient: String,
+	Reason: String,
 })
 
 mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', function(error){
@@ -276,7 +276,32 @@ app.post('/addGPToDB',function(req,res,next){
 		}
 	});
 });
-
+app.post('/addAppointment',function(req,res,next){
+	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime},function(err, obj){
+		if(err) {
+			res.send(500, 'err');
+			console.error(err);
+		}
+		else{
+			if(obj == null){
+				var test = new Appointments({
+					GPs: req.body.GPs,
+					ApptDate: req.body.ApptDate,
+					ApptTime: req.body.ApptTime,
+					Patient: req.body.Patient,
+					Reason: req.body.Reason,
+				}); 
+				test.save(function(err){
+					if(err) return console.error(err);
+					res.json(200, {message: 'true'});
+				});
+			}
+			else{
+					res.send(200, {message: 'false'});
+			}
+		}
+	});
+});
 /*************************************************************************************************************************************
 														DataBase Functions (only run once)
 *************************************************************************************************************************************/

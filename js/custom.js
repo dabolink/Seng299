@@ -3,7 +3,7 @@ var Privilege = '';
 
 function initialization(){
 	addSchools();
-	addGPs();
+	addGPs("GP");
 	
 }
 
@@ -82,16 +82,16 @@ function addSchool(school){
 	x.add(option);
 }
 
-function addGPs(){
+function addGPs(name){
 	serverPost('getGPs',null,function(result){
 		for(i=0;i<result.names.length;i++){
-			addGP(result.names[i].name);
+			addGP(result.names[i].name,name);
 		}
 	});
 }
 
-function addGP(GP){
-	var x = document.getElementById('GP');
+function addGP(GP,name){
+	var x = document.getElementById(name);
 	var option = document.createElement("option");
 	option.text = GP;
 	x.add(option);
@@ -198,6 +198,7 @@ function confirmUserPass(){
 			window.Privilege = result.Privilege;
 			if(window.Privilege == 'admin'){
 				addAllUsers();
+				addGPs('allGPsApp');
 			}
 			$.mobile.changePage("#main");
 		}
@@ -209,7 +210,27 @@ function confirmUserPass(){
 		}
 	});
 }
-
+function createAppointment(){
+	var GP = document.getElementById('allGPsApp').value;
+	var Date = document.getElementById('addedDateApp').value;
+	var Time = document.getElementById('addedTimeApp').value;
+	var AMPM = document.getElementById('addedAMPMApp').value;
+	var appointment = JSON.stringify({
+		GPs: GP,
+		ApptDate: Date,
+		ApptTime: Time + " " + AMPM,
+		Patient: '',
+		Reason: '',
+	});
+	serverPost('addAppointment', appointment, function(result){
+		if(result.message == 'true'){
+			alert("appointment added");
+		}
+		else{
+			alert("appointment already created");
+		}
+	});
+}
 function cancelAppointment(){
 	serverPost('', JSON.stringify({number:1}), function(result){alert(result.message);});
 	alert('Appointment cancelled.\n')
