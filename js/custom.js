@@ -290,8 +290,20 @@ function getApptTimes(){
 
 function bookAppointment(){
 	if($('input[name=radio-mini]:checked').size() > 0){
-		document.getElementById('bookButton').setAttribute('href','#viewAppt');
-		alert('Appointment booked');
+		serverPost('bookAppt', JSON.stringify({
+			GPs: document.getElementById('GP').value,
+			ApptDate: document.getElementById('BookApptDate').value,
+			ApptTime: $('input[name=radio-mini]:checked').value,
+			Patient: curUser,
+			Reason: document.getElementById('apptReason')
+		}), function(result){
+			alert('Appointment booked');
+			$.mobile.changePage("#login");
+		})
+		
+	}
+	else{
+		alert('Please select a time.');
 	}
 }
 

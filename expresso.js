@@ -181,7 +181,7 @@ app.post('/getProfile', function(req, res, next){
 });
 
 app.post('/getApptTimes', function(req, res, next){
-	Appointments.find({GPs: req.body.GPs, ApptDate: req.body.ApptDate, Patient: '', Reason: ''}, function(err, obj){
+	Appointments.find({GPs: req.body.GPs, ApptDate: req.body.ApptDate, Patient: "", Reason: ""}, function(err, obj){
 		if(err){
 			res.send(500, 'err');
 			console.log(err);
@@ -200,6 +200,36 @@ app.post('/getApptTimes', function(req, res, next){
 		}
 	})
 });
+
+app.post('/bookAppt', function(req, res, next){
+	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate}, function(err, obj){
+		if(err){
+			res.send(500,'err');
+			console.log(err);
+		}
+		else {
+			console.log('You\'re a butt')
+			obj.modified = new Appointments({
+				GPs: req.body.GPs,
+				ApptDate: req.body.ApptDate,
+				ApptTime: req.body.ApptTime,
+				Patient: req.body.Patient,
+				Reason: req.body.Reason,
+			});
+			obj.save(function(err){
+				if (err){
+					console.log(err);
+					res.send(500);
+				}
+				else{
+					console.log('Seriously')
+					res.send(200);
+				}
+			});
+		}
+	});
+});
+
 /*************************************************************************************************************************************
 														admin functions
 *************************************************************************************************************************************/
