@@ -293,12 +293,12 @@ function bookAppointment(){
 		serverPost('bookAppt', JSON.stringify({
 			GPs: document.getElementById('GP').value,
 			ApptDate: document.getElementById('BookApptDate').value,
-			ApptTime: $('input[name=radio-mini]:checked').value,
+			ApptTime: $('input[name=radio-mini]:checked').val(),
 			Patient: curUser,
-			Reason: document.getElementById('apptReason')
+			Reason: document.getElementById('apptReason').value
 		}), function(result){
 			alert('Appointment booked');
-			$.mobile.changePage("#login");
+			$.mobile.changePage("#viewAppt");
 		})
 		
 	}

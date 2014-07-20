@@ -208,22 +208,33 @@ app.post('/bookAppt', function(req, res, next){
 			console.log(err);
 		}
 		else {
-			console.log('You\'re a butt')
 			obj.modified = new Appointments({
 				GPs: req.body.GPs,
 				ApptDate: req.body.ApptDate,
 				ApptTime: req.body.ApptTime,
 				Patient: req.body.Patient,
 				Reason: req.body.Reason,
-			});
-			obj.save(function(err){
+			}).save(function(err){
 				if (err){
 					console.log(err);
-					res.send(500);
+					//res.send(500);
 				}
 				else{
-					console.log('Seriously')
-					res.send(200);
+					//res.send(200);
+					Appointments.remove({
+						GPs: req.body.GPs,
+					ApptDate: req.body.ApptDate,
+					ApptTime: req.body.ApptTime,
+					Patient: "",
+					Reason: "",
+					}, function(err){
+						if(err){
+							console.log(err);
+							res.send(500);
+						}
+						else
+							res.send(200);
+					});
 				}
 			});
 		}
