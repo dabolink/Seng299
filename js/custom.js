@@ -81,7 +81,6 @@ function initialization(){
 
 function signOut(){
 	window.curUser = '';
-	document.getElementById("GP").options.length = 1;
 	document.getElementById("allUsers").options.length = 1;
 	document.getElementById("allGPsApp").options.length = 1;
 	
