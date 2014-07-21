@@ -194,8 +194,10 @@ function checkRegistration(){
 		valid = false;
 	}
 	var email = document.getElementById('Email').value;
-	if(email == ''){
-		incomplete += 'Please enter an E-Mail address\n';
+	var emailMatch = new RegExp(/.*@.*\.(ca|com)/);
+	alert(email + " "+ emailMatch.test(email));
+	if(email == '' || !emailMatch.test(email)){
+		incomplete += 'Please enter a valid E-Mail address\n';
 		valid = false;
 	}
 	var School = document.getElementById('School').value;
