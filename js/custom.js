@@ -358,7 +358,7 @@ function bookAppointment(){
 		}), function(result){
 			alert('Appointment booked');
 			retrieveAppts();
-			$.mobile.changePage("#viewAppt");
+			$.mobile.changePage("#main");
 		})
 		
 	}
