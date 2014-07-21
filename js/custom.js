@@ -139,6 +139,7 @@ function confirmUserPass(){
 				addAllUsers();
 				addGPs('allGPsApp');
 			}
+			storeLogin();
 			$.mobile.changePage("#main");
 			document.getElementById('userlogin').value = '';
 			document.getElementById('passlogin').value = '';
@@ -150,6 +151,25 @@ function confirmUserPass(){
 			alert("Invalid Username or Password");
 			document.getElementById('passlogin').value = '';
 		}
+	});
+}
+
+function storeLogin(){
+	var curDate = getDate();
+	navigator.geolocation.getCurrentPosition(function(pos){
+		serverPost('storeLogin', JSON.stringify({
+			Username: curUser,
+			DateofLogin: curDate,
+			Lat: pos.coords.latitude,
+			Long: pos.coords.longitude,
+		}), function(result){alert('Success!');});
+	}, function(err){
+		serverPost('storeLogin', JSON.stringify({
+			Username: curUser,
+			DateofLogin: curDate,
+			Lat: '',
+			Long: '',
+		}), function(result){alert('Failure...\n' + err);});
 	});
 }
 
@@ -302,8 +322,20 @@ function getProfileInfo(){
 			+ '</p><p>E-Mail: ' + result.User.EMail
 			+ '</p><p>School: ' + result.User.School + '</p>';
 	});
+	getPastLogins();
 }
 
+function getPastLogins(){
+	var logList = document.getElementById('textarea-b');
+	logList.value = '';
+	serverPost('getPastLogins', JSON.stringify({
+		Username: curUser,
+	}), function(result){
+		for(i = result.logins.length-1; i >= 0; i--){
+			logList.value += 'Date: ' + result.logins[i].Dates + '  Latitude: ' + result.logins[i].Lat + '  Longitude: ' + result.logins[i].Long + '\n';
+		}
+	});
+}
 
 /* Book Appointment */
 
