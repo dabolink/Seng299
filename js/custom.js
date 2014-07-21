@@ -217,7 +217,6 @@ function checkRegistration(){
 	}
 	var email = document.getElementById('Email').value;
 	var emailMatch = new RegExp(/.*@.*\.(ca|com)/);
-	alert(email + " "+ emailMatch.test(email));
 	if(email == '' || !emailMatch.test(email)){
 		incomplete += 'Please enter a valid E-Mail address\n';
 		valid = false;
