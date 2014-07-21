@@ -221,10 +221,10 @@ app.post('/bookAppt', function(req, res, next){
 				else{
 					Appointments.remove({
 						GPs: req.body.GPs,
-					ApptDate: req.body.ApptDate,
-					ApptTime: req.body.ApptTime,
-					Patient: "",
-					Reason: "",
+						ApptDate: req.body.ApptDate,
+						ApptTime: req.body.ApptTime,
+						Patient: "",
+						Reason: "",
 					}, function(err){
 						if(err){
 							console.log(err);
@@ -240,28 +240,52 @@ app.post('/bookAppt', function(req, res, next){
 });
 
 app.post('/cancelAppt', function(req, res, next){
-	for(var i = 0; i < req.Appts.length; i++){
-		Appointments.findOne({GPs: req.body.Appts[i].GPs, ApptDate: req.body.Appts[i].ApptDate, ApptTime: req.body.Appts[i].ApptTime, Patient: req.body.Appts[i].Patient}, function(err, obj){
+	curPatient = req.body.Appts[0].Patient;
+	for(var i = 0; i < req.body.Appts.length; i++){
+		console.log(req.body.Appts[i].GPs);
+		console.log(req.body.Appts[i].ApptDate);
+		console.log(req.body.Appts[i].ApptTime);
+		console.log(curPatient);
+		Appointments.findOne({GPs: req.body.Appts[i].GPs, ApptDate: req.body.Appts[i].ApptDate, ApptTime: req.body.Appts[i].ApptTime, Patient: curPatient}, function(err, obj){
 			if(err){
 				res.send(500,'err');
 				console.log(err);
 			}
 			else {
-				obj.modified = new Appointments({
-					GPs: req.body.GPs,
-					ApptDate: req.body.ApptDate,
-					ApptTime: req.body.ApptTime,
-					Patient: "",
-					Reason: "",
-				}).save(function(err){
-					if (err){
-						console.log(err);
-						res.send(500);
-					}
-					else{
-						res.send(200);
-					}
-				});
+				if(obj != null){
+					obj.modified = new Appointments({
+						GPs: obj.GPs,
+						ApptDate: obj.ApptDate,
+						ApptTime: obj.ApptTime,
+						Patient: "",
+						Reason: "",
+					}).save(function(err){
+						if (err){
+							console.log(err);
+							res.send(500);
+						}
+						else{
+							Appointments.remove({
+								GPs: obj.GPs,
+								ApptDate: obj.ApptDate,
+								ApptTime: obj.ApptTime,
+								Patient: curPatient,
+							}, function(err){
+								if(err){
+									console.err(err);
+									res.send(500);
+								}
+								else{
+									console.log('Success');
+									res.send(200);
+								}
+							});
+						}
+					});
+				}
+				else{
+					res.send(500);
+				}
 			}
 		});
 	}
@@ -282,7 +306,7 @@ app.post('/getUserAppt', function(req, res, next){
 				res.json(200, {Appts: temp});
 			}
 			else{
-				res.json(500, {message: 'Could not find'});
+				res.json(500, {message: 'You ave no appointments booked.'});
 			}
 		}
 	});

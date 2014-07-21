@@ -1,5 +1,6 @@
 var curUser = '';
 var Privilege = '';
+var apptList = [];
 
 function initialization(){
 	addSchools();
@@ -339,6 +340,7 @@ function beforeTomorrow(date1){
 }
 
 function retrieveAppts(){
+	apptList = [];
 	var list = document.getElementById('userApptsList');
 	list.innerHTML = '<p>Loading, please wait.</p>';
 	serverPost('getUserAppt', JSON.stringify({
@@ -348,6 +350,7 @@ function retrieveAppts(){
 		for(var i=0; i < result.Appts.length; i++){
 			HTMLstring += '<input type="checkbox" name="checkbox-' + i + '" id="checkbox-' + i + '" class="custom" /><label for="checkbox-' + i + '">';
 			HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</label>';
+			apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
 		}
 		list.innerHTML = HTMLstring;
 		$("#viewAppt").trigger("pagecreate");
@@ -356,8 +359,28 @@ function retrieveAppts(){
 }
 
 function cancelAppointment(){
-	serverPost('', JSON.stringify({number:1}), function(result){alert(result.message);});
-	alert('Appointment cancelled.\n')
+	var temp = [];
+	if(apptList.length > 0){
+		for(var i = 0; i < apptList.length; i++){
+			if (document.getElementById('checkbox-' + i).checked)
+				temp.push({
+					GPs: apptList[i].GPs,
+					ApptDate: apptList[i].ApptDate,
+					ApptTime: apptList[i].ApptTime,
+					Patient: curUser
+				});
+		}
+		serverPost('cancelAppt', JSON.stringify({
+			Appts: temp
+		}), function(result){
+			alert('Appointment cancelled.\n');
+			retrieveAppts();
+		});
+	}
+	else{
+		alert('There are no appointments to cancel');
+	}
+	
 }
 
 /*************************************************************************************************************************************
