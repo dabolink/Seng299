@@ -242,10 +242,6 @@ app.post('/bookAppt', function(req, res, next){
 app.post('/cancelAppt', function(req, res, next){
 	curPatient = req.body.Appts[0].Patient;
 	for(var i = 0; i < req.body.Appts.length; i++){
-		console.log(req.body.Appts[i].GPs);
-		console.log(req.body.Appts[i].ApptDate);
-		console.log(req.body.Appts[i].ApptTime);
-		console.log(curPatient);
 		Appointments.findOne({GPs: req.body.Appts[i].GPs, ApptDate: req.body.Appts[i].ApptDate, ApptTime: req.body.Appts[i].ApptTime, Patient: curPatient}, function(err, obj){
 			if(err){
 				res.send(500,'err');
@@ -276,7 +272,6 @@ app.post('/cancelAppt', function(req, res, next){
 									res.send(500);
 								}
 								else{
-									console.log('Success');
 									res.send(200);
 								}
 							});
@@ -306,7 +301,7 @@ app.post('/getUserAppt', function(req, res, next){
 				res.json(200, {Appts: temp});
 			}
 			else{
-				res.json(500, {message: 'You ave no appointments booked.'});
+				res.json(200, {message: 'You have no appointments booked.'});
 			}
 		}
 	});

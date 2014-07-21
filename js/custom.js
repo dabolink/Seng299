@@ -295,6 +295,7 @@ function bookAppointment(){
 			Reason: document.getElementById('apptReason').value
 		}), function(result){
 			alert('Appointment booked');
+			retrieveAppts();
 			$.mobile.changePage("#viewAppt");
 		})
 		
@@ -346,15 +347,19 @@ function retrieveAppts(){
 	serverPost('getUserAppt', JSON.stringify({
 		Patient: curUser
 	}), function(result){
-		var HTMLstring = '<legend>Appointments:</legend>';
-		for(var i=0; i < result.Appts.length; i++){
-			HTMLstring += '<input type="checkbox" name="checkbox-' + i + '" id="checkbox-' + i + '" class="custom" /><label for="checkbox-' + i + '">';
-			HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</label>';
-			apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
+		if(!result.message){
+			var HTMLstring = '<legend>Appointments:</legend>';
+			for(var i=0; i < result.Appts.length; i++){
+				HTMLstring += '<input type="checkbox" name="checkbox-' + i + '" id="checkbox-' + i + '" class="custom" /><label for="checkbox-' + i + '">';
+				HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</label>';
+				apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
+			}
+			list.innerHTML = HTMLstring;
+			$("#viewAppt").trigger("pagecreate");
 		}
-		list.innerHTML = HTMLstring;
-		$("#viewAppt").trigger("pagecreate");
-
+		else{
+			list.innerHTML = '<p>' + result.message + '</p>';
+		}
 	});
 }
 
