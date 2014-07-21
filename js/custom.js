@@ -371,7 +371,7 @@ function getPastLogins(){
 	serverPost('getPastLogins', JSON.stringify({
 		Username: curUser,
 	}), function(result){
-		for(i = result.logins.length-1; i >= 0; i--){
+		for(i = result.logins.length-1; i >= 0 && i >= result.logins.length-51; i--){
 			logList.value += 'Date: ' + result.logins[i].Dates + ',  Location: ' + result.logins[i].Loc + '\n';
 		}
 	});
