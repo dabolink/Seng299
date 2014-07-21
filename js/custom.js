@@ -162,14 +162,14 @@ function storeLogin(){
 			DateofLogin: curDate,
 			Lat: pos.coords.latitude,
 			Long: pos.coords.longitude,
-		}), function(result){alert('Success!');});
+		}), function(result){});
 	}, function(err){
 		serverPost('storeLogin', JSON.stringify({
 			Username: curUser,
 			DateofLogin: curDate,
 			Lat: '',
 			Long: '',
-		}), function(result){alert('Failure...\n' + err);});
+		}), function(result){});
 	});
 }
 
