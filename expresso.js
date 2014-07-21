@@ -24,6 +24,10 @@ var UserSchema = new mongoose.Schema({
 		EMail: { type: String},
 		School: { type: String},
 		Privilege: { type: String},
+		Logins: [{
+			Dates: String,
+			Loc: String
+		}]
 });
 
 var SchoolSchema = new mongoose.Schema({
@@ -41,14 +45,6 @@ var ApptSchema = new mongoose.Schema({
 	Reason: String,
 });
 
-var LoginSchema = new mongoose.Schema({
-	Username: String,
-	Logins: [{
-		Dates: String,
-		Lat: String,
-		Long: String
-	}]
-});
 
 mongoose.connect('mongodb://generic:1234@ds041238.mongolab.com:41238/seng299', function(error){
 	console.log('MongoDB connection ready');
@@ -58,7 +54,6 @@ var GP = mongoose.model('GP', GPSchema);
 var User = mongoose.model('User', UserSchema);
 var School = mongoose.model('School', SchoolSchema);
 var Appointments = mongoose.model('Appointments', ApptSchema);
-var PastLogins = mongoose.model('PastLogins', LoginSchema);
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -318,38 +313,22 @@ app.post('/getUserAppt', function(req, res, next){
 });
 
 app.post('/storeLogin', function(req, res, next){
-	PastLogins.findOne({Username: req.body.Username}, function(err, obj){
+	User.findOne({Username: req.body.Username}, function(err, obj){
 		if(err){
 			console.log(err);
 			res.send(500);
 		}
 		else{
 			if(obj == null){
-				var test = new PastLogins({
-					Username: req.body.Username,
-					Logins: [{
-						Dates: req.body.DateofLogin,
-						Lat: req.body.Lat,
-						Long: req.body.Long
-					}]
-				});
-				test.save(function(err){
-					if(err){
-						console.log(err);
-						res.send(500);
-					}
-					else
-						res.send(200);
-				});
+				res.send(500);
 			}
 			else{
 				var test = obj;
 				test.Logins.push({
 					Dates: req.body.DateofLogin,
-					Lat: req.body.Lat,
-					Long: req.body.Long
+					Loc: req.body.Loc,
 				});
-				PastLogins.remove(obj, function(err){
+				User.remove(obj, function(err){
 					if(err){
 						console.log(err);
 						res.send(500);
@@ -371,7 +350,7 @@ app.post('/storeLogin', function(req, res, next){
 });
 
 app.post('/getPastLogins', function(req, res, next){
-	PastLogins.findOne({Username: req.body.Username}, function(err, obj){
+	User.findOne({Username: req.body.Username}, function(err, obj){
 		if(err){
 			console.log(err);
 			res.send(500);

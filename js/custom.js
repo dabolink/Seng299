@@ -155,19 +155,50 @@ function confirmUserPass(){
 
 function storeLogin(){
 	var curDate = getDate();
+	var location = '';
+
 	navigator.geolocation.getCurrentPosition(function(pos){
-		serverPost('storeLogin', JSON.stringify({
-			Username: curUser,
-			DateofLogin: curDate,
-			Lat: pos.coords.latitude,
-			Long: pos.coords.longitude,
-		}), function(result){});
+
+		geocoder = new google.maps.Geocoder();
+		var lat = parseFloat(pos.coords.latitude);
+		var lng = parseFloat(pos.coords.longitude);
+		var latLng = new google.maps.LatLng(lat, lng);
+
+		geocoder.geocode({'latLng': latLng}, function(results, status){
+			if(status == google.maps.GeocoderStatus.OK){
+				if(results[1]){
+					serverPost('storeLogin', JSON.stringify({
+						Username: curUser,
+						DateofLogin: curDate,
+						Loc: results[1].formatted_address
+						}), function(result){}
+					);
+				}
+				else{
+					console.log('No results');
+					serverPost('storeLogin', JSON.stringify({
+						Username: curUser,
+						DateofLogin: curDate,
+						Loc: 'Unknown location'
+						}), function(result){}
+					);
+				}
+			}
+			else{
+				console.log('Geocoder failed due to ' + status);
+				serverPost('storeLogin', JSON.stringify({
+						Username: curUser,
+						DateofLogin: curDate,
+						Loc: 'Unknown location'
+						}), function(result){}
+					);
+			}
+		});
 	}, function(err){
 		serverPost('storeLogin', JSON.stringify({
 			Username: curUser,
 			DateofLogin: curDate,
-			Lat: '',
-			Long: '',
+			Loc: 'Unknown location'
 		}), function(result){});
 	});
 }
@@ -341,7 +372,7 @@ function getPastLogins(){
 		Username: curUser,
 	}), function(result){
 		for(i = result.logins.length-1; i >= 0; i--){
-			logList.value += 'Date: ' + result.logins[i].Dates + '  Latitude: ' + result.logins[i].Lat + '  Longitude: ' + result.logins[i].Long + '\n';
+			logList.value += 'Date: ' + result.logins[i].Dates + ',  Location: ' + result.logins[i].Loc + '\n';
 		}
 	});
 }
