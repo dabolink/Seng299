@@ -79,6 +79,84 @@ function initialization(){
 	
 }
 
+function signOut(){
+	window.curUser = '';
+	document.getElementById("GP").options.length = 1;
+	document.getElementById("allUsers").options.length = 1;
+	document.getElementById("allGPsApp").options.length = 1;
+	
+}
+
+//Add schools to selection menus
+function addSchools(){
+	serverPost('getSchools',null,function(result){
+		for(i=0;i<result.names.length;i++){
+			addSchool(result.names[i].name);
+		}
+	});
+}
+
+// Adds 1 school to selection menus
+function addSchool(school){
+	var x = document.getElementById('School');
+	var option = document.createElement("option");
+	option.text = school;
+	x.add(option);
+}
+
+//Adds GPs to selection menus
+function addGPs(name){
+	serverPost('getGPs',null,function(result){
+		for(i=0;i<result.names.length;i++){
+			addGP(result.names[i].name,name);
+		}
+	});
+}
+
+// Adds a GP to selection menus
+function addGP(GP,name){
+	var x = document.getElementById(name);
+	var option = document.createElement("option");
+	option.text = GP;
+	x.add(option);
+}
+
+
+/* Login */
+
+function confirmUserPass(){
+	var userE = document.getElementById('userlogin').value;
+	var passE = document.getElementById('passlogin').value;
+	var user = JSON.stringify({
+		Username: userE,
+		Password: passE,
+	});
+	serverPost('checkPass',user, function(result){
+		if(result.user != ''){
+			window.curUser = userE;
+			window.Privilege = result.Privilege;
+			if(window.Privilege == 'admin'){
+				addAllUsers();
+				addGPs('allGPsApp');
+			}
+			$.mobile.changePage("#main");
+			document.getElementById('userlogin').value = '';
+			document.getElementById('passlogin').value = '';
+		}
+		else if (result.message == 'err'){
+		
+		}
+		else{
+			alert("Invalid Username or Password");
+			document.getElementById('passlogin').value = '';
+		}
+	});
+}
+
+
+/* Registration Page */
+
+//Creates a user from form data and posts it to the server
 function createUser(){
 	if(!checkRegistration()){
 		return;
@@ -109,62 +187,6 @@ function createUser(){
 	});
 }
 
-//check if rewritten password == password
-function checkPassword(){
-	var pass = document.getElementById('password').value;
-	var repass = document.getElementById('repassword').value;
-	if((pass != repass) && (pass != '') && (repass != '')){
-		return true;
-	}
-	return false;
-}
-//add schools to selection
-function addSchools(){
-	serverPost('getSchools',null,function(result){
-		for(i=0;i<result.names.length;i++){
-			addSchool(result.names[i].name);
-		}
-	});
-}
-// add 1 school to selection
-function addSchool(school){
-	var x = document.getElementById('School');
-	var option = document.createElement("option");
-	option.text = school;
-	x.add(option);
-}
-
-function addGPs(name){
-	serverPost('getGPs',null,function(result){
-		for(i=0;i<result.names.length;i++){
-			addGP(result.names[i].name,name);
-		}
-	});
-}
-
-function addGP(GP,name){
-	var x = document.getElementById(name);
-	var option = document.createElement("option");
-	option.text = GP;
-	x.add(option);
-}
-
-//send email
-function sendEmail(){
-	alert('Confirmation Email Sent (To Be Implemented)');
-}
-function checkFgtPassUser(){
-	var x = document.getElementById('fgtpassUser');
-	var sendEmailB = document.getElementById('sendEmailB');
-	var y = x.value;
-	if (y == ''){
-		alert('please input username');
-	}
-	else{
-		alert('confirmation email sent (To Be Implemented)');
-		sendEmailB.setAttribute('href','#login');
-	}
-}
 function checkRegistration(){
 	var valid = true;
 	var fName = document.getElementById('firstName').value;
@@ -236,62 +258,40 @@ function checkMF(){
 		return 'Female';
 	}
 }
-function signOut(){
-	window.curUser = '';
-	document.getElementById("GP").options.length = 1;
-	document.getElementById("allUsers").options.length = 1;
-	document.getElementById("allGPsApp").options.length = 1;
-	
+
+//check if rewritten password == password
+function checkPassword(){
+	var pass = document.getElementById('password').value;
+	var repass = document.getElementById('repassword').value;
+	if((pass != repass) && (pass != '') && (repass != '')){
+		return true;
+	}
+	return false;
 }
-function confirmUserPass(){
-	var userE = document.getElementById('userlogin').value;
-	var passE = document.getElementById('passlogin').value;
-	var user = JSON.stringify({
-		Username: userE,
-		Password: passE,
-	});
-	serverPost('checkPass',user, function(result){
-		if(result.user != ''){
-			window.curUser = userE;
-			window.Privilege = result.Privilege;
-			if(window.Privilege == 'admin'){
-				addAllUsers();
-				addGPs('allGPsApp');
-			}
-			$.mobile.changePage("#main");
-			document.getElementById('userlogin').value = '';
-			document.getElementById('passlogin').value = '';
-		}
-		else if (result.message == 'err'){
-		
-		}
-		else{
-			alert("Invalid Username or Password");
-			document.getElementById('passlogin').value = '';
-		}
-	});
+
+//send email
+function sendEmail(){
+	alert('Confirmation Email Sent (To Be Implemented)');
 }
-function createAppointment(){
-	var GP = document.getElementById('allGPsApp').value;
-	var Date = document.getElementById('addedDateApp').value;
-	var Time = document.getElementById('addedTimeApp').value;
-	var AMPM = document.getElementById('addedAMPMApp').value;
-	var appointment = JSON.stringify({
-		GPs: GP,
-		ApptDate: Date,
-		ApptTime: Time + " " + AMPM,
-		Patient: '',
-		Reason: '',
-	});
-	serverPost('addAppointment', appointment, function(result){
-		if(result.message == 'true'){
-			alert("appointment added");
-		}
-		else{
-			alert("appointment already created");
-		}
-	});
+
+
+/* Forgot Password Page */
+
+function checkFgtPassUser(){
+	var x = document.getElementById('fgtpassUser');
+	var sendEmailB = document.getElementById('sendEmailB');
+	var y = x.value;
+	if (y == ''){
+		alert('please input username');
+	}
+	else{
+		alert('confirmation email sent (To Be Implemented)');
+		sendEmailB.setAttribute('href','#login');
+	}
 }
+
+
+/* Profile */
 
 function getProfileInfo(){
 	serverPost('getProfile', JSON.stringify({Username: curUser}), function(result){
@@ -304,6 +304,9 @@ function getProfileInfo(){
 			+ '</p><p>School: ' + result.User.School + '</p>';
 	});
 }
+
+
+/* Book Appointment */
 
 function getApptTimes(){
 	var bookB = document.getElementById('bookButton');
@@ -365,6 +368,10 @@ function bookAppointment(){
 	}
 }
 
+
+/* View Appointments */
+
+//Retrieves all appointments the current user has booked
 function retrieveAppts(){
 	apptList = [];
 	var list = document.getElementById('userApptsList');
@@ -388,6 +395,7 @@ function retrieveAppts(){
 	});
 }
 
+// Cancels an appointment through a post to the server
 function cancelAppointment(){
 	var temp = [];
 	if(apptList.length > 0){
@@ -413,8 +421,9 @@ function cancelAppointment(){
 	
 }
 
+
 /*************************************************************************************************************************************
-														admin functions
+														Admin Functions
 *************************************************************************************************************************************/
 
 
@@ -423,7 +432,7 @@ function removeUser(){
 	serverPost('removeUser',JSON.stringify({Username: User}),function(result){
 		alert(User + " has been deleted for the database");
 		if(User == curUser){
-			alert("deleted your own account");
+			alert("Deleted your own account");
 			signOut();
 		}
 	});
@@ -439,7 +448,7 @@ function addSchoolToDB(){
 	var SchoolName = document.getElementById('addedSchool').value;
 	serverPost('addSchoolToDB',JSON.stringify({name: SchoolName}),function(result){
 		if(result == 'false'){
-			alert('school already in database');
+			alert('School already in database');
 		}
 		else{
 			alert(SchoolName + ' has been added to the database');
@@ -463,6 +472,28 @@ function addGPToDB(){
 		}
 		else{
 			alert(GPName + ' has been added to the database');
+		}
+	});
+}
+
+function createAppointment(){
+	var GP = document.getElementById('allGPsApp').value;
+	var Date = document.getElementById('addedDateApp').value;
+	var Time = document.getElementById('addedTimeApp').value;
+	var AMPM = document.getElementById('addedAMPMApp').value;
+	var appointment = JSON.stringify({
+		GPs: GP,
+		ApptDate: Date,
+		ApptTime: Time + " " + AMPM,
+		Patient: '',
+		Reason: '',
+	});
+	serverPost('addAppointment', appointment, function(result){
+		if(result.message == 'true'){
+			alert("Appointment added");
+		}
+		else{
+			alert("Appointment already created");
 		}
 	});
 }
