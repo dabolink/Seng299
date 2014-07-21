@@ -185,6 +185,10 @@ function checkMF(){
 }
 function signOut(){
 	window.curUser = '';
+	document.getElementById("GP").options.length = 1;
+	document.getElementById("allUsers").options.length = 1;
+	document.getElementById("allGPsApp").options.length = 1;
+	
 }
 function confirmUserPass(){
 	var userE = document.getElementById('userlogin').value;
@@ -202,12 +206,15 @@ function confirmUserPass(){
 				addGPs('allGPsApp');
 			}
 			$.mobile.changePage("#main");
+			document.getElementById('userlogin').value = '';
+			document.getElementById('passlogin').value = '';
 		}
 		else if (result.message == 'err'){
 		
 		}
 		else{
 			alert("Invalid Username or Password");
+			document.getElementById('passlogin').value = '';
 		}
 	});
 }
