@@ -338,6 +338,12 @@ function getPastLogins(){
 
 /* Book Appointment */
 
+function apptInit(){
+	document.getElementById('BookApptDate').value = '';
+	document.getElementById('apptReason').value = '';
+	getApptTimes();
+}
+
 function getApptTimes(){
 	var bookB = document.getElementById('bookButton');
 	var field = document.getElementById('availableTimes');
