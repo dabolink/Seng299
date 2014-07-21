@@ -193,9 +193,19 @@ function createUser(){
 	});
 	serverPost('addUser', user, function(result){
 		if(result.message == 'true'){
-			alert('registration sucessful');
+			alert('Registration sucessful');
 			$.mobile.changePage("#login");
-			alert('confirmation email sent');
+			alert('Confirmation email sent');
+			document.getElementById('firstName').value = '';
+			document.getElementById('lastName').value = '';
+			document.getElementById('birthDate').value = '';
+			document.getElementById('username').value = '';
+			document.getElementById('password').value = '';
+			document.getElementById('Email').value = '';
+			document.getElementById('repassword').value = '';
+			document.getElementById('ToS').checked = false;
+			document.getElementById('Male').checked = false;
+			document.getElementById('Female').checked = false;
 		}		
 		else if(result.message == 'err'){
 		
