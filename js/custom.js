@@ -2,7 +2,6 @@
  Global Variables
  ******************************************************************************************************/
 
-var curUser = '';
 var apptList = [];
 var curAppt = -1;
 
@@ -28,6 +27,9 @@ function serverPost(uri, keyPair, successFunction){
     },
 	error: function(xhr){
 		alert('There was a problem.\n' + xhr.responseText);
+		if(xhr.status == 401){
+			$.mobile.changePage("#login");
+		}
 	}})
 }
 
@@ -76,14 +78,10 @@ function beforeTomorrow(date1){
 function initialization(){
 	addSchools();
 	addGPs("GP");
-	
 }
 
 function signOut(){
-	window.curUser = '';
-	document.getElementById("allUsers").options.length = 1;
-	document.getElementById("allGPsApp").options.length = 1;
-	
+	serverPost('signOut', {}, function(result){})
 }
 
 //Add schools to selection menus
@@ -132,7 +130,6 @@ function confirmUserPass(){
 	});
 	serverPost('checkPass',user, function(result){
 		if(result.user != ''){
-			window.curUser = userE;
 			storeLogin();
 			$.mobile.changePage("#main");
 			document.getElementById('userlogin').value = '';
@@ -163,7 +160,6 @@ function storeLogin(){
 			if(status == google.maps.GeocoderStatus.OK){
 				if(results[1]){
 					serverPost('storeLogin', JSON.stringify({
-						Username: curUser,
 						DateofLogin: curDate,
 						Loc: results[1].formatted_address
 						}), function(result){}
@@ -172,7 +168,6 @@ function storeLogin(){
 				else{
 					console.log('No results');
 					serverPost('storeLogin', JSON.stringify({
-						Username: curUser,
 						DateofLogin: curDate,
 						Loc: 'Unknown location'
 						}), function(result){}
@@ -182,7 +177,6 @@ function storeLogin(){
 			else{
 				console.log('Geocoder failed due to ' + status);
 				serverPost('storeLogin', JSON.stringify({
-						Username: curUser,
 						DateofLogin: curDate,
 						Loc: 'Unknown location'
 						}), function(result){}
@@ -191,7 +185,6 @@ function storeLogin(){
 		});
 	}, function(err){
 		serverPost('storeLogin', JSON.stringify({
-			Username: curUser,
 			DateofLogin: curDate,
 			Loc: 'Unknown location'
 		}), function(result){});
@@ -348,8 +341,9 @@ function checkFgtPassUser(){
 /* Profile */
 
 function getProfileInfo(){
-	serverPost('getProfile', JSON.stringify({Username: curUser}), function(result){
-		var userInfo = document.getElementById('profileInfo');
+	var userInfo = document.getElementById('profileInfo');
+	userInfo.innerHTML = ''
+	serverPost('getProfile', {}, function(result){
 		userInfo.innerHTML = '<p>Name: ' + result.User.FirstName + " " + result.User.LastName
 			+ '</p><p>Date of Birth: ' + result.User.DateOfBirth
 			+ '</p><p>Gender: ' + result.User.gender
@@ -363,9 +357,7 @@ function getProfileInfo(){
 function getPastLogins(){
 	var logList = document.getElementById('textarea-b');
 	logList.value = '';
-	serverPost('getPastLogins', JSON.stringify({
-		Username: curUser,
-	}), function(result){
+	serverPost('getPastLogins', {}, function(result){
 		for(i = result.logins.length-1; i >= 0 && i >= result.logins.length-51; i--){
 			logList.value += 'Date: ' + result.logins[i].Dates + ',  Location: ' + result.logins[i].Loc + '\n';
 		}
@@ -426,7 +418,6 @@ function bookAppointment(){
 			GPs: document.getElementById('GP').value,
 			ApptDate: document.getElementById('BookApptDate').value,
 			ApptTime: $('input[name=radio-mini]:checked').val(),
-			Patient: curUser,
 			Reason: document.getElementById('apptReason').value
 		}), function(result){
 			alert('Appointment booked');
@@ -450,7 +441,6 @@ function retrieveAppts(){
 	var list = document.getElementById('userApptsList');
 	list.innerHTML = '<p>Loading, please wait.</p>';
 	serverPost('getUserAppt', JSON.stringify({
-		Patient: curUser
 	}), function(result){
 		if(!result.message){
 			var HTMLstring = '<legend>Appointments:</legend>';
@@ -474,7 +464,6 @@ function getSingleAppt(btnID){
 		GPs: apptList[curAppt].GPs,
 		ApptDate: apptList[curAppt].ApptDate,
 		ApptTime: apptList[curAppt].ApptTime,
-		Patient: curUser,
 	}), function(result){
 		var appt = document.getElementById('singleAppt');
 		appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GPs + '</p>';
@@ -494,7 +483,6 @@ function cancelAppointment(){
 		GPs: apptList[curAppt].GPs,
 		ApptDate: apptList[curAppt].ApptDate,
 		ApptTime: apptList[curAppt].ApptTime,
-		Patient: curUser,
 	}), function(result){
 		curAppt = -1;
 		alert('Appointment cancelled.\n');
@@ -502,34 +490,3 @@ function cancelAppointment(){
 		$.mobile.changePage('#viewAppt');
 	});
 }
-
-
-/*************************************************************************************************************************************
-														Redirect to login if no current login
-*************************************************************************************************************************************/
-
-
-$('#main').live('pageinit',function(){
-	if(window.curUser == ''){
-		$.mobile.changePage("#login");
-		alert("Must be logged in to access this page");
-	}
-});
-$('#profile').live('pageinit',function(){
-	if(window.curUser == ''){
-		$.mobile.changePage("#login");
-		alert("Must be logged in to access this page");
-	}
-});
-$('#bookAppt').live('pageinit',function(){
-	if(window.curUser == ''){
-		$.mobile.changePage("#login");
-		alert("Must be logged in to access this page");
-	}
-});
-$('#viewAppt').live('pageinit',function(){
-	if(window.curUser == ''){
-		$.mobile.changePage("#login");
-		alert("Must be logged in to access this page");
-	}
-});

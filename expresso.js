@@ -4,7 +4,9 @@
 
 
 var express = require('express'),
+	session = require('express-session'),
     bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
     app = express(),
     mongoose = require('mongoose'),
     https = require('https'),
@@ -13,6 +15,9 @@ var express = require('express'),
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){});
+
+
+/* User Schemas */
 
 var UserSchema = new mongoose.Schema({
 		FirstName: { type: String},
@@ -57,9 +62,20 @@ var Appointments = mongoose.model('Appointments', ApptSchema);
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
+app.use(session({
+	secret: 'GetOnMyLevel',
+    cookie: { maxAge: 3600000, }, //An idle seesion only lasts for 15 minutes
+    saveUninitialized: true,
+    resave: true
+}));
 
 app.get('/', function(req, res){
-    res.sendfile('index.html');
+	if(!req.session.userId){
+	    res.sendfile('index.html');
+	}
+	else{
+		res.redirect('#main');
+	}
 });
 
 app.get('/_____admin', function(req, res){
@@ -81,6 +97,18 @@ var server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
 });
 
+function authenticate(req){
+	if (!req.session.userId || req.session.userId == '' || req.session.cookie.maxAge <= 0){
+		req.session.userId = '';
+		req.session.destroy();
+		return false;
+	}
+	else{
+		req.session.touch();
+		return true;
+	}
+}
+
 /*************************************************************************************************************************************
 														serverPost Methods
 *************************************************************************************************************************************/
@@ -92,6 +120,9 @@ var server = app.listen(3000, function() {
 app.post('/', function(req, res, next){
     res.json(200, {message: 'You\'re a wizard, Harry'});
 });
+
+
+/* Load Form Data */
 
 app.post('/getSchools', function(req,res,next){
 	School.find(function(err,obj){
@@ -109,29 +140,30 @@ app.post('/getSchools', function(req,res,next){
 		}
 	}); 
 });
-app.post('/checkPass', function(req,res,next){
-	User.findOne({Username: req.body.Username},function(err,obj){
+
+app.post('/getGPs', function(req,res,next){
+	GP.find(function(err,obj){
 		if(err){
-			res.send(500, 'err');
 			console.log(err);
 		}
 		else{
-			if(obj != null){
-				if(req.body.Password == obj.Password){
-					res.send(200);
-				}
-				else{
-					res.json(200, {user: ''});
-				}
+			var temp = [];
+			for(i=0;i<obj.length;i++){
+				temp.push({name: obj[i].name});
 			}
-			else{
-				res.json(200, {user: ''});
-			}
+			res.json(200,{
+				names: temp,
+				});
 		}
 	});
 });
+
+
+/* Registration */
+
+
 app.post('/addUser', function(req, res, next){
-	User.findOne({Username: req.body.Username},function(err, obj){
+	User.findOne({Username: req.session.userId},function(err, obj){
 		if(err) {
 			res.send(500, 'err');
 			console.error(err);
@@ -161,182 +193,49 @@ app.post('/addUser', function(req, res, next){
 	});	
 });
 
-app.post('/getGPs', function(req,res,next){
-	GP.find(function(err,obj){
+
+/* Login / Logout */
+
+app.post('/signOut', function(req, res, next){
+	req.session.userId = '';
+	req.session.destroy(function(err){
 		if(err){
 			console.log(err);
+			res.send(401, "Could not log out successfully");
 		}
 		else{
-			var temp = [];
-			for(i=0;i<obj.length;i++){
-				temp.push({name: obj[i].name});
-			}
-			res.json(200,{
-				names: temp,
-				});
+			res.send(200);
 		}
 	});
-});
+})
 
-app.post('/getProfile', function(req, res, next){
-	User.findOne({Username: req.body.Username},function(err, obj){
-		if(err){
-			res.send(500,'err');
-			console.log(err);
-		}
-		else {
-			res.json(200, {User: {
-				FirstName: obj.FirstName,
-				LastName: obj.LastName,
-				DateOfBirth: obj.DateOfBirth,
-				gender: obj.gender,
-				Username: obj.Username,
-				EMail: obj.EMail,
-				School: obj.School,
-			}});
-		}
-	});
-});
-
-app.post('/getApptTimes', function(req, res, next){
-	Appointments.find({GPs: req.body.GPs, ApptDate: req.body.ApptDate, Patient: "", Reason: ""}, function(err, obj){
+app.post('/checkPass', function(req,res,next){
+	User.findOne({Username: req.body.Username},function(err,obj){
 		if(err){
 			res.send(500, 'err');
 			console.log(err);
 		}
 		else{
-			if (obj.length > 0){
-				var temp = [];
-				for (var i = 0; i < obj.length; i++) {
-					temp.push({Time: obj[i].ApptTime});
-				};
-				res.json(200, {ApptTimes: temp});
-			}
-			else{
-				res.json(200, {message: 'Could not find'});
-			}
-		}
-	})
-});
-
-app.post('/bookAppt', function(req, res, next){
-	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
-		if(err){
-			res.send(500,'err');
-			console.log(err);
-		}
-		else {
-			obj.modified = new Appointments({
-				GPs: req.body.GPs,
-				ApptDate: req.body.ApptDate,
-				ApptTime: req.body.ApptTime,
-				Patient: req.body.Patient,
-				Reason: req.body.Reason,
-			}).save(function(err){
-				if (err){
-					console.log(err);
-					res.send(500);
+			if(obj != null){
+				if(req.body.Password == obj.Password){
+					req.session.userId = req.body.Username;
+					req.session.save();
+					console.log(req.session.userId)
+					res.send(200);
 				}
 				else{
-					Appointments.remove({
-						GPs: req.body.GPs,
-						ApptDate: req.body.ApptDate,
-						ApptTime: req.body.ApptTime,
-						Patient: "",
-						Reason: "",
-					}, function(err){
-						if(err){
-							console.log(err);
-							res.send(500);
-						}
-						else
-							res.send(200);
-					});
+					res.json(200, {user: ''});
 				}
-			});
-		}
-	});
-});
-
-app.post('/cancelAppt', function(req, res, next){
-	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime, Patient: req.body.Patient}, function(err, obj){
-		if(err){
-			res.send(500,'err');
-			console.log(err);
-		}
-		else {
-			if(obj != null){
-				obj.modified = new Appointments({
-					GPs: obj.GPs,
-					ApptDate: obj.ApptDate,
-					ApptTime: obj.ApptTime,
-					Patient: "",
-					Reason: "",
-				}).save(function(err){
-					if (err){
-						console.log(err);
-						res.send(500);
-					}
-					else{
-						Appointments.remove({
-							GPs: obj.GPs,
-							ApptDate: obj.ApptDate,
-							ApptTime: obj.ApptTime,
-							Patient: req.body.Patient,
-						}, function(err){
-							if(err){
-								console.err(err);
-								res.send(500);
-							}
-							else{
-								res.send(200);
-							}
-						});
-					}
-				});
 			}
 			else{
-				res.send(500, 'Appointment does not exist.');
+				res.json(200, {user: ''});
 			}
-		}
-	});
-});
-
-app.post('/getUserAppt', function(req, res, next){
-	Appointments.find({Patient: req.body.Patient}, function(err, obj){
-		if(err){
-			console.log(err);
-			res.send(500);
-		}
-		else{
-			if (obj.length > 0){
-				var temp = [];
-				for (var i = 0; i < obj.length; i++) {
-					temp.push({Appts: obj[i]});
-				};
-				res.json(200, {Appts: temp});
-			}
-			else{
-				res.json(200, {message: 'You have no appointments booked.'});
-			}
-		}
-	});
-});
-
-app.post('/getOneAppt', function(req, res, next){
-	Appointments.findOne({Patient: req.body.Patient, GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
-		if(err){
-			console.log(err);
-			res.send(500);
-		}
-		else{
-				res.json(200, {Appt: obj});
 		}
 	});
 });
 
 app.post('/storeLogin', function(req, res, next){
-	User.findOne({Username: req.body.Username}, function(err, obj){
+	User.findOne({Username: req.session.userId}, function(err, obj){
 		if(err){
 			console.log(err);
 			res.send(500);
@@ -372,19 +271,208 @@ app.post('/storeLogin', function(req, res, next){
 	});
 });
 
+/* Profile */
+
+app.post('/getProfile', function(req, res, next){
+	console.log(req.session.userId);
+	if(!authenticate(req)){
+		res.send(401, "You are not logged in");
+		next();
+	}
+	else{
+		User.findOne({Username: req.session.userId},function(err, obj){
+			if(err){
+				res.send(500,'err');
+				console.log(err);
+			}
+			else {
+				res.json(200, {User: {
+					FirstName: obj.FirstName,
+					LastName: obj.LastName,
+					DateOfBirth: obj.DateOfBirth,
+					gender: obj.gender,
+					Username: obj.Username,
+					EMail: obj.EMail,
+					School: obj.School,
+				}});
+			}
+		});
+	}
+});
+
 app.post('/getPastLogins', function(req, res, next){
-	User.findOne({Username: req.body.Username}, function(err, obj){
+	if(!authenticate(req)){
+		res.send(200, "You are not logged in"); //Sending 200 prevents 2 alerts from occurring in succession
+		next();
+	}
+	else{
+		User.findOne({Username: req.session.userId}, function(err, obj){
+			if(err){
+				console.log(err);
+				res.send(500);
+			}
+			else{
+				res.json(200, {
+					logins: obj.Logins
+				});
+			}
+		});
+	}
+});
+
+/* Book Appointment */
+
+app.post('/getApptTimes', function(req, res, next){
+	Appointments.find({GPs: req.body.GPs, ApptDate: req.body.ApptDate, Patient: "", Reason: ""}, function(err, obj){
+		if(err){
+			res.send(500, 'err');
+			console.log(err);
+		}
+		else{
+			if (obj.length > 0){
+				var temp = [];
+				for (var i = 0; i < obj.length; i++) {
+					temp.push({Time: obj[i].ApptTime});
+				};
+				res.json(200, {ApptTimes: temp});
+			}
+			else{
+				res.json(200, {message: 'Could not find any appointments'});
+			}
+		}
+	})
+});
+
+app.post('/bookAppt', function(req, res, next){
+	if(!authenticate(req)){
+		res.send(401, "You are not logged in");
+		next();
+	}
+	else{
+		Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
+			if(err){
+				res.send(500,'err');
+				console.log(err);
+			}
+			else {
+				obj.modified = new Appointments({
+					GPs: req.body.GPs,
+					ApptDate: req.body.ApptDate,
+					ApptTime: req.body.ApptTime,
+					Patient: req.session.userId,
+					Reason: req.body.Reason,
+				}).save(function(err){
+					if (err){
+						console.log(err);
+						res.send(500);
+					}
+					else{
+						Appointments.remove({
+							GPs: req.body.GPs,
+							ApptDate: req.body.ApptDate,
+							ApptTime: req.body.ApptTime,
+							Patient: "",
+							Reason: "",
+						}, function(err){
+							if(err){
+								console.log(err);
+								res.send(500);
+							}
+							else
+								res.send(200);
+						});
+					}
+				});
+			}
+		});
+	}
+});
+
+/* Review Appt */
+
+app.post('/cancelAppt', function(req, res, next){
+	if(!authenticate(req)){
+		res.send(401, "You are not logged in");
+		next();
+	}
+	else{
+		Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime, Patient: req.session.userId}, function(err, obj){
+			if(err){
+				res.send(500,'err');
+				console.log(err);
+			}
+			else {
+				if(obj != null){
+					obj.modified = new Appointments({
+						GPs: obj.GPs,
+						ApptDate: obj.ApptDate,
+						ApptTime: obj.ApptTime,
+						Patient: "",
+						Reason: "",
+					}).save(function(err){
+						if (err){
+							console.log(err);
+							res.send(500);
+						}
+						else{
+							Appointments.remove({
+								GPs: obj.GPs,
+								ApptDate: obj.ApptDate,
+								ApptTime: obj.ApptTime,
+								Patient: req.session.userId,
+							}, function(err){
+								if(err){
+									console.err(err);
+									res.send(500);
+								}
+								else{
+									res.send(200);
+								}
+							});
+						}
+					});
+				}
+				else{
+					res.send(500, 'Appointment does not exist.');
+				}
+			}
+		});
+	}
+});
+
+app.post('/getUserAppt', function(req, res, next){
+	Appointments.find({Patient: req.session.userId}, function(err, obj){
 		if(err){
 			console.log(err);
 			res.send(500);
 		}
 		else{
-			res.json(200, {
-				logins: obj.Logins
-			});
+			if (obj.length > 0){
+				var temp = [];
+				for (var i = 0; i < obj.length; i++) {
+					temp.push({Appts: obj[i]});
+				};
+				res.json(200, {Appts: temp});
+			}
+			else{
+				res.json(200, {message: 'You have no appointments booked.'});
+			}
 		}
 	});
 });
+
+app.post('/getOneAppt', function(req, res, next){
+	Appointments.findOne({Patient: req.session.userId, GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
+		if(err){
+			console.log(err);
+			res.send(500);
+		}
+		else{
+				res.json(200, {Appt: obj});
+		}
+	});
+});
+
 
 /*************************************************************************************************************************************
 														admin functions
@@ -474,7 +562,7 @@ app.post('/addAppointment',function(req,res,next){
 					GPs: req.body.GPs,
 					ApptDate: req.body.ApptDate,
 					ApptTime: req.body.ApptTime,
-					Patient: req.body.Patient,
+					Patient: req.session.userId,
 					Reason: req.body.Reason,
 				}); 
 				test.save(function(err){
