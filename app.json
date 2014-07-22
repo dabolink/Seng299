@@ -1,0 +1,7 @@
+{
+  "name": "Seng 299",
+  "description": "A sample electronic medical booking application for SENG299 @UVic",
+  "repository": "https://github.com/dabolink/Seng299",
+  "logo": "",
+  "keywords": ["node", "express", "static"]
+}

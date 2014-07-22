@@ -70,11 +70,12 @@ app.use(session({
 }));
 
 app.get('/', function(req, res){
-	if(!req.session.userId){
+	if(!authenticate(req)){
 	    res.sendfile('index.html');
 	}
 	else{
-		res.redirect('#main');
+		console.log('IT HAPPENED!!!!!!!');
+		res.sendfile('index.html');
 	}
 });
 
@@ -220,7 +221,6 @@ app.post('/checkPass', function(req,res,next){
 				if(req.body.Password == obj.Password){
 					req.session.userId = req.body.Username;
 					req.session.save();
-					console.log(req.session.userId)
 					res.send(200);
 				}
 				else{
@@ -274,7 +274,6 @@ app.post('/storeLogin', function(req, res, next){
 /* Profile */
 
 app.post('/getProfile', function(req, res, next){
-	console.log(req.session.userId);
 	if(!authenticate(req)){
 		res.send(401, "You are not logged in");
 		next();
