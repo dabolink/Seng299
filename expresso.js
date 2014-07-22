@@ -62,6 +62,20 @@ app.get('/', function(req, res){
     res.sendfile('index.html');
 });
 
+app.get('/_____admin', function(req, res){
+	User.findOne({Username: req.query.Username}, function(err,obj){
+		if(err){
+			console.log(err);
+			res.send('Cannot GET ' + req.originalUrl);
+		}
+		else if(obj != null && req.query.secure == '4462174635846168'){
+			res.sendfile('admin.html');
+		}
+		else
+			res.send('Cannot GET ' + req.originalUrl);
+	});
+});
+
 //Create the server on port 3000
 var server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
@@ -104,14 +118,14 @@ app.post('/checkPass', function(req,res,next){
 		else{
 			if(obj != null){
 				if(req.body.Password == obj.Password){
-					res.json(200, {user: obj.Username, Privilege: obj.Privilege,});
+					res.send(200);
 				}
 				else{
-					res.json(200, {user: '', Privilege: '',});
+					res.json(200, {user: ''});
 				}
 			}
 			else{
-				res.json(200, {user: '', Privilege: '',});
+				res.json(200, {user: ''});
 			}
 		}
 	});
