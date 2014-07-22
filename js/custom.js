@@ -477,7 +477,7 @@ function getSingleAppt(btnID){
 		Patient: curUser,
 	}), function(result){
 		var appt = document.getElementById('singleAppt');
-		appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GP + '</p>';
+		appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GPs + '</p>';
 		appt.innerHTML += '<p><strong>Date: </strong>' + result.Appt.ApptDate + '</p>';
 		appt.innerHTML += '<p><strong>Time: </strong>' + result.Appt.ApptTime + '</p>';
 		appt.innerHTML += '<p><strong>Reason: </strong>' + result.Appt.Reason + '</p>';
