@@ -28,6 +28,7 @@ function serverPost(uri, keyPair, successFunction){
 	error: function(xhr){
 		alert('There was a problem.\n' + xhr.responseText);
 		if(xhr.status == 401){
+			delete $.mobile.urlHistory.stack[0];
 			$.mobile.changePage("#login");
 		}
 	}})
@@ -81,7 +82,9 @@ function initialization(){
 }
 
 function signOut(){
-	serverPost('signOut', {}, function(result){})
+	serverPost('signOut', {}, function(result){
+		delete $.mobile.urlHistory.stack[0];
+	})
 }
 
 //Add schools to selection menus
