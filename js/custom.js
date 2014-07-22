@@ -4,6 +4,7 @@
 
 var curUser = '';
 var apptList = [];
+var curAppt = -1;
 
 /*******************************************************************************************************
  Utility Functions
@@ -46,16 +47,16 @@ function getDate(){
 // returns true if the specified date is today's date or comes before today's date
 function beforeTomorrow(date1){
 	try{
-		var date2 = getDate();
+		var today = getDate();
 		var year1 = date1.charAt(0) + date1.charAt(1) + date1.charAt(2) + date1.charAt(3),
-		year2 = date2.charAt(0) + date2.charAt(1) + date2.charAt(2) + date2.charAt(3);
-		if(parseInt(year2) <= parseInt(year1)){
+		thisYear = today.charAt(0) + today.charAt(1) + today.charAt(2) + today.charAt(3);
+		if(parseInt(thisYear) >= parseInt(year1)){
 			var month1 = date1.charAt(5) + date1.charAt(6),
-			month2 = date2.charAt(5) + date2.charAt(6);
-			if(parseInt(month2) <= parseInt(month1)){
+			thisMonth = today.charAt(5) + today.charAt(6);
+			if(parseInt(thisMonth) >= parseInt(month1)){
 				var day1 = date1.charAt(8) + date1.charAt(9),
-				day2 = date2.charAt(8) + date2.charAt(9);
-				if(parseInt(day2) < parseInt(day1)){
+				day = today.charAt(8) + today.charAt(9);
+				if((parseInt(day)+1) > parseInt(day1)){
 					return true;
 				}
 			}
@@ -389,7 +390,7 @@ function getApptTimes(){
 	bookB.setAttribute('onmouseup', '');
 	field.innerHTML = '';
 	var tempHTML = '';
-	if (curGP != 'NULL' && selectedDate && beforeTomorrow(selectedDate)){
+	if (curGP != 'NULL' && selectedDate && !beforeTomorrow(selectedDate)){
 		field.innerHTML = '<p>Loading, please wait.</p>';
 		serverPost('getApptTimes', JSON.stringify({
 			GPs: curGP,
@@ -410,7 +411,7 @@ function getApptTimes(){
 		});
 	}
 	else{
-		if(!beforeTomorrow(selectedDate) && curGP != 'NULL' && selectedDate){
+		if(beforeTomorrow(selectedDate) && curGP != 'NULL' && selectedDate){
 			field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
 		}
 		else{
@@ -444,6 +445,7 @@ function bookAppointment(){
 
 //Retrieves all appointments the current user has booked
 function retrieveAppts(){
+	curAppt = -1;
 	apptList = [];
 	var list = document.getElementById('userApptsList');
 	list.innerHTML = '<p>Loading, please wait.</p>';
@@ -453,43 +455,52 @@ function retrieveAppts(){
 		if(!result.message){
 			var HTMLstring = '<legend>Appointments:</legend>';
 			for(var i=0; i < result.Appts.length; i++){
-				HTMLstring += '<input type="checkbox" name="checkbox-' + i + '" id="checkbox-' + i + '" class="custom" /><label for="checkbox-' + i + '">';
-				HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</label>';
+				HTMLstring += '<a href = "#reviewAppt" data-role = "button" id = "' + i + '" onmouseup = getSingleAppt(' + i + ')>'
+				HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</a>';
 				apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
 			}
 			list.innerHTML = HTMLstring;
 			$("#viewAppt").trigger("pagecreate");
 		}
 		else{
-			list.innerHTML = '<p>' + result.message + '</p>';
+			list.innerHTML = '<center><p>' + result.message + '</p></center>';
+		}
+	});
+}
+
+function getSingleAppt(btnID){
+	curAppt = btnID;
+	serverPost('getOneAppt', JSON.stringify({
+		GPs: apptList[curAppt].GPs,
+		ApptDate: apptList[curAppt].ApptDate,
+		ApptTime: apptList[curAppt].ApptTime,
+		Patient: curUser,
+	}), function(result){
+		var appt = document.getElementById('singleAppt');
+		appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GP + '</p>';
+		appt.innerHTML += '<p><strong>Date: </strong>' + result.Appt.ApptDate + '</p>';
+		appt.innerHTML += '<p><strong>Time: </strong>' + result.Appt.ApptTime + '</p>';
+		appt.innerHTML += '<p><strong>Reason: </strong>' + result.Appt.Reason + '</p>';
+		if(!beforeTomorrow(result.Appt.ApptDate)){
+			appt.innerHTML += '<center><a href = "#" data-role = "button" onmouseup = cancelAppointment()>Cancel Appointment</a></center>';
+			$("#reviewAppt").trigger("pagecreate");
 		}
 	});
 }
 
 // Cancels an appointment through a post to the server
 function cancelAppointment(){
-	var temp = [];
-	if(apptList.length > 0){
-		for(var i = 0; i < apptList.length; i++){
-			if (document.getElementById('checkbox-' + i).checked)
-				temp.push({
-					GPs: apptList[i].GPs,
-					ApptDate: apptList[i].ApptDate,
-					ApptTime: apptList[i].ApptTime,
-					Patient: curUser
-				});
-		}
-		serverPost('cancelAppt', JSON.stringify({
-			Appts: temp
-		}), function(result){
-			alert('Appointment cancelled.\n');
-			retrieveAppts();
-		});
-	}
-	else{
-		alert('There are no appointments to cancel');
-	}
-	
+	serverPost('cancelAppt', JSON.stringify({
+		GPs: apptList[curAppt].GPs,
+		ApptDate: apptList[curAppt].ApptDate,
+		ApptTime: apptList[curAppt].ApptTime,
+		Patient: curUser,
+	}), function(result){
+		curAppt = -1;
+		alert('Appointment cancelled.\n');
+		retrieveAppts();
+		$.mobile.changePage('#viewAppt');
+	});
 }
 
 

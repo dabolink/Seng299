@@ -186,11 +186,19 @@ WARNING: THERE HAS BEEN AN OUTBREAK OF AN EXTREMELY VOLATILE PATHOGEN THAT CAN R
 				    <fieldset data-role="controlgroup" id="userApptsList">
 				    </fieldset>
 				</div>
-				<a href = "#" data-role = "button" onmouseup = cancelAppointment()>Cancel Appointment</a>
-				<center>
-					<font color = 'red'>This will cancel the selected appointment(s).
-						Appointments cannot be cancelled 30 minutes prior to the indicated time.</font>
-				</center>
+			</div>
+		</div>
+
+		<div data-role = "page" id = "reviewAppt" data-add-back-btn=true>
+			<div data-role="header">
+				<h1>Review Appointment</h1>
+				<div class = "ui-btn-right">
+					<a href = "#login" data-role = "button" onmouseup=signOut()>Sign out</a>
+				</div>
+			</div>
+			<div data-role = "content">
+				<div id = "singleAppt">
+				</div>
 			</div>
 		</div>
 

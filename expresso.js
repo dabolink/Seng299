@@ -259,50 +259,47 @@ app.post('/bookAppt', function(req, res, next){
 });
 
 app.post('/cancelAppt', function(req, res, next){
-	curPatient = req.body.Appts[0].Patient;
-	for(var i = 0; i < req.body.Appts.length; i++){
-		Appointments.findOne({GPs: req.body.Appts[i].GPs, ApptDate: req.body.Appts[i].ApptDate, ApptTime: req.body.Appts[i].ApptTime, Patient: curPatient}, function(err, obj){
-			if(err){
-				res.send(500,'err');
-				console.log(err);
+	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime, Patient: req.body.Patient}, function(err, obj){
+		if(err){
+			res.send(500,'err');
+			console.log(err);
+		}
+		else {
+			if(obj != null){
+				obj.modified = new Appointments({
+					GPs: obj.GPs,
+					ApptDate: obj.ApptDate,
+					ApptTime: obj.ApptTime,
+					Patient: "",
+					Reason: "",
+				}).save(function(err){
+					if (err){
+						console.log(err);
+						res.send(500);
+					}
+					else{
+						Appointments.remove({
+							GPs: obj.GPs,
+							ApptDate: obj.ApptDate,
+							ApptTime: obj.ApptTime,
+							Patient: req.body.Patient,
+						}, function(err){
+							if(err){
+								console.err(err);
+								res.send(500);
+							}
+							else{
+								res.send(200);
+							}
+						});
+					}
+				});
 			}
-			else {
-				if(obj != null){
-					obj.modified = new Appointments({
-						GPs: obj.GPs,
-						ApptDate: obj.ApptDate,
-						ApptTime: obj.ApptTime,
-						Patient: "",
-						Reason: "",
-					}).save(function(err){
-						if (err){
-							console.log(err);
-							res.send(500);
-						}
-						else{
-							Appointments.remove({
-								GPs: obj.GPs,
-								ApptDate: obj.ApptDate,
-								ApptTime: obj.ApptTime,
-								Patient: curPatient,
-							}, function(err){
-								if(err){
-									console.err(err);
-									res.send(500);
-								}
-								else{
-									res.send(200);
-								}
-							});
-						}
-					});
-				}
-				else{
-					res.send(500);
-				}
+			else{
+				res.send(500, 'Appointment does not exist.');
 			}
-		});
-	}
+		}
+	});
 });
 
 app.post('/getUserAppt', function(req, res, next){
@@ -322,6 +319,18 @@ app.post('/getUserAppt', function(req, res, next){
 			else{
 				res.json(200, {message: 'You have no appointments booked.'});
 			}
+		}
+	});
+});
+
+app.post('/getOneAppt', function(req, res, next){
+	Appointments.findOne({Patient: req.body.Patient, GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
+		if(err){
+			console.log(err);
+			res.send(500);
+		}
+		else{
+				res.json(200, {Appt: obj});
 		}
 	});
 });
