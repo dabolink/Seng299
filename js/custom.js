@@ -125,7 +125,7 @@ function addGP(GP,name){
 
 function confirmUserPass(){
 	var userE = document.getElementById('userlogin').value;
-	var passE = document.getElementById('passlogin').value;
+	var passE = md5(document.getElementById('passlogin').value);
 	var user = JSON.stringify({
 		Username: userE,
 		Password: passE,
@@ -212,7 +212,7 @@ function createUser(){
 		DateOfBirth: document.getElementById('birthDate').value,
 		gender: checkMF(),
 		Username: document.getElementById('username').value,
-		Password: document.getElementById('password').value,
+		Password: md5(document.getElementById('password').value),
 		EMail: document.getElementById('Email').value,
 		School: document.getElementById('School').value,
 		Privilege: '',

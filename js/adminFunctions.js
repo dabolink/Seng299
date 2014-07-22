@@ -15,6 +15,7 @@ function removeUser(){
 			alert("Deleted your own account");
 			signOut();
 		}
+		location.reload();
 	});
 }
 function addAllUsers(){
