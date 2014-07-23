@@ -152,46 +152,47 @@ function storeLogin(){
 	var curDate = getDate();
 	var location = '';
 
-	navigator.geolocation.getCurrentPosition(function(pos){
+	if (navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(function(pos){
+		
+			geocoder = new google.maps.Geocoder();
+			var lat = parseFloat(pos.coords.latitude);
+			var lng = parseFloat(pos.coords.longitude);
+			var latLng = new google.maps.LatLng(lat, lng);
 
-		geocoder = new google.maps.Geocoder();
-		var lat = parseFloat(pos.coords.latitude);
-		var lng = parseFloat(pos.coords.longitude);
-		var latLng = new google.maps.LatLng(lat, lng);
-
-		geocoder.geocode({'latLng': latLng}, function(results, status){
-			if(status == google.maps.GeocoderStatus.OK){
-				if(results[1]){
-					serverPost('storeLogin', JSON.stringify({
-						DateofLogin: curDate,
-						Loc: results[1].formatted_address
-						}), function(result){}
-					);
+			geocoder.geocode({'latLng': latLng}, function(results, status){
+				if(status == google.maps.GeocoderStatus.OK){
+					if(results[1]){
+						serverPost('storeLogin', JSON.stringify({
+							DateofLogin: curDate,
+							Loc: results[1].formatted_address
+							}), function(result){}
+						);
+					}
+					else{
+						serverPost('storeLogin', JSON.stringify({
+							DateofLogin: curDate,
+							Loc: 'Unknown location'
+							}), function(result){}
+						);
+					}
 				}
 				else{
-					console.log('No results');
+					console.log('Geocoder failed due to ' + status);
 					serverPost('storeLogin', JSON.stringify({
-						DateofLogin: curDate,
-						Loc: 'Unknown location'
-						}), function(result){}
-					);
+							DateofLogin: curDate,
+							Loc: 'Unknown location'
+							}), function(result){}
+						);
 				}
-			}
-			else{
-				console.log('Geocoder failed due to ' + status);
-				serverPost('storeLogin', JSON.stringify({
-						DateofLogin: curDate,
-						Loc: 'Unknown location'
-						}), function(result){}
-					);
-			}
+			});
+		}, function(err){
+			serverPost('storeLogin', JSON.stringify({
+				DateofLogin: curDate,
+				Loc: 'Unknown location'
+			}), function(result){});
 		});
-	}, function(err){
-		serverPost('storeLogin', JSON.stringify({
-			DateofLogin: curDate,
-			Loc: 'Unknown location'
-		}), function(result){});
-	});
+	}
 }
 
 
