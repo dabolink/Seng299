@@ -14,3 +14,5 @@ ALTERNATIVLY:
 	-go to:
 		http://guarded-meadow-7684.herokuapp.com/
 	-register and use app
+	
+also added demo presentation as we forgot to talk about last slide (was told to insert into zip file)
