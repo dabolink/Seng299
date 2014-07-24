@@ -561,8 +561,8 @@ app.post('/addAppointment',function(req,res,next){
 					GPs: req.body.GPs,
 					ApptDate: req.body.ApptDate,
 					ApptTime: req.body.ApptTime,
-					Patient: req.session.userId,
-					Reason: req.body.Reason,
+					Patient: "",
+					Reason: "",
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
