@@ -28,7 +28,7 @@ function serverPost(uri, keyPair, successFunction){
 	error: function(xhr){
 		alert('There was a problem.\n' + xhr.responseText);
 		if(xhr.status == 401){
-			delete $.mobile.urlHistory.stack[0];
+			$.mobile.urlHistory.stack[0].url = '/';
 			$.mobile.changePage("#login");
 		}
 	}})
@@ -83,7 +83,7 @@ function initialization(){
 
 function signOut(){
 	serverPost('signOut', {}, function(result){
-		delete $.mobile.urlHistory.stack[0];
+		$.mobile.urlHistory.stack[0].url = '/';
 	})
 }
 
