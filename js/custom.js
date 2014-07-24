@@ -193,6 +193,13 @@ function storeLogin(){
 			}), function(result){});
 		});
 	}
+	else{
+		serverPost('storeLogin', JSON.stringify({
+			DateofLogin: curDate,
+			Loc: 'Unknown location'
+			}), function(result){}
+		);
+	}
 }
 
 
