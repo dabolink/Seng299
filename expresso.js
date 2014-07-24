@@ -271,6 +271,23 @@ app.post('/storeLogin', function(req, res, next){
 	});
 });
 
+/* sees if username is in database */
+app.post('/checkUser', function(req,res,next){
+	User.findOne({Username: req.body.Username},function(err,obj){
+		if(err){
+			res.send(500,'err');
+		}else
+		{
+			console.log(obj);
+			if(obj != null){
+				res.json(200,{message: 'true'});
+			}
+			else{
+				res.json(200,{message: 'false'});
+			}
+		}
+	});
+});
 /* Profile */
 
 app.post('/getProfile', function(req, res, next){

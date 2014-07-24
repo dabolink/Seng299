@@ -343,8 +343,15 @@ function checkFgtPassUser(){
 		alert('please input username');
 	}
 	else{
-		alert('confirmation email sent (To Be Implemented)');
-		sendEmailB.setAttribute('href','#login');
+		serverPost('checkUser', JSON.stringify({Username: y}), function(result){
+			if(result.message == 'false'){
+				alert('Username not found');
+			}else{
+				alert('confirmation email sent (To Be Implemented)');
+				$.mobile.changePage("#login");
+			}
+		})
+		
 	}
 }
 
