@@ -2,6 +2,7 @@
 														Initialization
 *************************************************************************************************************************************/
 
+var timeSet = 2000;
 
 var express = require('express'),
 	session = require('express-session'),
@@ -11,6 +12,11 @@ var express = require('express'),
     mongoose = require('mongoose'),
     https = require('https'),
 	fs = require('fs');
+
+require('nodetime').profile({
+    accountKey: 'b88aef656af1f1ebfd6557c9a984b045f012bd69', 
+    appName: 'EMR App'
+  });
 
 var db = mongoose.connection;
 db.on('error', console.error);
@@ -71,11 +77,15 @@ app.use(session({
 
 app.get('/', function(req, res){
 	if(!authenticate(req)){
-	    res.sendfile('index.html');
+		setTimeout(function(){
+	    	res.sendfile('index.html');
+	    }, timeSet);
 	}
 	else{
 		console.log('IT HAPPENED!!!!!!!');
-		res.sendfile('index.html');
+		setTimeout(function(){
+			res.sendfile('index.html');
+		}, timeSet);
 	}
 });
 
@@ -83,15 +93,21 @@ app.get('/_____admin', function(req, res){
 	User.findOne({Username: req.query.Username}, function(err,obj){
 		if(err){
 			console.log(err);
-			res.send('Cannot GET ' + req.originalUrl);
+			setTimeout(function(){
+				res.send('Cannot GET ' + req.originalUrl);
+			}, timeSet);
 		}
 		else if(obj != null && req.query.secure == '4462174635846168'){
-			res.sendfile('admin.html');
+			setTimeout(function(){
+				res.sendfile('admin.html');
+			}, timeSet);
 		}
 		else
-			{
+		{
+			setTimeout(function(){
 				res.send('Cannot GET ' + req.originalUrl);
-			}
+			}, timeSet);
+		}
 	});
 });
 
@@ -133,7 +149,7 @@ app.post('/getSchools', function(req,res,next){
 			console.log(err);
 			setTimeout(function(){
 				res.send(500);
-			}, 10000);
+			}, timeSet);
 		}
 		else{
 			var temp = [];
@@ -144,7 +160,7 @@ app.post('/getSchools', function(req,res,next){
 				res.json(200,{
 					names: temp,
 					});
-			}, 10000);
+			}, timeSet);
 		}
 	}); 
 });
@@ -155,7 +171,7 @@ app.post('/getGPs', function(req,res,next){
 			console.log(err);
 			setTimeout(function(){
 				res.send(500);
-			}, 10000);
+			}, timeSet);
 		}
 		else{
 			var temp = [];
@@ -166,7 +182,7 @@ app.post('/getGPs', function(req,res,next){
 				res.json(200,{
 					names: temp,
 					});
-			}, 10000);
+			}, timeSet);
 		}
 	});
 });
@@ -180,7 +196,7 @@ app.post('/addUser', function(req, res, next){
 		if(err) {
 			setTimeout(function(){
 				res.send(500, 'err');
-			}, 10000);
+			}, timeSet);
 			console.error(err);
 		}
 		else{
@@ -200,13 +216,13 @@ app.post('/addUser', function(req, res, next){
 					if(err) return console.error(err);
 					setTimeout(function(){
 						res.json(200, {message: 'true'});
-					}, 10000);
+					}, timeSet);
 				});
 			}
 			else{
 				setTimeout(function(){
 					res.send(200, {message: 'false'});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	});	
@@ -220,12 +236,14 @@ app.post('/signOut', function(req, res, next){
 	req.session.destroy(function(err){
 		if(err){
 			console.log(err);
-			res.send(401, "Could not log out successfully");
+			setTimeout(function(){
+				res.send(401, "Could not log out successfully");
+			}, timeSet);
 		}
 		else{
 			setTimeout(function(){
 				res.send(200);
-			}, 10000);
+			}, timeSet);
 		}
 	});
 })
@@ -233,7 +251,9 @@ app.post('/signOut', function(req, res, next){
 app.post('/checkPass', function(req,res,next){
 	User.findOne({Username: req.body.Username},function(err,obj){
 		if(err){
-			res.send(500, 'err');
+			setTimeout(function(){
+				res.send(500, 'err');
+			}, timeSet);
 			console.log(err);
 		}
 		else{
@@ -243,18 +263,18 @@ app.post('/checkPass', function(req,res,next){
 					req.session.save();
 					setTimeout(function(){
 						res.send(200);
-					}, 10000);
+					}, timeSet);
 				}
 				else{
 					setTimeout(function(){
 						res.json(200, {user: ''});
-					}, 10000);
+					}, timeSet);
 				}
 			}
 			else{
 				setTimeout(function(){
 					res.json(200, {user: ''});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	});
@@ -264,11 +284,15 @@ app.post('/storeLogin', function(req, res, next){
 	User.findOne({Username: req.session.userId}, function(err, obj){
 		if(err){
 			console.log(err);
-			res.send(500);
+			setTimeout(function(){
+				res.send(500);
+			}, timeSet);
 		}
 		else{
 			if(obj == null){
-				res.send(500);
+				setTimeout(function(){
+					res.send(500);
+				}, timeSet);
 			}
 			else{
 				var test = obj;
@@ -279,18 +303,22 @@ app.post('/storeLogin', function(req, res, next){
 				User.remove(obj, function(err){
 					if(err){
 						console.log(err);
-						res.send(500);
+						setTimeout(function(){
+							res.send(500);
+						}, timeSet);
 					}
 					else{
 						test.save(function(err){
 							if(err){
 								console.log(err);
-								res.send(500);
+								setTimeout(function(){
+									res.send(500);
+								}, timeSet);
 							}
 							else
 								setTimeout(function(){
 									res.send(200);
-								}, 10000);
+								}, timeSet);
 						});
 					}
 				});
@@ -303,19 +331,21 @@ app.post('/storeLogin', function(req, res, next){
 app.post('/checkUser', function(req,res,next){
 	User.findOne({Username: req.body.Username},function(err,obj){
 		if(err){
-			res.send(500,'err');
+			setTimeout(function(){
+				res.send(500,'err');
+			}, timeSet);
 		}else
 		{
 			console.log(obj);
 			if(obj != null){
 				setTimeout(function(){
 					res.json(200,{message: 'true'});
-				}, 10000);
+				}, timeSet);
 			}
 			else{
 				setTimeout(function(){
 					res.json(200,{message: 'false'});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	});
@@ -330,7 +360,9 @@ app.post('/getProfile', function(req, res, next){
 	else{
 		User.findOne({Username: req.session.userId},function(err, obj){
 			if(err){
-				res.send(500,'err');
+				setTimeout(function(){
+					res.send(500,'err');
+				}, timeSet);
 				console.log(err);
 			}
 			else {
@@ -344,7 +376,7 @@ app.post('/getProfile', function(req, res, next){
 						EMail: obj.EMail,
 						School: obj.School,
 					}});
-				}, 10000);
+				}, timeSet);
 			}
 		});
 	}
@@ -352,21 +384,25 @@ app.post('/getProfile', function(req, res, next){
 
 app.post('/getPastLogins', function(req, res, next){
 	if(!authenticate(req)){
-		res.send(200, "You are not logged in"); //Sending 200 prevents 2 alerts from occurring in succession
+		setTimeout(function(){
+			res.send(200, "You are not logged in"); //Sending 200 prevents 2 alerts from occurring in succession
+		}, timeSet);
 		next();
 	}
 	else{
 		User.findOne({Username: req.session.userId}, function(err, obj){
 			if(err){
 				console.log(err);
-				res.send(500);
+				setTimeout(function(){
+					res.send(500);
+				}, timeSet);
 			}
 			else{
 				setTimeout(function(){
 					res.json(200, {
 						logins: obj.Logins
 					});
-				}, 10000);
+				}, timeSet);
 			}
 		});
 	}
@@ -377,7 +413,9 @@ app.post('/getPastLogins', function(req, res, next){
 app.post('/getApptTimes', function(req, res, next){
 	Appointments.find({GPs: req.body.GPs, ApptDate: req.body.ApptDate, Patient: "", Reason: ""}, function(err, obj){
 		if(err){
-			res.send(500, 'err');
+			setTimeout(function(){
+				res.send(500, 'err');
+			}, timeSet);
 			console.log(err);
 		}
 		else{
@@ -388,12 +426,12 @@ app.post('/getApptTimes', function(req, res, next){
 				};
 				setTimeout(function(){
 					res.json(200, {ApptTimes: temp});
-				}, 10000);
+				}, timeSet);
 			}
 			else{
 				setTimeout(function(){
 					res.json(200, {message: 'Could not find any appointments'});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	})
@@ -401,13 +439,17 @@ app.post('/getApptTimes', function(req, res, next){
 
 app.post('/bookAppt', function(req, res, next){
 	if(!authenticate(req)){
-		res.send(401, "You are not logged in");
+		setTimeout(function(){
+			res.send(401, "You are not logged in");
+		}, timeSet);
 		next();
 	}
 	else{
 		Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
 			if(err){
-				res.send(500,'err');
+				setTimeout(function(){
+					res.send(500,'err');
+				}, timeSet);
 				console.log(err);
 			}
 			else {
@@ -420,7 +462,9 @@ app.post('/bookAppt', function(req, res, next){
 				}).save(function(err){
 					if (err){
 						console.log(err);
-						res.send(500);
+						setTimeout(function(){
+							res.send(500);
+						}, timeSet);
 					}
 					else{
 						Appointments.remove({
@@ -432,12 +476,14 @@ app.post('/bookAppt', function(req, res, next){
 						}, function(err){
 							if(err){
 								console.log(err);
-								res.send(500);
+								setTimeout(function(){
+									res.send(500);
+								}, timeSet);
 							}
 							else
 								setTimeout(function(){
 									res.send(200);
-								}, 10000);
+								}, timeSet);
 						});
 					}
 				});
@@ -450,13 +496,17 @@ app.post('/bookAppt', function(req, res, next){
 
 app.post('/cancelAppt', function(req, res, next){
 	if(!authenticate(req)){
-		res.send(401, "You are not logged in");
+		setTimeout(function(){
+			res.send(401, "You are not logged in");
+		}, timeSet);
 		next();
 	}
 	else{
 		Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime, Patient: req.session.userId}, function(err, obj){
 			if(err){
-				res.send(500,'err');
+				setTimeout(function(){
+					res.send(500,'err');
+				}, timeSet);
 				console.log(err);
 			}
 			else {
@@ -470,7 +520,9 @@ app.post('/cancelAppt', function(req, res, next){
 					}).save(function(err){
 						if (err){
 							console.log(err);
-							res.send(500);
+							setTimeout(function(){
+								res.send(500);
+							}, timeSet);
 						}
 						else{
 							Appointments.remove({
@@ -481,19 +533,23 @@ app.post('/cancelAppt', function(req, res, next){
 							}, function(err){
 								if(err){
 									console.err(err);
-									res.send(500);
+									setTimeout(function(){
+										res.send(500);
+									}, timeSet);
 								}
 								else{
 									setTimeout(function(){
 										res.send(200);
-									}, 10000);
+									}, timeSet);
 								}
 							});
 						}
 					});
 				}
 				else{
-					res.send(500, 'Appointment does not exist.');
+					setTimeout(function(){
+						res.send(500, 'Appointment does not exist.');
+					}, timeSet);
 				}
 			}
 		});
@@ -504,7 +560,9 @@ app.post('/getUserAppt', function(req, res, next){
 	Appointments.find({Patient: req.session.userId}, function(err, obj){
 		if(err){
 			console.log(err);
-			res.send(500);
+			setTimeout(function(){
+				res.send(500);
+			}, timeSet);
 		}
 		else{
 			if (obj.length > 0){
@@ -514,12 +572,12 @@ app.post('/getUserAppt', function(req, res, next){
 				};
 				setTimeout(function(){
 					res.json(200, {Appts: temp});
-				}, 10000);
+				}, timeSet);
 			}
 			else{
 				setTimeout(function(){
 					res.json(200, {message: 'You have no appointments booked.'});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	});
@@ -529,12 +587,14 @@ app.post('/getOneAppt', function(req, res, next){
 	Appointments.findOne({Patient: req.session.userId, GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime}, function(err, obj){
 		if(err){
 			console.log(err);
-			res.send(500);
+			setTimeout(function(){
+				res.send(500);
+			}, timeSet);
 		}
 		else{
 			setTimeout(function(){
 				res.json(200, {Appt: obj});
-			}, 10000);
+			}, timeSet);
 		}
 	});
 });
@@ -557,28 +617,32 @@ app.post('/addAllUsers', function(req,res,next){
 				res.json(200,{
 					Users: temp,
 					});
-			}, 10000);
+			}, timeSet);
 		}
 	});
 });
 app.post('/removeUser',function(req,res,next){
 	User.remove({Username: req.body.Username},function(err,obj){
 		if(err){
-			res.send(500,'err');
+			setTimeout(function(){
+				res.send(500,'err');
+			}, timeSet);
 			console.log(err);
 		}
 		else{
 			console.log('User was removed: ' + obj);
 			setTimeout(function(){
 				res.send(200,obj);
-			}, 10000);
+			}, timeSet);
 		}
 	});
 });
 app.post('/addSchoolToDB',function(req,res,next){
 	School.findOne({name: req.body.name},function(err, obj){
 		if(err) {
-			res.send(500, 'err');
+			setTimeout(function(){
+				res.send(500, 'err');
+			}, timeSet);
 			console.error(err);
 		}
 		else{
@@ -590,13 +654,13 @@ app.post('/addSchoolToDB',function(req,res,next){
 					if(err) return console.error(err);
 					setTimeout(function(){
 						res.json(200, {message: 'true'});
-					}, 10000);
+					}, timeSet);
 				});
 			}
 			else{
 				setTimeout(function(){
 					res.send(200, {message: 'false'});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	});
@@ -605,7 +669,9 @@ app.post('/addSchoolToDB',function(req,res,next){
 app.post('/addGPToDB',function(req,res,next){
 	GP.findOne({name: req.body.name},function(err, obj){
 		if(err) {
-			res.send(500, 'err');
+			setTimeout(function(){
+				res.send(500, 'err');
+			}, timeSet);
 			console.error(err);
 		}
 		else{
@@ -617,13 +683,13 @@ app.post('/addGPToDB',function(req,res,next){
 					if(err) return console.error(err);
 					setTimeout(function(){
 						res.json(200, {message: 'true'});
-					}, 10000);
+					}, timeSet);
 				});
 			}
 			else{
 				setTimeout(function(){
 					res.send(200, {message: 'false'});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	});
@@ -631,7 +697,9 @@ app.post('/addGPToDB',function(req,res,next){
 app.post('/addAppointment',function(req,res,next){
 	Appointments.findOne({GPs: req.body.GPs, ApptDate: req.body.ApptDate, ApptTime: req.body.ApptTime},function(err, obj){
 		if(err) {
-			res.send(500, 'err');
+			setTimeout(function(){
+				res.send(500, 'err');
+			}, timeSet);
 			console.error(err);
 		}
 		else{
@@ -647,13 +715,13 @@ app.post('/addAppointment',function(req,res,next){
 					if(err) return console.error(err);
 					setTimeout(function(){
 						res.json(200, {message: 'true'});
-					}, 10000);
+					}, timeSet);
 				});
 			}
 			else{
 				setTimeout(function(){
 					res.send(200, {message: 'false'});
-				}, 10000);
+				}, timeSet);
 			}
 		}
 	});
