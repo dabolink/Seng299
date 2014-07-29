@@ -89,7 +89,9 @@ app.get('/_____admin', function(req, res){
 			res.sendfile('admin.html');
 		}
 		else
-			res.send('Cannot GET ' + req.originalUrl);
+			{
+				res.send('Cannot GET ' + req.originalUrl);
+			}
 	});
 });
 
@@ -129,15 +131,20 @@ app.post('/getSchools', function(req,res,next){
 	School.find(function(err,obj){
 		if(err){
 			console.log(err);
+			setTimeout(function(){
+				res.send(500);
+			}, 10000);
 		}
 		else{
 			var temp = [];
 			for(i=0;i<obj.length;i++){
 				temp.push({name: obj[i].name});
 			}
-			res.json(200,{
-				names: temp,
-				});
+			setTimeout(function(){
+				res.json(200,{
+					names: temp,
+					});
+			}, 10000);
 		}
 	}); 
 });
@@ -146,15 +153,20 @@ app.post('/getGPs', function(req,res,next){
 	GP.find(function(err,obj){
 		if(err){
 			console.log(err);
+			setTimeout(function(){
+				res.send(500);
+			}, 10000);
 		}
 		else{
 			var temp = [];
 			for(i=0;i<obj.length;i++){
 				temp.push({name: obj[i].name});
 			}
-			res.json(200,{
-				names: temp,
-				});
+			setTimeout(function(){
+				res.json(200,{
+					names: temp,
+					});
+			}, 10000);
 		}
 	});
 });
@@ -166,7 +178,9 @@ app.post('/getGPs', function(req,res,next){
 app.post('/addUser', function(req, res, next){
 	User.findOne({Username: req.session.userId},function(err, obj){
 		if(err) {
-			res.send(500, 'err');
+			setTimeout(function(){
+				res.send(500, 'err');
+			}, 10000);
 			console.error(err);
 		}
 		else{
@@ -184,11 +198,15 @@ app.post('/addUser', function(req, res, next){
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
-					res.json(200, {message: 'true'});
+					setTimeout(function(){
+						res.json(200, {message: 'true'});
+					}, 10000);
 				});
 			}
 			else{
+				setTimeout(function(){
 					res.send(200, {message: 'false'});
+				}, 10000);
 			}
 		}
 	});	
@@ -205,7 +223,9 @@ app.post('/signOut', function(req, res, next){
 			res.send(401, "Could not log out successfully");
 		}
 		else{
-			res.send(200);
+			setTimeout(function(){
+				res.send(200);
+			}, 10000);
 		}
 	});
 })
@@ -221,14 +241,20 @@ app.post('/checkPass', function(req,res,next){
 				if(req.body.Password == obj.Password){
 					req.session.userId = req.body.Username;
 					req.session.save();
-					res.send(200);
+					setTimeout(function(){
+						res.send(200);
+					}, 10000);
 				}
 				else{
-					res.json(200, {user: ''});
+					setTimeout(function(){
+						res.json(200, {user: ''});
+					}, 10000);
 				}
 			}
 			else{
-				res.json(200, {user: ''});
+				setTimeout(function(){
+					res.json(200, {user: ''});
+				}, 10000);
 			}
 		}
 	});
@@ -262,7 +288,9 @@ app.post('/storeLogin', function(req, res, next){
 								res.send(500);
 							}
 							else
-								res.send(200);
+								setTimeout(function(){
+									res.send(200);
+								}, 10000);
 						});
 					}
 				});
@@ -280,10 +308,14 @@ app.post('/checkUser', function(req,res,next){
 		{
 			console.log(obj);
 			if(obj != null){
-				res.json(200,{message: 'true'});
+				setTimeout(function(){
+					res.json(200,{message: 'true'});
+				}, 10000);
 			}
 			else{
-				res.json(200,{message: 'false'});
+				setTimeout(function(){
+					res.json(200,{message: 'false'});
+				}, 10000);
 			}
 		}
 	});
@@ -302,15 +334,17 @@ app.post('/getProfile', function(req, res, next){
 				console.log(err);
 			}
 			else {
-				res.json(200, {User: {
-					FirstName: obj.FirstName,
-					LastName: obj.LastName,
-					DateOfBirth: obj.DateOfBirth,
-					gender: obj.gender,
-					Username: obj.Username,
-					EMail: obj.EMail,
-					School: obj.School,
-				}});
+				setTimeout(function(){
+					res.json(200, {User: {
+						FirstName: obj.FirstName,
+						LastName: obj.LastName,
+						DateOfBirth: obj.DateOfBirth,
+						gender: obj.gender,
+						Username: obj.Username,
+						EMail: obj.EMail,
+						School: obj.School,
+					}});
+				}, 10000);
 			}
 		});
 	}
@@ -328,9 +362,11 @@ app.post('/getPastLogins', function(req, res, next){
 				res.send(500);
 			}
 			else{
-				res.json(200, {
-					logins: obj.Logins
-				});
+				setTimeout(function(){
+					res.json(200, {
+						logins: obj.Logins
+					});
+				}, 10000);
 			}
 		});
 	}
@@ -350,10 +386,14 @@ app.post('/getApptTimes', function(req, res, next){
 				for (var i = 0; i < obj.length; i++) {
 					temp.push({Time: obj[i].ApptTime});
 				};
-				res.json(200, {ApptTimes: temp});
+				setTimeout(function(){
+					res.json(200, {ApptTimes: temp});
+				}, 10000);
 			}
 			else{
-				res.json(200, {message: 'Could not find any appointments'});
+				setTimeout(function(){
+					res.json(200, {message: 'Could not find any appointments'});
+				}, 10000);
 			}
 		}
 	})
@@ -395,7 +435,9 @@ app.post('/bookAppt', function(req, res, next){
 								res.send(500);
 							}
 							else
-								res.send(200);
+								setTimeout(function(){
+									res.send(200);
+								}, 10000);
 						});
 					}
 				});
@@ -442,7 +484,9 @@ app.post('/cancelAppt', function(req, res, next){
 									res.send(500);
 								}
 								else{
-									res.send(200);
+									setTimeout(function(){
+										res.send(200);
+									}, 10000);
 								}
 							});
 						}
@@ -468,10 +512,14 @@ app.post('/getUserAppt', function(req, res, next){
 				for (var i = 0; i < obj.length; i++) {
 					temp.push({Appts: obj[i]});
 				};
-				res.json(200, {Appts: temp});
+				setTimeout(function(){
+					res.json(200, {Appts: temp});
+				}, 10000);
 			}
 			else{
-				res.json(200, {message: 'You have no appointments booked.'});
+				setTimeout(function(){
+					res.json(200, {message: 'You have no appointments booked.'});
+				}, 10000);
 			}
 		}
 	});
@@ -484,7 +532,9 @@ app.post('/getOneAppt', function(req, res, next){
 			res.send(500);
 		}
 		else{
+			setTimeout(function(){
 				res.json(200, {Appt: obj});
+			}, 10000);
 		}
 	});
 });
@@ -503,9 +553,11 @@ app.post('/addAllUsers', function(req,res,next){
 			for(i=0;i<obj.length;i++){
 				temp.push({Username: obj[i].Username});
 			}
-			res.json(200,{
-				Users: temp,
-				});
+			setTimeout(function(){
+				res.json(200,{
+					Users: temp,
+					});
+			}, 10000);
 		}
 	});
 });
@@ -517,7 +569,9 @@ app.post('/removeUser',function(req,res,next){
 		}
 		else{
 			console.log('User was removed: ' + obj);
-			res.send(200,obj);
+			setTimeout(function(){
+				res.send(200,obj);
+			}, 10000);
 		}
 	});
 });
@@ -534,11 +588,15 @@ app.post('/addSchoolToDB',function(req,res,next){
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
-					res.json(200, {message: 'true'});
+					setTimeout(function(){
+						res.json(200, {message: 'true'});
+					}, 10000);
 				});
 			}
 			else{
+				setTimeout(function(){
 					res.send(200, {message: 'false'});
+				}, 10000);
 			}
 		}
 	});
@@ -557,11 +615,15 @@ app.post('/addGPToDB',function(req,res,next){
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
-					res.json(200, {message: 'true'});
+					setTimeout(function(){
+						res.json(200, {message: 'true'});
+					}, 10000);
 				});
 			}
 			else{
+				setTimeout(function(){
 					res.send(200, {message: 'false'});
+				}, 10000);
 			}
 		}
 	});
@@ -583,11 +645,15 @@ app.post('/addAppointment',function(req,res,next){
 				}); 
 				test.save(function(err){
 					if(err) return console.error(err);
-					res.json(200, {message: 'true'});
+					setTimeout(function(){
+						res.json(200, {message: 'true'});
+					}, 10000);
 				});
 			}
 			else{
+				setTimeout(function(){
 					res.send(200, {message: 'false'});
+				}, 10000);
 			}
 		}
 	});
