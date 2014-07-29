@@ -1,3 +1,19 @@
+$(document).on("click",".show-page-loading-msg", function(){
+	$.mobile.loading("show",{
+		text: "",
+		textVisible: false,
+	});
+}).on("pagecontainerload",function(){
+	$.mobile.loading("hide");
+});
+
+
+
+
+
+
+
+
 /*******************************************************************************************************
  Global Variables
  ******************************************************************************************************/
@@ -368,6 +384,7 @@ function getProfileInfo(){
 			+ '</p><p>Username: ' + result.User.Username
 			+ '</p><p>E-Mail: ' + result.User.EMail
 			+ '</p><p>School: ' + result.User.School + '</p>';
+			$.mobile.changePage("#profile");
 	});
 	getPastLogins();
 }
@@ -418,6 +435,7 @@ function getApptTimes(){
 				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
 			}
 			$("#bookAppt").trigger("pagecreate");
+			$.mobile.changePage("bookAppt");
 		});
 	}
 	else{
