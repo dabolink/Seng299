@@ -82,9 +82,8 @@ function initialization(){
 }
 
 function signOut(){
-	serverPost('signOut', {}, function(result){
-		$.mobile.urlHistory.stack[0].url = '/';
-	})
+	$.mobile.urlHistory.stack[0].url = '/';
+	serverPost('signOut', {}, function(result){});
 }
 
 //Add schools to selection menus
