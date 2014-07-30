@@ -436,7 +436,7 @@ function getApptTimes(){
 				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
 			}
 			$.mobile.changePage("#bookAppt");
-			$("#bookAppt").trigger("pagecreate");
+			$("#bookAppt").trigger("create");
 		});
 	}
 	else{
@@ -487,7 +487,7 @@ function retrieveAppts(){
 				apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
 			}
 			list.innerHTML = HTMLstring;
-			$("#viewAppt").trigger("pagecreate");
+			$("#viewAppt").trigger("create");
 			$.mobile.changePage("#viewAppt");
 		}
 		else{
