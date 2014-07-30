@@ -2,7 +2,7 @@
 														Initialization
 *************************************************************************************************************************************/
 
-var timeSet = 2000;
+var timeSet = 200;
 
 var express = require('express'),
 	session = require('express-session'),
@@ -419,6 +419,7 @@ app.post('/getApptTimes', function(req, res, next){
 			console.log(err);
 		}
 		else{
+			console.log("start");
 			if (obj.length > 0){
 				var temp = [];
 				for (var i = 0; i < obj.length; i++) {
@@ -427,6 +428,7 @@ app.post('/getApptTimes', function(req, res, next){
 				setTimeout(function(){
 					res.json(200, {ApptTimes: temp});
 				}, timeSet);
+				console.log("end");
 			}
 			else{
 				setTimeout(function(){

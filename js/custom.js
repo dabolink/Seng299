@@ -3,8 +3,6 @@ $(document).on("click",".show-page-loading-msg", function(){
 		text: "",
 		textVisible: false,
 	});
-}).on("pagecontainerload",function(){
-	$.mobile.loading("hide");
 });
 
 
@@ -98,7 +96,9 @@ function initialization(){
 }
 
 function signOut(){
-	$.mobile.urlHistory.stack[0].url = '/';
+	if($.mobile.urlHistory.stack.length != 0){
+		$.mobile.urlHistory.stack[0].url = '/';
+	}
 	serverPost('signOut', {}, function(result){});
 }
 
@@ -149,16 +149,17 @@ function confirmUserPass(){
 	serverPost('checkPass',user, function(result){
 		if(result.user != ''){
 			storeLogin();
+			$.mobile.loading("hide");
 			$.mobile.changePage("#main");
 			document.getElementById('userlogin').value = '';
 			document.getElementById('passlogin').value = '';
 		}
 		else if (result.message == 'err'){
-		
 		}
 		else{
 			alert("Invalid Username or Password");
 			document.getElementById('passlogin').value = '';
+			$.mobile.loading("hide");
 		}
 	});
 }
@@ -361,6 +362,7 @@ function checkFgtPassUser(){
 		serverPost('checkUser', JSON.stringify({Username: y}), function(result){
 			if(result.message == 'false'){
 				alert('Username not found');
+				$.mobile.changePage("#");
 			}else{
 				alert('confirmation email sent (To Be Implemented)');
 				$.mobile.changePage("#login");
@@ -433,8 +435,8 @@ function getApptTimes(){
 			else {
 				field.innerHTML = '<strong>Sorry, ' + curGP + ' is not available for the requested date.</strong>'
 			}
+			$.mobile.changePage("#bookAppt");
 			$("#bookAppt").trigger("pagecreate");
-			$.mobile.changePage("bookAppt");
 		});
 	}
 	else{
@@ -444,6 +446,7 @@ function getApptTimes(){
 		else{
 			field.innerHTML = '<p><strong>Please select a date and/or a GP.<strong></p>'
 		}
+		$.mobile.changePage("#bookAppt");
 	}
 }
 
@@ -456,9 +459,8 @@ function bookAppointment(){
 			Reason: document.getElementById('apptReason').value
 		}), function(result){
 			alert('Appointment booked');
-			retrieveAppts();
 			$.mobile.changePage("#main");
-		})
+		});
 		
 	}
 	else{
@@ -486,6 +488,7 @@ function retrieveAppts(){
 			}
 			list.innerHTML = HTMLstring;
 			$("#viewAppt").trigger("pagecreate");
+			$.mobile.changePage("#viewAppt");
 		}
 		else{
 			list.innerHTML = '<center><p>' + result.message + '</p></center>';
