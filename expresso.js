@@ -2,7 +2,7 @@
 														Initialization
 *************************************************************************************************************************************/
 
-var timeSet = 200;
+var timeSet = 0;
 
 var express = require('express'),
 	session = require('express-session'),
