@@ -19,6 +19,9 @@ $(document).on("click",".show-page-loading-msg", function(){
 var apptList = [];
 var curAppt = -1;
 
+var profileInfo = null;
+var prevLogin = null;
+
 /*******************************************************************************************************
  Utility Functions
  ******************************************************************************************************/
@@ -376,18 +379,28 @@ function checkFgtPassUser(){
 /* Profile */
 
 function getProfileInfo(){
-	var userInfo = document.getElementById('profileInfo');
-	userInfo.innerHTML = ''
-	serverPost('getProfile', {}, function(result){
-		userInfo.innerHTML = '<p>Name: ' + result.User.FirstName + " " + result.User.LastName
-			+ '</p><p>Date of Birth: ' + result.User.DateOfBirth
-			+ '</p><p>Gender: ' + result.User.gender
-			+ '</p><p>Username: ' + result.User.Username
-			+ '</p><p>E-Mail: ' + result.User.EMail
-			+ '</p><p>School: ' + result.User.School + '</p>';
-			$.mobile.changePage("#profile");
-	});
-	getPastLogins();
+	if (!profileInfo){
+		var userInfo = document.getElementById('profileInfo');
+		userInfo.innerHTML = ''
+		serverPost('getProfile', {}, function(result){
+			userInfo.innerHTML = '<p>Name: ' + result.User.FirstName + " " + result.User.LastName
+				+ '</p><p>Date of Birth: ' + result.User.DateOfBirth
+				+ '</p><p>Gender: ' + result.User.gender
+				+ '</p><p>Username: ' + result.User.Username
+				+ '</p><p>E-Mail: ' + result.User.EMail
+				+ '</p><p>School: ' + result.User.School + '</p>';
+				profileInfo = result.User;
+				console.log("serverPost. " + profileInfo);
+				$.mobile.changePage("#profile");
+		});
+		getPastLogins();
+	}
+	else{
+		console.log("No serverPost. " + profileInfo);
+		$.mobile.changePage("#profile");
+	}
+
+		$.mobile.loading("hide");
 }
 
 function getPastLogins(){

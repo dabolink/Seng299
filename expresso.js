@@ -2,6 +2,11 @@
 														Initialization
 *************************************************************************************************************************************/
 
+require('nodetime').profile({
+    accountKey: 'b88aef656af1f1ebfd6557c9a984b045f012bd69', 
+    appName: 'EMR App'
+  });
+
 var timeSet = 0;
 
 var express = require('express'),
@@ -12,11 +17,6 @@ var express = require('express'),
     mongoose = require('mongoose'),
     https = require('https'),
 	fs = require('fs');
-
-require('nodetime').profile({
-    accountKey: 'b88aef656af1f1ebfd6557c9a984b045f012bd69', 
-    appName: 'EMR App'
-  });
 
 var db = mongoose.connection;
 db.on('error', console.error);
