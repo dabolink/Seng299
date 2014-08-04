@@ -510,22 +510,36 @@ function retrieveAppts(){
 }
 
 function getSingleAppt(btnID){
-	curAppt = btnID;
-	serverPost('getOneAppt', JSON.stringify({
-		GPs: apptList[curAppt].GPs,
-		ApptDate: apptList[curAppt].ApptDate,
-		ApptTime: apptList[curAppt].ApptTime,
-	}), function(result){
+	if(!apptList[btnID]){
+		curAppt = btnID;
+		serverPost('getOneAppt', JSON.stringify({
+			GPs: apptList[curAppt].GPs,
+			ApptDate: apptList[curAppt].ApptDate,
+			ApptTime: apptList[curAppt].ApptTime,
+		}), function(result){
+			var appt = document.getElementById('singleAppt');
+			appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GPs + '</p>';
+			appt.innerHTML += '<p><strong>Date: </strong>' + result.Appt.ApptDate + '</p>';
+			appt.innerHTML += '<p><strong>Time: </strong>' + result.Appt.ApptTime + '</p>';
+			appt.innerHTML += '<p><strong>Reason: </strong>' + result.Appt.Reason + '</p>';
+			if(!beforeTomorrow(result.Appt.ApptDate)){
+				appt.innerHTML += '<center><a href = "#" data-role = "button" onmouseup = cancelAppointment()>Cancel Appointment</a></center>';
+				$("#reviewAppt").trigger("pagecreate");
+			}
+		});
+	}
+	else{
+		curAppt = btnID;
 		var appt = document.getElementById('singleAppt');
 		appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GPs + '</p>';
-		appt.innerHTML += '<p><strong>Date: </strong>' + result.Appt.ApptDate + '</p>';
-		appt.innerHTML += '<p><strong>Time: </strong>' + result.Appt.ApptTime + '</p>';
-		appt.innerHTML += '<p><strong>Reason: </strong>' + result.Appt.Reason + '</p>';
+		appt.innerHTML += '<p><strong>Date: </strong>' + apptList[btn].Appt.ApptDate + '</p>';
+		appt.innerHTML += '<p><strong>Time: </strong>' + apptList[btn].Appt.ApptTime + '</p>';
+		appt.innerHTML += '<p><strong>Reason: </strong>' + apptList[btn].Appt.Reason + '</p>';
 		if(!beforeTomorrow(result.Appt.ApptDate)){
 			appt.innerHTML += '<center><a href = "#" data-role = "button" onmouseup = cancelAppointment()>Cancel Appointment</a></center>';
 			$("#reviewAppt").trigger("pagecreate");
 		}
-	});
+	}
 }
 
 // Cancels an appointment through a post to the server
