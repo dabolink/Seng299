@@ -513,7 +513,7 @@ function retrieveAppts(){
 		var atLeastOne = false;
 		var HTMLstring = '<legend>Appointments:</legend>';
 		for(var i=0; i < apptList.length; i++){
-			if(apptList[i]){
+			if(apptList[i] != 'undefined'){
 				atLeastOne = true;
 				HTMLstring += '<a href = "#reviewAppt" data-role = "button" id = "' + i + '" onmouseup = getSingleAppt(' + i + ')>'
 				HTMLstring += apptList[i].ApptDate + ' @ ' + apptList[i].ApptTime + ' with ' + apptList[i].GPs + '</a>';
@@ -568,6 +568,7 @@ function cancelAppointment(){
 		ApptDate: apptList[curAppt].ApptDate,
 		ApptTime: apptList[curAppt].ApptTime,
 	}), function(result){
+		apptList[curAppt] = 'undefined';
 		curAppt = -1;
 		alert('Appointment cancelled.\n');
 		retrieveAppts();
