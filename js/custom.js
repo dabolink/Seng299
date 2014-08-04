@@ -99,6 +99,8 @@ function initialization(){
 }
 
 function signOut(){
+	curAppt = -1;
+	apptList = [];
 	if($.mobile.urlHistory.stack.length != 0){
 		$.mobile.urlHistory.stack[0].url = '/';
 	}
@@ -390,13 +392,11 @@ function getProfileInfo(){
 				+ '</p><p>E-Mail: ' + result.User.EMail
 				+ '</p><p>School: ' + result.User.School + '</p>';
 				profileInfo = result.User;
-				console.log("serverPost. " + profileInfo);
 				$.mobile.changePage("#profile");
 		});
 		getPastLogins();
 	}
 	else{
-		console.log("No serverPost. " + profileInfo);
 		$.mobile.changePage("#profile");
 	}
 
@@ -465,6 +465,8 @@ function getApptTimes(){
 
 function bookAppointment(){
 	if($('input[name=radio-mini]:checked').size() > 0){
+		curAppt = -1;
+		apptList = [];
 		serverPost('bookAppt', JSON.stringify({
 			GPs: document.getElementById('GP').value,
 			ApptDate: document.getElementById('BookApptDate').value,
@@ -486,27 +488,41 @@ function bookAppointment(){
 
 //Retrieves all appointments the current user has booked
 function retrieveAppts(){
-	curAppt = -1;
-	apptList = [];
-	var list = document.getElementById('userApptsList');
-	list.innerHTML = '<p>Loading, please wait.</p>';
-	serverPost('getUserAppt', JSON.stringify({
-	}), function(result){
-		if(!result.message){
-			var HTMLstring = '<legend>Appointments:</legend>';
-			for(var i=0; i < result.Appts.length; i++){
-				HTMLstring += '<a href = "#reviewAppt" data-role = "button" id = "' + i + '" onmouseup = getSingleAppt(' + i + ')>'
-				HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</a>';
-				apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
+	if(!apptList){
+		var list = document.getElementById('userApptsList');
+		list.innerHTML = '<p>Loading, please wait.</p>';
+		serverPost('getUserAppt', JSON.stringify({
+		}), function(result){
+			if(!result.message){
+				var HTMLstring = '<legend>Appointments:</legend>';
+				for(var i=0; i < result.Appts.length; i++){
+					HTMLstring += '<a href = "#reviewAppt" data-role = "button" id = "' + i + '" onmouseup = getSingleAppt(' + i + ')>'
+					HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</a>';
+					apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
+				}
+				list.innerHTML = HTMLstring;
+				$("#viewAppt").trigger("create");
+				$.mobile.changePage("#viewAppt");
 			}
-			list.innerHTML = HTMLstring;
-			$("#viewAppt").trigger("create");
-			$.mobile.changePage("#viewAppt");
+			else{
+				list.innerHTML = '<center><p>' + result.message + '</p></center>';
+			}
+		});
+	}
+	else{
+		var atLeastOne = false;
+		var HTMLstring = '<legend>Appointments:</legend>';
+		for(var i=0; i < apptList.length; i++){
+			if(apptList[i]){
+
+				HTMLstring += '<a href = "#reviewAppt" data-role = "button" id = "' + i + '" onmouseup = getSingleAppt(' + i + ')>'
+				HTMLstring += apptList[i].ApptDate + ' @ ' + apptList[i].ApptTime + ' with ' + apptList[i].GPs + '</a>';
+			}
 		}
-		else{
-			list.innerHTML = '<center><p>' + result.message + '</p></center>';
-		}
-	});
+		list.innerHTML = HTMLstring;
+		$("#viewAppt").trigger("create");
+		$.mobile.changePage("#viewAppt");
+	}
 }
 
 function getSingleAppt(btnID){

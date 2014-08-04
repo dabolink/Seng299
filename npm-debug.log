@@ -1,0 +1,302 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'nodetime-native' ]
+2 info using npm@1.4.14
+3 info using node@v0.10.29
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'nodetime-native', null ]
+7 verbose cache add name=undefined spec="nodetime-native" args=["nodetime-native",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'nodetime-native',
+8 verbose parsed url   path: 'nodetime-native',
+8 verbose parsed url   href: 'nodetime-native' }
+9 silly lockFile 218d0cce-nodetime-native nodetime-native
+10 verbose lock nodetime-native C:\Users\Andrew\AppData\Roaming\npm-cache\218d0cce-nodetime-native.lock
+11 silly lockFile 218d0cce-nodetime-native nodetime-native
+12 silly lockFile 218d0cce-nodetime-native nodetime-native
+13 verbose addNamed [ 'nodetime-native', '' ]
+14 verbose addNamed [ null, '*' ]
+15 silly lockFile 6af877d4-nodetime-native nodetime-native@
+16 verbose lock nodetime-native@ C:\Users\Andrew\AppData\Roaming\npm-cache\6af877d4-nodetime-native.lock
+17 silly addNameRange { name: 'nodetime-native', range: '*', hasData: false }
+18 verbose url raw nodetime-native
+19 verbose url resolving [ 'https://registry.npmjs.org/', './nodetime-native' ]
+20 verbose url resolved https://registry.npmjs.org/nodetime-native
+21 info trying registry request attempt 1 at 12:15:21
+22 verbose etag "3S6KKMM4EBKSQJRJ44BZX97VK"
+23 http GET https://registry.npmjs.org/nodetime-native
+24 http 304 https://registry.npmjs.org/nodetime-native
+25 silly registry.get cb [ 304,
+25 silly registry.get   { date: 'Mon, 04 Aug 2014 19:15:22 GMT',
+25 silly registry.get     server: 'Apache',
+25 silly registry.get     via: '1.1 varnish',
+25 silly registry.get     'last-modified': 'Mon, 04 Aug 2014 19:15:22 GMT',
+25 silly registry.get     'cache-control': 'max-age=60',
+25 silly registry.get     etag: '"3S6KKMM4EBKSQJRJ44BZX97VK"',
+25 silly registry.get     'x-served-by': 'cache-sjc3133-SJC',
+25 silly registry.get     'x-cache': 'HIT',
+25 silly registry.get     'x-cache-hits': '1',
+25 silly registry.get     'x-timer': 'S1407179722.533126,VS0,VE352',
+25 silly registry.get     vary: 'Accept',
+25 silly registry.get     'content-length': '0',
+25 silly registry.get     'keep-alive': 'timeout=10, max=50',
+25 silly registry.get     connection: 'Keep-Alive' } ]
+26 verbose etag nodetime-native from cache
+27 silly addNameRange number 2 { name: 'nodetime-native', range: '*', hasData: true }
+28 silly addNameRange versions [ 'nodetime-native', [ '0.1.0' ] ]
+29 verbose addNamed [ 'nodetime-native', '0.1.0' ]
+30 verbose addNamed [ '0.1.0', '0.1.0' ]
+31 silly lockFile 4075e7c7-nodetime-native-0-1-0 nodetime-native@0.1.0
+32 verbose lock nodetime-native@0.1.0 C:\Users\Andrew\AppData\Roaming\npm-cache\4075e7c7-nodetime-native-0-1-0.lock
+33 silly lockFile 4075e7c7-nodetime-native-0-1-0 nodetime-native@0.1.0
+34 silly lockFile 4075e7c7-nodetime-native-0-1-0 nodetime-native@0.1.0
+35 silly lockFile 6af877d4-nodetime-native nodetime-native@
+36 silly lockFile 6af877d4-nodetime-native nodetime-native@
+37 silly resolved [ { name: 'nodetime-native',
+37 silly resolved     version: '0.1.0',
+37 silly resolved     description: 'Nodetime Native Tools',
+37 silly resolved     author: { name: 'Nodetime', email: 'devops@nodetime.com' },
+37 silly resolved     main: './index.js',
+37 silly resolved     dependencies: { bindings: '*' },
+37 silly resolved     repository:
+37 silly resolved      { type: 'git',
+37 silly resolved        url: 'git://github.com/nodetime/nodetime-native.git' },
+37 silly resolved     engines: { node: '>=0.6.0' },
+37 silly resolved     licenses: [ [Object] ],
+37 silly resolved     scripts: { install: 'node-gyp rebuild' },
+37 silly resolved     gypfile: true,
+37 silly resolved     readme: 'Nodetime\'s Native Tools\n===\n\n',
+37 silly resolved     readmeFilename: 'README.md',
+37 silly resolved     _id: 'nodetime-native@0.1.0',
+37 silly resolved     dist:
+37 silly resolved      { shasum: '61569708b9229bf3f638572959a40bac148acdce',
+37 silly resolved        tarball: 'http://registry.npmjs.org/nodetime-native/-/nodetime-native-0.1.0.tgz' },
+37 silly resolved     _from: 'nodetime-native@',
+37 silly resolved     _npmVersion: '1.2.15',
+37 silly resolved     _npmUser: { name: 'nodetime', email: 'devops@nodetime.com' },
+37 silly resolved     maintainers: [ [Object] ],
+37 silly resolved     directories: {},
+37 silly resolved     _shasum: '61569708b9229bf3f638572959a40bac148acdce',
+37 silly resolved     _resolved: 'https://registry.npmjs.org/nodetime-native/-/nodetime-native-0.1.0.tgz',
+37 silly resolved     bugs: { url: 'https://github.com/nodetime/nodetime-native/issues' },
+37 silly resolved     homepage: 'https://github.com/nodetime/nodetime-native' } ]
+38 info install nodetime-native@0.1.0 into C:\Users\Andrew\Documents\GitHub\Seng299
+39 info installOne nodetime-native@0.1.0
+40 info C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native unbuild
+41 verbose tar unpack C:\Users\Andrew\AppData\Roaming\npm-cache\nodetime-native\0.1.0\package.tgz
+42 silly lockFile 5ffbe206-299-node-modules-nodetime-native tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native
+43 verbose lock tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native C:\Users\Andrew\AppData\Roaming\npm-cache\5ffbe206-299-node-modules-nodetime-native.lock
+44 silly lockFile 09b53c9b-odetime-native-0-1-0-package-tgz tar://C:\Users\Andrew\AppData\Roaming\npm-cache\nodetime-native\0.1.0\package.tgz
+45 verbose lock tar://C:\Users\Andrew\AppData\Roaming\npm-cache\nodetime-native\0.1.0\package.tgz C:\Users\Andrew\AppData\Roaming\npm-cache\09b53c9b-odetime-native-0-1-0-package-tgz.lock
+46 silly gunzTarPerm modes [ '755', '644' ]
+47 silly gunzTarPerm extractEntry package.json
+48 silly gunzTarPerm extractEntry .npmignore
+49 silly gunzTarPerm extractEntry README.md
+50 silly gunzTarPerm extractEntry LICENSE
+51 silly gunzTarPerm extractEntry index.js
+52 silly gunzTarPerm extractEntry binding.gyp
+53 silly gunzTarPerm extractEntry nodetime_native.cc
+54 silly gunzTarPerm extractEntry src/gc.cc
+55 silly gunzTarPerm extractEntry src/gc.h
+56 silly gunzTarPerm extractEntry src/nodetime_native.cc
+57 silly gunzTarPerm extractEntry src/profiler.cc
+58 silly gunzTarPerm extractEntry src/profiler.h
+59 silly gunzTarPerm extractEntry src/system.h
+60 silly gunzTarPerm extractEntry src/system_posix.cc
+61 silly gunzTarPerm extractEntry src/system_win.cc
+62 silly gunzTarPerm extractEntry wscript
+63 silly lockFile 5ffbe206-299-node-modules-nodetime-native tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native
+64 silly lockFile 5ffbe206-299-node-modules-nodetime-native tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native
+65 silly lockFile 09b53c9b-odetime-native-0-1-0-package-tgz tar://C:\Users\Andrew\AppData\Roaming\npm-cache\nodetime-native\0.1.0\package.tgz
+66 silly lockFile 09b53c9b-odetime-native-0-1-0-package-tgz tar://C:\Users\Andrew\AppData\Roaming\npm-cache\nodetime-native\0.1.0\package.tgz
+67 info preinstall nodetime-native@0.1.0
+68 verbose readDependencies using package.json deps
+69 verbose readDependencies using package.json deps
+70 verbose cache add [ 'bindings@*', null ]
+71 verbose cache add name=undefined spec="bindings@*" args=["bindings@*",null]
+72 verbose parsed url { protocol: null,
+72 verbose parsed url   slashes: null,
+72 verbose parsed url   auth: null,
+72 verbose parsed url   host: null,
+72 verbose parsed url   port: null,
+72 verbose parsed url   hostname: null,
+72 verbose parsed url   hash: null,
+72 verbose parsed url   search: null,
+72 verbose parsed url   query: null,
+72 verbose parsed url   pathname: 'bindings@*',
+72 verbose parsed url   path: 'bindings@*',
+72 verbose parsed url   href: 'bindings@*' }
+73 verbose cache add name="bindings" spec="*" args=["bindings","*"]
+74 verbose parsed url { protocol: null,
+74 verbose parsed url   slashes: null,
+74 verbose parsed url   auth: null,
+74 verbose parsed url   host: null,
+74 verbose parsed url   port: null,
+74 verbose parsed url   hostname: null,
+74 verbose parsed url   hash: null,
+74 verbose parsed url   search: null,
+74 verbose parsed url   query: null,
+74 verbose parsed url   pathname: '*',
+74 verbose parsed url   path: '*',
+74 verbose parsed url   href: '*' }
+75 verbose addNamed [ 'bindings', '*' ]
+76 verbose addNamed [ null, '*' ]
+77 silly lockFile a3858fc2-bindings bindings@*
+78 verbose lock bindings@* C:\Users\Andrew\AppData\Roaming\npm-cache\a3858fc2-bindings.lock
+79 silly addNameRange { name: 'bindings', range: '*', hasData: false }
+80 verbose url raw bindings
+81 verbose url resolving [ 'https://registry.npmjs.org/', './bindings' ]
+82 verbose url resolved https://registry.npmjs.org/bindings
+83 info trying registry request attempt 1 at 12:15:22
+84 verbose etag "HHDEMUMZU8OTS1DUFQCBQQ8Z"
+85 http GET https://registry.npmjs.org/bindings
+86 http 304 https://registry.npmjs.org/bindings
+87 silly registry.get cb [ 304,
+87 silly registry.get   { date: 'Mon, 04 Aug 2014 19:15:23 GMT',
+87 silly registry.get     server: 'Apache',
+87 silly registry.get     via: '1.1 varnish',
+87 silly registry.get     'last-modified': 'Mon, 04 Aug 2014 19:15:23 GMT',
+87 silly registry.get     'cache-control': 'max-age=60',
+87 silly registry.get     etag: '"HHDEMUMZU8OTS1DUFQCBQQ8Z"',
+87 silly registry.get     'x-served-by': 'cache-sjc3127-SJC',
+87 silly registry.get     'x-cache': 'HIT',
+87 silly registry.get     'x-cache-hits': '1',
+87 silly registry.get     'x-timer': 'S1407179723.520769,VS0,VE0',
+87 silly registry.get     vary: 'Accept',
+87 silly registry.get     'content-length': '0',
+87 silly registry.get     'keep-alive': 'timeout=10, max=50',
+87 silly registry.get     connection: 'Keep-Alive' } ]
+88 verbose etag bindings from cache
+89 silly addNameRange number 2 { name: 'bindings', range: '*', hasData: true }
+90 silly addNameRange versions [ 'bindings',
+90 silly addNameRange   [ '0.0.1',
+90 silly addNameRange     '0.1.0',
+90 silly addNameRange     '0.1.1',
+90 silly addNameRange     '0.2.0',
+90 silly addNameRange     '0.2.1',
+90 silly addNameRange     '0.2.2',
+90 silly addNameRange     '0.2.3',
+90 silly addNameRange     '0.2.4',
+90 silly addNameRange     '0.3.0',
+90 silly addNameRange     '0.4.0',
+90 silly addNameRange     '1.0.0',
+90 silly addNameRange     '1.1.0',
+90 silly addNameRange     '1.1.1',
+90 silly addNameRange     '1.2.0',
+90 silly addNameRange     '1.2.1' ] ]
+91 verbose addNamed [ 'bindings', '1.2.1' ]
+92 verbose addNamed [ '1.2.1', '1.2.1' ]
+93 silly lockFile e9060511-bindings-1-2-1 bindings@1.2.1
+94 verbose lock bindings@1.2.1 C:\Users\Andrew\AppData\Roaming\npm-cache\e9060511-bindings-1-2-1.lock
+95 silly lockFile e9060511-bindings-1-2-1 bindings@1.2.1
+96 silly lockFile e9060511-bindings-1-2-1 bindings@1.2.1
+97 silly lockFile a3858fc2-bindings bindings@*
+98 silly lockFile a3858fc2-bindings bindings@*
+99 silly resolved [ { name: 'bindings',
+99 silly resolved     description: 'Helper module for loading your native module\'s .node file',
+99 silly resolved     keywords: [ 'native', 'addon', 'bindings', 'gyp', 'waf', 'c', 'c++' ],
+99 silly resolved     version: '1.2.1',
+99 silly resolved     author:
+99 silly resolved      { name: 'Nathan Rajlich',
+99 silly resolved        email: 'nathan@tootallnate.net',
+99 silly resolved        url: 'http://tootallnate.net' },
+99 silly resolved     repository:
+99 silly resolved      { type: 'git',
+99 silly resolved        url: 'git://github.com/TooTallNate/node-bindings.git' },
+99 silly resolved     main: './bindings.js',
+99 silly resolved     bugs: { url: 'https://github.com/TooTallNate/node-bindings/issues' },
+99 silly resolved     homepage: 'https://github.com/TooTallNate/node-bindings',
+99 silly resolved     license: 'MIT',
+99 silly resolved     gitHead: 'e404152ee27f8478ccbc7122ee051246e8e5ec02',
+99 silly resolved     _id: 'bindings@1.2.1',
+99 silly resolved     scripts: {},
+99 silly resolved     _shasum: '14ad6113812d2d37d72e67b4cacb4bb726505f11',
+99 silly resolved     _from: 'bindings@*',
+99 silly resolved     _npmVersion: '1.4.14',
+99 silly resolved     _npmUser: { name: 'tootallnate', email: 'nathan@tootallnate.net' },
+99 silly resolved     maintainers: [ [Object], [Object] ],
+99 silly resolved     dist:
+99 silly resolved      { shasum: '14ad6113812d2d37d72e67b4cacb4bb726505f11',
+99 silly resolved        tarball: 'http://registry.npmjs.org/bindings/-/bindings-1.2.1.tgz' },
+99 silly resolved     directories: {},
+99 silly resolved     _resolved: 'https://registry.npmjs.org/bindings/-/bindings-1.2.1.tgz',
+99 silly resolved     readme: 'ERROR: No README data found!' } ]
+100 info install bindings@1.2.1 into C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native
+101 info installOne bindings@1.2.1
+102 info C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native\node_modules\bindings unbuild
+103 verbose tar unpack C:\Users\Andrew\AppData\Roaming\npm-cache\bindings\1.2.1\package.tgz
+104 silly lockFile 4139b71e-ime-native-node-modules-bindings tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native\node_modules\bindings
+105 verbose lock tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native\node_modules\bindings C:\Users\Andrew\AppData\Roaming\npm-cache\4139b71e-ime-native-node-modules-bindings.lock
+106 silly lockFile 19b609dc-cache-bindings-1-2-1-package-tgz tar://C:\Users\Andrew\AppData\Roaming\npm-cache\bindings\1.2.1\package.tgz
+107 verbose lock tar://C:\Users\Andrew\AppData\Roaming\npm-cache\bindings\1.2.1\package.tgz C:\Users\Andrew\AppData\Roaming\npm-cache\19b609dc-cache-bindings-1-2-1-package-tgz.lock
+108 silly gunzTarPerm modes [ '755', '644' ]
+109 silly gunzTarPerm extractEntry package.json
+110 silly gunzTarPerm extractEntry README.md
+111 silly gunzTarPerm extractEntry bindings.js
+112 silly lockFile 4139b71e-ime-native-node-modules-bindings tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native\node_modules\bindings
+113 silly lockFile 4139b71e-ime-native-node-modules-bindings tar://C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native\node_modules\bindings
+114 silly lockFile 19b609dc-cache-bindings-1-2-1-package-tgz tar://C:\Users\Andrew\AppData\Roaming\npm-cache\bindings\1.2.1\package.tgz
+115 silly lockFile 19b609dc-cache-bindings-1-2-1-package-tgz tar://C:\Users\Andrew\AppData\Roaming\npm-cache\bindings\1.2.1\package.tgz
+116 info preinstall bindings@1.2.1
+117 verbose readDependencies using package.json deps
+118 verbose readDependencies using package.json deps
+119 silly resolved []
+120 verbose about to build C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native\node_modules\bindings
+121 info build C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native\node_modules\bindings
+122 verbose linkStuff [ false,
+122 verbose linkStuff   false,
+122 verbose linkStuff   false,
+122 verbose linkStuff   'C:\\Users\\Andrew\\Documents\\GitHub\\Seng299\\node_modules\\nodetime-native\\node_modules' ]
+123 info linkStuff bindings@1.2.1
+124 verbose linkBins bindings@1.2.1
+125 verbose linkMans bindings@1.2.1
+126 verbose rebuildBundles bindings@1.2.1
+127 info install bindings@1.2.1
+128 info postinstall bindings@1.2.1
+129 verbose about to build C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native
+130 info build C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native
+131 verbose linkStuff [ false,
+131 verbose linkStuff   false,
+131 verbose linkStuff   false,
+131 verbose linkStuff   'C:\\Users\\Andrew\\Documents\\GitHub\\Seng299\\node_modules' ]
+132 info linkStuff nodetime-native@0.1.0
+133 verbose linkBins nodetime-native@0.1.0
+134 verbose linkMans nodetime-native@0.1.0
+135 verbose rebuildBundles nodetime-native@0.1.0
+136 verbose rebuildBundles [ 'bindings' ]
+137 info install nodetime-native@0.1.0
+138 verbose unsafe-perm in lifecycle true
+139 info nodetime-native@0.1.0 Failed to exec install script
+140 info C:\Users\Andrew\Documents\GitHub\Seng299\node_modules\nodetime-native unbuild
+141 info preuninstall nodetime-native@0.1.0
+142 info uninstall nodetime-native@0.1.0
+143 verbose true,C:\Users\Andrew\Documents\GitHub\Seng299\node_modules,C:\Users\Andrew\Documents\GitHub\Seng299\node_modules unbuild nodetime-native@0.1.0
+144 info postuninstall nodetime-native@0.1.0
+145 error nodetime-native@0.1.0 install: `node-gyp rebuild`
+145 error Exit status 1
+146 error Failed at the nodetime-native@0.1.0 install script.
+146 error This is most likely a problem with the nodetime-native package,
+146 error not with npm itself.
+146 error Tell the author that this fails on your system:
+146 error     node-gyp rebuild
+146 error You can get their info via:
+146 error     npm owner ls nodetime-native
+146 error There is likely additional logging output above.
+147 error System Windows_NT 6.1.7601
+148 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "nodetime-native"
+149 error cwd C:\Users\Andrew\Documents\GitHub\Seng299
+150 error node -v v0.10.29
+151 error npm -v 1.4.14
+152 error code ELIFECYCLE
+153 verbose exit [ 1, true ]
