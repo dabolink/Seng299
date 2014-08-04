@@ -498,7 +498,7 @@ function retrieveAppts(){
 				for(var i=0; i < result.Appts.length; i++){
 					HTMLstring += '<a href = "#reviewAppt" data-role = "button" id = "' + i + '" onmouseup = getSingleAppt(' + i + ')>'
 					HTMLstring += result.Appts[i].Appts.ApptDate + ' @ ' + result.Appts[i].Appts.ApptTime + ' with ' + result.Appts[i].Appts.GPs + '</a>';
-					apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime, Reason: result.Appts[i].Appts.Reason});
+					apptList.push({GPs: result.Appts[i].Appts.GPs, ApptDate: result.Appts[i].Appts.ApptDate, ApptTime: result.Appts[i].Appts.ApptTime});
 				}
 				list.innerHTML = HTMLstring;
 				$("#viewAppt").trigger("create");
@@ -550,11 +550,11 @@ function getSingleAppt(btnID){
 	else{
 		curAppt = btnID;
 		var appt = document.getElementById('singleAppt');
-		appt.innerHTML = '<p><strong>GP: </strong>' + apptList[curAppt].GPs + '</p>';
-		appt.innerHTML += '<p><strong>Date: </strong>' + apptList[curAppt].ApptDate + '</p>';
-		appt.innerHTML += '<p><strong>Time: </strong>' + apptList[curAppt].ApptTime + '</p>';
-		appt.innerHTML += '<p><strong>Reason: </strong>' + apptList[curAppt].Reason + '</p>';
-		if(!beforeTomorrow(apptList[curAppt].ApptDate)){
+		appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GPs + '</p>';
+		appt.innerHTML += '<p><strong>Date: </strong>' + apptList[btn].Appt.ApptDate + '</p>';
+		appt.innerHTML += '<p><strong>Time: </strong>' + apptList[btn].Appt.ApptTime + '</p>';
+		appt.innerHTML += '<p><strong>Reason: </strong>' + apptList[btn].Appt.Reason + '</p>';
+		if(!beforeTomorrow(result.Appt.ApptDate)){
 			appt.innerHTML += '<center><a href = "#" data-role = "button" onmouseup = cancelAppointment()>Cancel Appointment</a></center>';
 			$("#reviewAppt").trigger("pagecreate");
 		}
