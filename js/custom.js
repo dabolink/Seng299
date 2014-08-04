@@ -488,8 +488,8 @@ function bookAppointment(){
 
 //Retrieves all appointments the current user has booked
 function retrieveAppts(){
-	if(!apptList){
-		var list = document.getElementById('userApptsList');
+	var list = document.getElementById('userApptsList');
+	if(apptList.length == 0){
 		list.innerHTML = '<p>Loading, please wait.</p>';
 		serverPost('getUserAppt', JSON.stringify({
 		}), function(result){
@@ -514,12 +514,15 @@ function retrieveAppts(){
 		var HTMLstring = '<legend>Appointments:</legend>';
 		for(var i=0; i < apptList.length; i++){
 			if(apptList[i]){
-
+				atLeastOne = true;
 				HTMLstring += '<a href = "#reviewAppt" data-role = "button" id = "' + i + '" onmouseup = getSingleAppt(' + i + ')>'
 				HTMLstring += apptList[i].ApptDate + ' @ ' + apptList[i].ApptTime + ' with ' + apptList[i].GPs + '</a>';
 			}
 		}
-		list.innerHTML = HTMLstring;
+		if (atLeastOne)
+			list.innerHTML = HTMLstring;
+		else
+			list.innerHTML = 'You have no appointments booked.'
 		$("#viewAppt").trigger("create");
 		$.mobile.changePage("#viewAppt");
 	}
