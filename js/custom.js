@@ -529,7 +529,7 @@ function retrieveAppts(){
 }
 
 function getSingleAppt(btnID){
-	if(!apptList[btnID]){
+	if(apptList[btnID]){
 		curAppt = btnID;
 		serverPost('getOneAppt', JSON.stringify({
 			GPs: apptList[curAppt].GPs,
@@ -550,11 +550,11 @@ function getSingleAppt(btnID){
 	else{
 		curAppt = btnID;
 		var appt = document.getElementById('singleAppt');
-		appt.innerHTML = '<p><strong>GP: </strong>' + result.Appt.GPs + '</p>';
-		appt.innerHTML += '<p><strong>Date: </strong>' + apptList[btn].Appt.ApptDate + '</p>';
-		appt.innerHTML += '<p><strong>Time: </strong>' + apptList[btn].Appt.ApptTime + '</p>';
-		appt.innerHTML += '<p><strong>Reason: </strong>' + apptList[btn].Appt.Reason + '</p>';
-		if(!beforeTomorrow(result.Appt.ApptDate)){
+		appt.innerHTML = '<p><strong>GP: </strong>' + apptList[btnID].Appt.GPs + '</p>';
+		appt.innerHTML += '<p><strong>Date: </strong>' + apptList[btnID].Appt.ApptDate + '</p>';
+		appt.innerHTML += '<p><strong>Time: </strong>' + apptList[btnID].Appt.ApptTime + '</p>';
+		appt.innerHTML += '<p><strong>Reason: </strong>' + apptList[btnID].Appt.Reason + '</p>';
+		if(!beforeTomorrow(apptList[btnID].Appt.ApptDate)){
 			appt.innerHTML += '<center><a href = "#" data-role = "button" onmouseup = cancelAppointment()>Cancel Appointment</a></center>';
 			$("#reviewAppt").trigger("pagecreate");
 		}
